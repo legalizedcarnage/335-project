@@ -1,11 +1,11 @@
-# cs335 lab1
+# cs335 group project
 # to compile your project, type make and press enter
 
-all: lab1
+#all: main
 
-lab1: lab1.cpp
-	g++ lab1.cpp -Wall -olab1 -lX11 -lGL -lGLU -lm
+main: main.cpp davis.cpp
+	g++ main.cpp davis.cpp -Wall -omain -lX11 -lGL -lGLU -lm
 
 clean:
-	rm -f lab1
+	rm -f main
 	rm -f *.o

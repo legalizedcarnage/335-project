@@ -21,6 +21,15 @@
 Display *dpy;
 Window win;
 GLXContext glc;
+//Function prototypes
+void initXWindows(void);
+void init_opengl(void);
+void cleanupXWindows(void);
+void check_mouse(XEvent *e, Game *game);
+int check_keys(XEvent *e, Game *game);
+void movement(Game *game);
+void charMovement(Game *game);
+void render(Game *game);
 
 int main(void)
 {
@@ -59,7 +68,7 @@ void set_title(void)
 {
 	//Set the window title bar.
 	XMapWindow(dpy, win);
-	XStoreName(dpy, win, "335 Lab1   LMB for particle");
+	XStoreName(dpy, win, "335 group project");
 }
 
 void cleanupXWindows(void)

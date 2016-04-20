@@ -1,4 +1,4 @@
-//main header file
+//struct header file
 #ifndef MAIN_H
 #define MAIN_H
 const unsigned int Max_Enemies = 10;
@@ -34,16 +34,6 @@ struct Game {
 	Shape box;
 	int n;
 };
-
-//Function prototypes
-void initXWindows(void);
-void init_opengl(void);
-void cleanupXWindows(void);
-void check_mouse(XEvent *e, Game *game);
-int check_keys(XEvent *e, Game *game);
-void movement(Game *game);
-void charMovement(Game *game);
-void render(Game *game);
 
 
 #endif
