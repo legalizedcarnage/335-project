@@ -1,4 +1,4 @@
-// cs335 group project
+// cs335 group project main
 //. collision detection
 //. more objects
 //
