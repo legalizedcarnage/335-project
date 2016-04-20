@@ -1,6 +1,4 @@
 // cs335 group project main
-//. collision detection
-//. more objects
 //
 #include <iostream>
 #include <cstdlib>
@@ -10,7 +8,11 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <GL/glx.h>
+//header files
 #include "main.h"
+#include "davis.h"
+
+
 #define WINDOW_WIDTH  800
 #define WINDOW_HEIGHT 600
 
