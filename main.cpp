@@ -42,7 +42,7 @@ int main(void)
 	//declare game object
 	Game game;
 	game.n=0;
-
+	game.num_objects=0;
 	game.player.s.width = 20;
 	game.player.s.height = 40;
 	game.player.s.center.x = 120 + 5*65;
@@ -246,19 +246,32 @@ void movement(Game *game)
 
 	if (game->n <= 0)
 		return;
-	for (int i = 0; i < Max_Particles; i++) {
+	for (int i = 0; i < game->n; i++) {
 		p = &game->particle[i];
 		p->s.center.x += p->velocity.x;
 		p->s.center.y += p->velocity.y;
-	}
-	//check for collision with shapes...
-	//Shape *s;
-
-
-	//check for off-screen
-	if (p->s.center.y < 0.0) {
-		std::cout << "off screen" << std::endl;
-		game->n--;
+	
+		//check for off-screen
+		if (p->s.center.x > WINDOW_WIDTH + p->s.width) {
+			std::cout << "off screen" << std::endl;
+			game->particle[i] = game->particle[game->n-1];
+			game->n--;
+		}
+		if (p->s.center.x < 0.0) {
+			std::cout << "off screen" << std::endl;
+			game->particle[i] = game->particle[game->n-1];
+			game->n--;
+		}
+		if (p->s.center.y > WINDOW_HEIGHT + p->s.height) {
+			std::cout << "off screen" << std::endl;
+			game->particle[i] = game->particle[game->n-1];
+			game->n--;
+		}
+		if (p->s.center.y < 0.0) {
+			std::cout << "off screen" << std::endl;
+			game->particle[i] = game->particle[game->n-1];
+			game->n--;
+		}
 	}
 }
 void charMovement( Game *game) 
@@ -298,12 +311,17 @@ void charMovement( Game *game)
 
 void render(Game *game)
 {
+	if (game.state == 0) {
+    	//function call for main menu
+	}
+
 	float w, h;
 	glClear(GL_COLOR_BUFFER_BIT);
 	//Draw shapes...
 	
-	//draw box
+	//draw current tile
 	Shape *s;
+	for (int i = 0; i < game->num_objects; i++ ) {
 	glColor3ub(90,140,90);
 	s = &game->box;
 	glPushMatrix();
@@ -317,9 +335,9 @@ void render(Game *game)
 		glVertex2i( w,-h);
 	glEnd();
 	glPopMatrix();
-
+	}
 	//draw all particles here
-	for ( int i = 0; i < Max_Particles; i++) {
+	for ( int i = 0; i < game->n; i++) {
 		glPushMatrix();
 		glColor3ub(150,160,220);
 		Vec *c = &game->particle[i].s.center;
@@ -333,7 +351,7 @@ void render(Game *game)
 		glEnd();
 		glPopMatrix();
 	}
-	
+	//draw player	
 	glColor3ub(150,160,220);
 	s = &game->player.s;
 	glPushMatrix();

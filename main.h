@@ -27,12 +27,15 @@ struct Player {
 struct Game {
 	int state;
     	char direction;
+        int map[2];
 	Player enemies[Max_Enemies] ;
 	Player player;
 	Shape object[Max_Objects];
 	Particle particle[Max_Particles];
 	Shape box;
 	int n;
+	int num_objects;
+
 };
 
 
