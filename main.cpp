@@ -11,7 +11,7 @@
 //header files
 #include "main.h"
 #include "davis.h"
-
+#include "mario.h"
 
 #define WINDOW_WIDTH  800
 #define WINDOW_HEIGHT 600
@@ -41,8 +41,8 @@ int main(void)
 	init_opengl();
 	//declare game object
 	Game game;
+	game.state = 0;
 	game.n=0;
-	game.direction = 'u';
 	game.num_objects=0;
 	game.player.s.width = 20;
 	game.player.s.height = 40;
@@ -51,8 +51,6 @@ int main(void)
 	game.player.velocity.x = 0;
 	game.player.velocity.y = 0;	
 	//start animation
-	std::cout << game.map[0]  << ", " << game.map[1] << std::endl;
-	
 	while(!done) {
 		while(XPending(dpy)) {
 			XEvent e;
@@ -287,25 +285,21 @@ void charMovement( Game *game)
 	if (p->s.center.y - p->s.height == 0 && p->velocity.y < 0) {
 		p->s.center.y = p->s.height;
 		p->velocity.y = 0;
-		shiftScreen(game, 'd');
 	}
 	//roof
 	if (p->s.center.y + p->s.height == WINDOW_HEIGHT && p->velocity.y > 0) {
 		p->s.center.y = WINDOW_HEIGHT - p->s.height;
 		p->velocity.y = 0;
-		shiftScreen(game, 'u');
 	}
 	//left wall
 	if (p->s.center.x - p->s.width <= 0 && p->velocity.x < 0) {
 		p->s.center.x = p->s.width;
 		p->velocity.x = 0;
-		shiftScreen(game, 'l');
 	}
 	//right wall
 	if (p->s.center.x + p->s.width >= WINDOW_WIDTH && p->velocity.x > 0) {
 		p->s.center.x = WINDOW_WIDTH - p->s.width;
 		p->velocity.x = 0;
-		shiftScreen(game, 'r');
 	}
 	
 	
@@ -318,9 +312,11 @@ void charMovement( Game *game)
 
 void render(Game *game)
 {
-	if (game->state == 0) {
-    	//function call for main menu
-	}
+    	//game->state = 0;
+	if (game->state == 0)
+	    displayMenu(game);
+	else {
+	glClearColor(0.0,0.0,0.0,1.0);
 	float w, h;
 	glClear(GL_COLOR_BUFFER_BIT);
 	//Draw shapes...
@@ -371,5 +367,6 @@ void render(Game *game)
 		glVertex2i( w,-h);
 	glEnd();
 	glPopMatrix();
+	}
 }
 
