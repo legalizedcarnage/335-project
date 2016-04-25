@@ -13,8 +13,8 @@
 #include "davis.h"
 #include "mario.h"
 
-#define WINDOW_WIDTH  800
-#define WINDOW_HEIGHT 600
+#define WINDOW_WIDTH  1200
+#define WINDOW_HEIGHT 900
 
 #define MAX_PARTICLES 100
 #define GRAVITY 0.1
@@ -45,7 +45,7 @@ int main(void)
 	game.n=0;
 	game.num_objects=0;
 	game.player.s.width = 20;
-	game.player.s.height = 40;
+	game.player.s.height = 30;
 	game.player.s.center.x = 120 + 5*65;
 	game.player.s.center.y = 500 - 5*60;
 	game.player.velocity.x = 0;
