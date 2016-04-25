@@ -343,7 +343,7 @@ void render(Game *game)
 	glPopMatrix();
 	}
 	//draw all particles here
-	for ( int i = 0; i < game->n; i++) {
+	for (int i = 0; i < game->n; i++) {
 		glPushMatrix();
 		glColor3ub(150,160,220);
 		Vec *c = &game->particle[i].s.center;
