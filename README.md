@@ -1,5 +1,11 @@
 # 335-project
 
+#work
+  davis: levels/transition
+  barrales:weapons/inventory
+  acosta: tiles
+  trigueros:enemies
+  hernandez:menu
 #project plan
   -2d jail map
   -moveable character with gun (possible melee)
