@@ -10,4 +10,27 @@
   -main menu
   -map style: tile based (zelda-esque)
   -interactable parts to levels
+  -inventory
+  -bosses
+  
+#levels
+  cell
+  kitchen/offices
+  courtyard
+
+#weapons
+  knife
+  crobar
+  pistol
+  rifle
+  shield
+  shotgun
+  
+#enemies
+  prisoner
+  guard
+  warden
+  shield
+  tower guard
+  dog
   
