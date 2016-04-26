@@ -20,9 +20,12 @@ void shiftScreen(Game *game, char direction)
 }
 void collision(Game *game)
 {
+	//detect object collisions
 	Shape *s;
-	for (int i; i < game->n; i++) {
-		s = &game->objects[i];
-	}
+	for (int i; i < game->num_objects; i++) {
+		s = &game->object[i];
 		
+	}
+	//detect screen collisions
+	
 }
