@@ -178,7 +178,7 @@ int check_keys(XEvent *e, Game *game)
 		if (key == XK_Escape) {
 			return 1;
 		}
-		//You may check other keys here.
+	
 		switch(key) {
 			case XK_Left:
 				//may need to adjust
@@ -279,35 +279,6 @@ void charMovement( Game *game)
 {
    	Player *p;
 	p = &game->player;
-	
-	//boundaries
-	//floor
-	if (p->s.center.y - p->s.height == 0 && p->velocity.y < 0) {
-		p->s.center.y = p->s.height;
-		p->velocity.y = 0;
-		shiftScreen(game, 'd');
-	}
-	//roof
-	if (p->s.center.y + p->s.height == WINDOW_HEIGHT && p->velocity.y > 0) {
-		p->s.center.y = WINDOW_HEIGHT - p->s.height;
-		p->velocity.y = 0;
-		shiftScreen(game, 'u');
-	}
-	//left wall
-	if (p->s.center.x - p->s.width <= 0 && p->velocity.x < 0) {
-		p->s.center.x = p->s.width;
-		p->velocity.x = 0;
-		shiftScreen(game, 'l');
-	}
-	//right wall
-	if (p->s.center.x + p->s.width >= WINDOW_WIDTH && p->velocity.x > 0) {
-		p->s.center.x = WINDOW_WIDTH - p->s.width;
-		p->velocity.x = 0;
-		shiftScreen(game, 'r');
-	}
-	
-	
-	
 	
 	
 	p->s.center.x += p->velocity.x;
