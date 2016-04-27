@@ -13,7 +13,7 @@
 #include "main.h"
 #include "davis.h"
 #include "mario.h"
-
+#include "julia.h"
 extern "C" {
     	#include "fonts.h"
 }
@@ -312,6 +312,9 @@ void render(Game *game)
 	r[0].center = 0;
 	ggprint8b(&r[0], 16, 0x00ff0000, "REQUIREMENTS");
 	
+	//print tiles
+	printtile(game);
+
 	//draw current tile
 	Shape *s;
 	for (int i = 0; i < game->num_objects; i++ ) {
