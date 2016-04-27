@@ -13,6 +13,8 @@
 #include "davis.h"
 #include "mario.h"
 
+
+
 #define WINDOW_WIDTH  1200
 #define WINDOW_HEIGHT 900
 
@@ -64,6 +66,7 @@ int main(void)
 		glXSwapBuffers(dpy, win);
 	}
 	cleanupXWindows();
+	cleanup_fonts();
 	return 0;
 }
 
@@ -122,6 +125,9 @@ void init_opengl(void)
 	glOrtho(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT, -1, 1);
 	//Set the screen background color
 	glClearColor(0.1, 0.1, 0.1, 1.0);
+	glEnable(GL_TEXTURE_2D);
+	initialize_fonts();
+
 }
 
 void makeParticle(Game *game, int x, int y) {
@@ -294,7 +300,14 @@ void render(Game *game)
 	glClearColor(0.0,0.0,0.0,1.0);
 	float w, h;
 	glClear(GL_COLOR_BUFFER_BIT);
-	//Draw shapes...
+	//Draw text
+	Rect r[5];
+//	glClear(GL_COLOR_BUFFER_BIT);
+	//
+	r[0].bot = 495;
+	r[0].left = 95;
+	r[0].center = 0;
+	ggprint8b(&r[0], 16, 0x00ff0000, "REQUIREMENTS");
 	
 	//draw current tile
 	Shape *s;
