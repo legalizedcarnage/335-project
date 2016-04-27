@@ -1,6 +1,9 @@
 //struct header file
 #ifndef MAIN_H
 #define MAIN_H
+
+#define WINDOW_WIDTH  1200
+#define WINDOW_HEIGHT 900
 const unsigned int Max_Enemies = 10;
 const int Max_Objects = 100;
 const int Max_Particles = 100;

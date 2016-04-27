@@ -21,13 +21,13 @@ void shiftScreen(Game *game, char direction)
 void playerCollision(Game *game)
 {
 	//detect object collisions
-	Shape *s;
+	/*Shape *s;
 	for (int i; i < game->num_objects; i++) {
 		s = &game->object[i];
 		
-	}
+	}*/
 	//detect screen collisions
-	Player *p
+	Player *p;
 	p = &game->player;
 	//floor
 	if (p->s.center.y - p->s.height == 0 && p->velocity.y < 0) {

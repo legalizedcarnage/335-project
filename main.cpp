@@ -8,6 +8,7 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <GL/glx.h>
+
 //header files
 #include "main.h"
 #include "davis.h"
