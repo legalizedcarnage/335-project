@@ -13,7 +13,9 @@
 #include "davis.h"
 #include "mario.h"
 
-
+extern "C" {
+    	#include "fonts.h"
+}
 
 #define WINDOW_WIDTH  1200
 #define WINDOW_HEIGHT 900
