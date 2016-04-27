@@ -8,10 +8,15 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <GL/glx.h>
+
 //header files
 #include "main.h"
 #include "davis.h"
 #include "mario.h"
+
+extern "C" {
+    	#include "fonts.h"
+}
 
 #define WINDOW_WIDTH  1200
 #define WINDOW_HEIGHT 900
@@ -64,6 +69,7 @@ int main(void)
 		glXSwapBuffers(dpy, win);
 	}
 	cleanupXWindows();
+	cleanup_fonts();
 	return 0;
 }
 
@@ -122,6 +128,9 @@ void init_opengl(void)
 	glOrtho(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT, -1, 1);
 	//Set the screen background color
 	glClearColor(0.1, 0.1, 0.1, 1.0);
+	glEnable(GL_TEXTURE_2D);
+	initialize_fonts();
+
 }
 
 void makeParticle(Game *game, int x, int y) {
@@ -178,7 +187,7 @@ int check_keys(XEvent *e, Game *game)
 		if (key == XK_Escape) {
 			return 1;
 		}
-		//You may check other keys here.
+	
 		switch(key) {
 			case XK_Left:
 				//may need to adjust
@@ -280,36 +289,7 @@ void charMovement( Game *game)
    	Player *p;
 	p = &game->player;
 	
-	//boundaries
-	//floor
-	if (p->s.center.y - p->s.height == 0 && p->velocity.y < 0) {
-		p->s.center.y = p->s.height;
-		p->velocity.y = 0;
-		shiftScreen(game, 'd');
-	}
-	//roof
-	if (p->s.center.y + p->s.height == WINDOW_HEIGHT && p->velocity.y > 0) {
-		p->s.center.y = WINDOW_HEIGHT - p->s.height;
-		p->velocity.y = 0;
-		shiftScreen(game, 'u');
-	}
-	//left wall
-	if (p->s.center.x - p->s.width <= 0 && p->velocity.x < 0) {
-		p->s.center.x = p->s.width;
-		p->velocity.x = 0;
-		shiftScreen(game, 'l');
-	}
-	//right wall
-	if (p->s.center.x + p->s.width >= WINDOW_WIDTH && p->velocity.x > 0) {
-		p->s.center.x = WINDOW_WIDTH - p->s.width;
-		p->velocity.x = 0;
-		shiftScreen(game, 'r');
-	}
-	
-	
-	
-	
-	
+	playerCollision(game);
 	p->s.center.x += p->velocity.x;
 	p->s.center.y += p->velocity.y;
 }
@@ -323,7 +303,14 @@ void render(Game *game)
 	glClearColor(0.0,0.0,0.0,1.0);
 	float w, h;
 	glClear(GL_COLOR_BUFFER_BIT);
-	//Draw shapes...
+	//Draw text
+	Rect r[5];
+//	glClear(GL_COLOR_BUFFER_BIT);
+	//
+	r[0].bot = 495;
+	r[0].left = 95;
+	r[0].center = 0;
+	ggprint8b(&r[0], 16, 0x00ff0000, "REQUIREMENTS");
 	
 	//draw current tile
 	Shape *s;
