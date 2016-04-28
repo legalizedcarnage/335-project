@@ -26,11 +26,12 @@ void playerCollision(Game *game)
 	Player *p;
 	p = &game->player;
 
-	//detect object collisions (BAD! FIX IT!)
+	//detect object collisions 
 	Shape *s;
 	for (int i = 0; i < game->num_objects; i++) {
 		s = &game->object[i];
-		if (p->s.center.y + p->s.height >= s->center.y- s->height
+		//bad and buggy
+		/*if (p->s.center.y + p->s.height >= s->center.y- s->height
 		&& p->s.center.y - p->s.height <= s->center.y + s->height
 		&& p->s.center.x  + p->s.width >= s->center.x - s->width
 		&& p->s.center.x - p->s.width <= s->center.x + s->width) {
@@ -50,7 +51,34 @@ void playerCollision(Game *game)
 				p->s.center.x += p->velocity.x;
 				p->velocity.x = 0;
 			}
-		}		
+		}*/
+		//fixed
+		float top = p->s.center.y  + p->s.height;
+		float bot = p->s.center.y  - p->s.height;
+		float left = p->s.center.x - p->s.width;
+		float right = p->s.center.x + p->s.width;
+
+		if (top >= s->center.y - s->height
+		&& top <= s->center.y + s->height
+		&& left <= s->center.x + s->width
+		&& right >= s->center.x - s->width
+	        && p->velocity.y > 0 ) {
+			p->velocity.y = 0;
+		} 
+		if (bot >= s->center.y - s->height
+		&& bot <= s->center.y + s->height
+		&& left <= s->center.x + s->width
+		&& right >= s->center.x - s->width
+	        && p->velocity.y < 0 ) {
+			p->velocity.y = 0;
+		} 
+		if (left >= s->center.x - s->width
+		&& left <= s->center.x + s->width
+		&& left <= s->center.x + s->width
+		&& right >= s->center.x - s->width
+	        && p->velocity.y > 0 ) {
+			p->velocity.y = 0;
+		} 
 	}
 	//detect screen collisions
 	//floor
