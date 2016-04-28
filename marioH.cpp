@@ -55,7 +55,7 @@ void displayMenu(Game * game)
     glEnd();
     glPopMatrix();
     //mainMenuCursor(XEvent *e,Game * game);
-   // game->state = 1;
+    game->state = 1;
 }
 
 int mainMenuCursor(XEvent *e,Game * game) {
