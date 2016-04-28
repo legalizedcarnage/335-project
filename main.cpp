@@ -59,7 +59,7 @@ int main(void)
     game.player.velocity.x = 0;
     game.player.velocity.y = 0;	
     game.map[0] = 0;
-    game.map[1] = 1;
+    game.map[1] = 0;
     //init enemies
     initEnemies(&game);
     //start animation
