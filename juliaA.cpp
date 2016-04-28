@@ -10,8 +10,6 @@
 #include <GL/glx.h>
 using namespace std;
 
-//void printtile(Game *game);
-
 void printtile(Game *game) 
 {
     Shape *s;
@@ -448,7 +446,6 @@ void printtile(Game *game)
             glPopMatrix();
         }
     }
-
     else 
 	game->num_objects = 0;
 
