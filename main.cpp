@@ -11,9 +11,9 @@
 
 //header files
 #include "main.h"
-#include "davis.h"
-#include "mario.h"
-#include "julia.h"
+#include "elijahD.h"
+#include "marioH.h"
+#include "juliaA.h"
 #include "miguelT.h"
 extern "C" {
     	#include "fonts.h"
