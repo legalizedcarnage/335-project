@@ -58,6 +58,8 @@ int main(void)
     game.player.s.center.y = 500 - 5*60;
     game.player.velocity.x = 0;
     game.player.velocity.y = 0;	
+    game.map[0] = 0;
+    game.map[1] = 1;
     //init enemies
     initEnemies(&game);
     //start animation
