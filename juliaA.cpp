@@ -231,7 +231,7 @@ void printtile(Game *game)
 
     }
     else 
-	game->num_object = 0;
+	game->num_objects = 0;
 
 
 }
