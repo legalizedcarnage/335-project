@@ -308,10 +308,10 @@ void render(Game *game)
 	Rect r[5];
 //	glClear(GL_COLOR_BUFFER_BIT);
 	//
-	r[0].bot = 495;
+	r[0].bot = 800;
 	r[0].left = 95;
 	r[0].center = 0;
-	ggprint8b(&r[0], 16, 0x00ff0000, "REQUIREMENTS");
+	ggprint8b(&r[0], 16, 0x00ff0000, "Jail Break");
 	
 	//print tiles
 	printtile(game);
