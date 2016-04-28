@@ -33,6 +33,8 @@ struct Game {
         int map[2];
 	Player enemies[Max_Enemies] ;
 	Player player;
+	Shape button1; //play
+	Shape button2; //quit
 	Shape object[Max_Objects];
 	Particle particle[Max_Particles];
 	Shape box;
