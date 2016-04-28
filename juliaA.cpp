@@ -13,7 +13,6 @@ using namespace std;
 
 void printtile(Game *game) 
 {
-    int num_objects;
 
     if (game->map[0] == 0 && game->map[1] == 0) {
 	Shape *s;
@@ -55,10 +54,10 @@ void printtile(Game *game)
         game->object[6].center.x = 1192;
         game->object[6].center.y = 600;
 
-	num_objects = 7;
+	game->num_objects = 7;
 
 	//bed 1
-	glColor3ub(191,191,191);
+	glColor3ub(92,92,92);
 	s = &game->object[1];
 	glPushMatrix();
 	glTranslatef(s->center.x, s->center.y, s->center.z);
@@ -88,8 +87,8 @@ void printtile(Game *game)
 	glPopMatrix();
 
 	//walls
-	for (int i=3; i<num_objects; i++) {
-	    glColor3ub(61,61,61);
+	for (int i=3; i<game->num_objects; i++) {
+	    glColor3ub(130,130,130);
 	    s = &game->object[i];
 	    glPushMatrix();
 	    glTranslatef(s->center.x, s->center.y, s->center.z);
@@ -132,11 +131,11 @@ void printtile(Game *game)
         game->object[2].center.x = 1192;
         game->object[2].center.y = 300;
 
-	num_objects = 3;
+	game->num_objects = 3;
 
 	//walls
-        for (int i=0; i<num_objects; i++) {
-            glColor3ub(61,61,61);
+        for (int i=0; i<game->num_objects; i++) {
+            glColor3ub(130,130,130);
             s = &game->object[i];
             glPushMatrix();
             glTranslatef(s->center.x, s->center.y, s->center.z);
