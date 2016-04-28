@@ -3,8 +3,8 @@
 
 #all: main
 
-main: main.cpp elijahD.cpp marioH.cpp juliaA.cpp miguelT.cpp 
-	g++ main.cpp elijahD.cpp marioH.cpp juliaA.cpp miguelT.cpp libggfonts.a -Wall -omain -lX11 -lGL -lGLU -lm
+main: main.cpp elijahD.cpp marioH.cpp juliaA.cpp miguelT.cpp miguelB.cpp
+	g++ main.cpp elijahD.cpp marioH.cpp juliaA.cpp miguelT.cpp miguelB.cpp libggfonts.a -Wall -omain -lX11 -lGL -lGLU -lm
 clean:
 	rm -f main
 	rm -f *.o
