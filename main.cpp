@@ -38,6 +38,8 @@ int check_keys(XEvent *e, Game *game);
 void movement(Game *game);
 void charMovement(Game *game);
 void render(Game *game);
+void enemiesMovement(Game *game);
+void initEnemies(Game *game);
 
 int main(void)
 {
@@ -56,6 +58,8 @@ int main(void)
 	game.player.s.center.y = 500 - 5*60;
 	game.player.velocity.x = 0;
 	game.player.velocity.y = 0;	
+	//init enemies
+	initEnemies(&game);
 	//start animation
 	while(!done) {
 		while(XPending(dpy)) {
@@ -66,6 +70,7 @@ int main(void)
 		}
 		movement(&game);
 		charMovement(&game);
+		enemiesMovement(&game);
 		render(&game);
 		glXSwapBuffers(dpy, win);
 	}
