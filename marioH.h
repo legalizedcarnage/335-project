@@ -1,7 +1,7 @@
 //Author: Mario Hernandez
 //purpose: .h file for the menu cpp file
-#ifndef MARIO_H
-#define MARIO_H
+#ifndef MARIOH_H
+#define MARIOH_H
 #include "main.h"
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
