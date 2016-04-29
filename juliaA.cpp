@@ -1,7 +1,10 @@
 //Julia Acosta
 //335
 //project- Prison Escape
-//Design/Layout
+//Design/Layout- Creating the walls for each tile of the game
+//		 and the layout of the prison cell/hallways etc.
+//		 Eventually put an image for the floor and more objects 
+//		 in the prison cells. 
 
 #include <iostream>
 #include "main.h"
