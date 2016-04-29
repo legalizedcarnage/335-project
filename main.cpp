@@ -70,6 +70,7 @@ int main(void)
 	    XNextEvent(dpy, &e);
 	    check_mouse(&e, &game);
 	    done = check_keys(&e, &game);
+	    mainMenuCursor(&e, &game); //main menu
 	}
 	physics(&game);
 	render(&game);
