@@ -15,6 +15,7 @@
 #include "marioH.h"
 #include "juliaA.h"
 #include "miguelT.h"
+#include "miguelB.h"
 extern "C" {
 #include "fonts.h"
 }

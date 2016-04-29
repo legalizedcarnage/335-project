@@ -19,6 +19,12 @@ struct Shape {
 
 struct Particle {
 	Shape s;
+	Shape p;
+	Shape k;
+	Shape c;
+	Shape r;
+	Shape s2;
+	Shape sh;
 	Vec velocity;
 };
 
@@ -26,7 +32,30 @@ struct Player {
     	Shape s;
 	Vec velocity;
 };
-
+struct Pistol {
+	Shape p;
+	Vec velocity;
+};
+struct Shield {	
+	Shape s2;
+	Vec velocity;
+};
+struct Shotgun {
+	Shape sh;
+	Vec velocity;
+};
+struct Knife {
+	Shape k;
+	Vec velocity;
+};
+struct Crowbar {
+	Shape c;
+	Vec velocity;
+};
+struct Rifle {
+	Shape r;
+	Vec velocity;
+};
 struct Game {
 	int state;
     	char direction;
@@ -36,6 +65,14 @@ struct Game {
 	Shape button1; //play
 	Shape button2; //quit
 	Shape object[Max_Objects];
+	//weapons
+	Shield shield;
+	Shotgun shotgun;
+	Knife knife;
+	Crowbar crowbar;
+	Rifle rifle;
+	Pistol pistol;
+	//wepaons
 	Particle particle[Max_Particles];
 	Shape box;
 	int n;
