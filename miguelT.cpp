@@ -1,6 +1,7 @@
 //Author: Miguel Trigueros
 //Purpose: I will be creating the enemies and allowing them to move and hunt the player.
 //Progress: Currently have basic movement but I need to make an enemy stay within its own tile.
+//	    Was able to add more enemies with their own movement, still need to make them be associated with a tile.
 #include <iostream>
 #include "main.h"
 #include <cstdlib>
