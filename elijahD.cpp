@@ -63,8 +63,9 @@ void playerCollision(Game *game)
 		&& left <= s->center.x + s->width
 		&& right >= s->center.x - s->width
 	        && p->velocity.y > 0 ) {
-			p->velocity.y = 0;
+		    	p->velocity.y = 0;
 		} 
+		
 		if (bot >= s->center.y - s->height
 		&& bot <= s->center.y + s->height
 		&& left <= s->center.x + s->width
@@ -74,11 +75,19 @@ void playerCollision(Game *game)
 		} 
 		if (left >= s->center.x - s->width
 		&& left <= s->center.x + s->width
-		&& left <= s->center.x + s->width
-		&& right >= s->center.x - s->width
-	        && p->velocity.y > 0 ) {
-			p->velocity.y = 0;
+		&& top <= s->center.y + s->height
+		&& bot >= s->center.y - s->height
+	        && p->velocity.x < 0 ) {
+			p->velocity.x = 0;
 		} 
+		if (right >= s->center.x - s->width
+		&& right <= s->center.x + s->width
+		&& top <= s->center.y + s->height
+		&& bot >= s->center.y - s->height
+	        && p->velocity.x > 0 ) {
+			p->velocity.x = 0;
+		} 
+		
 	}
 	//detect screen collisions
 	//floor
