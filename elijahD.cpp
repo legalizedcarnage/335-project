@@ -120,3 +120,41 @@ void playerCollision(Game *game)
 	}
 	
 }
+void particleCollision(Game *game) 
+{
+	Player *play;
+	play = &game->player;
+	float top = play->s.center.y  + play->s.height;
+	float bot = play->s.center.y  - play->s.height;
+	float left = play->s.center.x - play->s.width;
+	float right = play->s.center.x + play->s.width;
+    	
+	Particle *p;
+	Shape *s;
+	for (int i = 0; i < game->n; i++) {
+		p = &game->particle[i];
+	    	//check for bullet collision with player
+		if (p->s.center.x > bot
+		&& p->s.center.x < top
+		&& p->s.center.y >left	
+		&& p->s.center.y < right) {
+			*p = game->particle[i-1];
+			i--;
+			
+			//decrease lives once lives implemented
+		} else 
+		//check for bullet collision with enviornment
+
+		for (int j = 0; j < game->num_objects; j++) {
+			s = &game->object[j];
+		    	if (p->s.center.x < s->center.x + s->height
+			&& p->s.center.x > s->center.x - s->height
+			&& p->s.center.y > s->center.y 	+ s->width
+			&& p->s.center.y < s->center.y - s->width) {
+				*p = game->particle[i-1];
+				i--;
+				break;
+			}
+		}
+	}
+}
