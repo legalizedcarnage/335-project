@@ -1,5 +1,7 @@
 //Author:Mario Hernandez
 //Purpose: to render the main menu and functionality of the menu buttons
+// The buttons are drawing to screen but I have the game state going
+//straight to the game until I have the main menu working
 #include <iostream>
 #include "main.h"
 #include "marioH.h"
@@ -12,7 +14,7 @@ using namespace std;
 
 void displayMenu(Game * game)
 {
-    int cursorPos = 0;
+    //int cursorPos = 0; will be used to handle menu selection
     float w,h;
     cout << "menu" << endl;
     glClearColor(0.5,0.5,0.5,1.0);
