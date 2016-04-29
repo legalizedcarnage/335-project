@@ -41,7 +41,7 @@ void charMovement(Game *game);
 void render(Game *game);
 void enemiesMovement(Game *game);
 void initEnemies(Game *game);
-
+void physics(Game *game);
 int main(void)
 {
     int done=0;
@@ -71,9 +71,7 @@ int main(void)
 	    check_mouse(&e, &game);
 	    done = check_keys(&e, &game);
 	}
-	movement(&game);
-	charMovement(&game);
-	enemiesMovement(&game);
+	physics(&game);
 	render(&game);
 	glXSwapBuffers(dpy, win);
     }
@@ -258,7 +256,12 @@ int check_keys(XEvent *e, Game *game)
     }
     return 0;
 }
-
+void physics(Game *game) 
+{
+	charMovement(game);
+	enemiesMovement(game);
+	movement(game);
+}
 void movement(Game *game)
 {
     Particle *p;
