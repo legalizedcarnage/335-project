@@ -60,30 +60,30 @@ void playerCollision(Game *game)
 
 		if (top >= s->center.y - s->height
 		&& top <= s->center.y + s->height
-		&& left <= s->center.x + s->width
-		&& right >= s->center.x - s->width
+		&& left < s->center.x + s->width
+		&& right > s->center.x - s->width
 	        && p->velocity.y > 0 ) {
 		    	p->velocity.y = 0;
 		} 
 		
 		if (bot >= s->center.y - s->height
 		&& bot <= s->center.y + s->height
-		&& left <= s->center.x + s->width
-		&& right >= s->center.x - s->width
+		&& left < s->center.x + s->width
+		&& right > s->center.x - s->width
 	        && p->velocity.y < 0 ) {
 			p->velocity.y = 0;
 		} 
 		if (left >= s->center.x - s->width
 		&& left <= s->center.x + s->width
-		&& top <= s->center.y + s->height
-		&& bot >= s->center.y - s->height
+		&& bot < s->center.y + s->height
+		&& top > s->center.y - s->height
 	        && p->velocity.x < 0 ) {
 			p->velocity.x = 0;
 		} 
 		if (right >= s->center.x - s->width
 		&& right <= s->center.x + s->width
-		&& top <= s->center.y + s->height
-		&& bot >= s->center.y - s->height
+		&& bot < s->center.y + s->height
+		&& top > s->center.y - s->height
 	        && p->velocity.x > 0 ) {
 			p->velocity.x = 0;
 		} 
