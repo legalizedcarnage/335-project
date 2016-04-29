@@ -1,7 +1,7 @@
 // Miguel Barrales
 // 335
 // Prison Escape
-// Design/Layout
+// Weapon Design/Inventory
 
 #include <iostream>
 #include <cstdlib>
