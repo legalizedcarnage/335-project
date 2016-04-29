@@ -39,7 +39,7 @@ int check_keys(XEvent *e, Game *game);
 void movement(Game *game);
 void charMovement(Game *game);
 void render(Game *game);
-void enemiesMovement(Game *game);
+//void enemiesMovement(Game *game);
 void initEnemies(Game *game);
 void physics(Game *game);
 int main(void)
@@ -259,7 +259,7 @@ int check_keys(XEvent *e, Game *game)
 void physics(Game *game) 
 {
 	charMovement(game);
-	enemiesMovement(game);
+	//enemiesMovement(game);
 	movement(game);
 }
 void movement(Game *game)
@@ -373,7 +373,7 @@ void render(Game *game)
 	glVertex2i( w,-h);
 	glEnd();
 	glPopMatrix();
-
+	/*
 	//draw enemies	
 	glColor3ub(250,50,50);
 	s = &game->enemies[0].s;
@@ -388,6 +388,9 @@ void render(Game *game)
 	glVertex2i( w,-h);
 	glEnd();
 	glPopMatrix();
+	*/
+	//renders enemies
+	renderEnemies(game);
     }
 }
 
