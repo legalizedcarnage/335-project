@@ -7,7 +7,9 @@ void pistol(Game *game);
 void rifle(Game *game);
 void shield(Game *game);
 void shotgun(Game *game);
-//makes weapon
+//makes particles for each weapon
+// shotgun 3 bullets, rifle alot straight, pistol one
+// mele no particle
 void makeKnife(Game *game, int x, int y); 
 void makeCrowbar(Game *game, int x, int y); 
 void makePistol(Game *game, int x, int y); 
@@ -29,4 +31,3 @@ void renderRifle(Game *game);
 void renderShield(Game *game);
 void renderShotgun(Game *game);
 #endif
-
