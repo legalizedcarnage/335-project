@@ -63,6 +63,8 @@ int main(void)
     game.map[1] = 0;
     //init enemies
     initEnemies(&game);
+    //init enemies
+    knife(&game);
     //start animation
     while(!done) {
 	while(XPending(dpy)) {
@@ -147,8 +149,8 @@ void makeParticle(Game *game, int x, int y) {
     std::cout << "makeParticle() " << x << " " << y << std::endl;
     //position of particle
     Particle *p = &game->particle[game->n];
-    p->s.center.x = game->player.s.center.x;
-    p->s.center.y = game->player.s.center.y;
+    p->s.center.x = game->knife.k.center.x;
+    p->s.center.y = game->knife.k.center.y;
     //double z = sqrt(x*x + y*y);
     p->velocity.y = y;
     p->velocity.x = x;
@@ -305,6 +307,11 @@ void charMovement( Game *game)
     playerCollision(game);
     p->s.center.x += p->velocity.x;
     p->s.center.y += p->velocity.y;
+
+    Knife *k;
+    k = &game->knife;
+    k->k.center.x += p->velocity.x;
+    k->k.center.y += p->velocity.y;
 }
 
 void render(Game *game)
@@ -391,6 +398,7 @@ void render(Game *game)
 	glPopMatrix();
 	*/
 	//renders enemies
+	renderKnife(game);
 	renderEnemies(game);
     }
 }
