@@ -34,7 +34,6 @@ void printtile(Game *game)
 {
     //prison cell 1
     if (game->map[0] == 0 && game->map[1] == 0) {
-
 	//declare bed 1 shape
 	game->object[1].width = 200;
 	game->object[1].height = 100;
@@ -89,7 +88,6 @@ void printtile(Game *game)
     }
     //hallway 1
     else if (game->map[0] == 1 && game->map[1] == 0) {
-
         //declare wall 1 shape
         game->object[1].width = 12;
         game->object[1].height = 400;
@@ -112,7 +110,6 @@ void printtile(Game *game)
     }
     //prison cell 2
     else if (game->map[0] == 2 && game->map[1] == 0) {
-
 	//declare bed 1 shape
         game->object[1].width = 200;
         game->object[1].height = 100;
@@ -168,7 +165,6 @@ void printtile(Game *game)
     }
     //hallway 2
     else if (game->map[0] == 1 && game->map[1] == 1) {
-
 	//declare wall 1 shape
         game->object[1].width = 12;
         game->object[1].height = 350;
@@ -198,7 +194,6 @@ void printtile(Game *game)
     }
     //prison cell 3
     else if (game->map[0] == 0 && game->map[1] == 1) {
-
 	//declare bed 1 shape
 	game->object[1].width = 200;
 	game->object[1].height = 100;
@@ -254,7 +249,6 @@ void printtile(Game *game)
     }
     //prison cell 4
     else if (game->map[0] == 2 && game->map[1] == 1) {
-
 	//declare bed 1 shape
         game->object[1].width = 200;
         game->object[1].height = 100;
@@ -300,6 +294,188 @@ void printtile(Game *game)
 	//pillow 1
         glColor3ub(250,250,250);
 	drawobject(game, 2);
+        
+	//walls
+        for (int i=3; i<game->num_objects; i++) {
+            glColor3ub(130,130,130);
+	    drawobject(game, i);
+        }
+    }
+    //hallway 3
+    else if (game->map[0] == 1 && game->map[1] == -1) {
+	//declare wall 1 shape
+        game->object[1].width = 12;
+        game->object[1].height = 350;
+        game->object[1].center.x = 8;
+        game->object[1].center.y = 300;
+
+        //declare wall 2 shape
+        game->object[2].width = 12;
+        game->object[2].height = 350;
+        game->object[2].center.x = 1192;
+        game->object[2].center.y = 300;
+
+	//declare wall 3 shape
+        game->object[3].width = 600;
+        game->object[3].height = 12;
+        game->object[3].center.x = 600;
+        game->object[3].center.y = 8;
+
+	game->num_objects = 4;
+
+	//walls
+        for (int i=0; i<game->num_objects; i++) {
+            glColor3ub(130,130,130);
+	    drawobject(game, i);
+	}
+    }
+    //shower
+    else if (game->map[0] == 0 && game->map[1] == -1) {
+	//declare wall 1 shape
+	game->object[3].width = 600;
+	game->object[3].height = 12;
+	game->object[3].center.x = 600;
+	game->object[3].center.y = 892;
+
+	//declare wall 2 shape
+	game->object[4].width = 12;
+	game->object[4].height = 450;
+	game->object[4].center.x = 8;
+	game->object[4].center.y = 450;
+
+	//declare wall 3 shape
+	game->object[5].width = 600;
+	game->object[5].height = 12;
+	game->object[5].center.x = 600;
+	game->object[5].center.y = 8;
+	
+	//declare wall 4 shape
+        game->object[6].width = 12;
+        game->object[6].height = 350;
+        game->object[6].center.x = 1192;
+        game->object[6].center.y = 300;
+
+	game->num_objects = 7;
+
+	//walls
+	for (int i=3; i<game->num_objects; i++) {
+	    glColor3ub(130,130,130);
+	    drawobject(game, i);
+	}
+    }
+    //security guard office
+    else if (game->map[0] == 2 && game->map[1] == -1) {
+        //declare wall 1 shape
+        game->object[3].width = 600;
+        game->object[3].height = 12;
+        game->object[3].center.x = 600;
+        game->object[3].center.y = 892;
+
+        //declare wall 2 shape
+        game->object[4].width = 12;
+        game->object[4].height = 350;
+        game->object[4].center.x = 8;
+        game->object[4].center.y = 300;
+
+        //declare wall 3 shape
+        game->object[5].width = 600;
+        game->object[5].height = 12;
+        game->object[5].center.x = 600;
+        game->object[5].center.y = 8;
+
+        //declare wall 4 shape
+        game->object[6].width = 12;
+        game->object[6].height = 350;
+        game->object[6].center.x = 1192;
+        game->object[6].center.y = 300;
+
+	//declare wall 5 shape
+	game->object[7].width = 480;
+	game->object[7].height = 12;
+	game->object[7].center.x = 750;
+	game->object[7].center.y = 650;
+
+        game->num_objects = 8;
+
+	//walls
+        for (int i=3; i<game->num_objects; i++) {
+            glColor3ub(130,130,130);
+	    drawobject(game, i);
+        }
+    }
+    //level 2
+    else if (game->map[0] == 3 && game->map[1] == -1) {
+	//declare wall 1 shape
+	game->object[3].width = 400;
+	game->object[3].height = 12;
+	game->object[3].center.x = 200;
+	game->object[3].center.y = 892;
+
+	//declare wall 2 shape
+	game->object[4].width = 12;
+	game->object[4].height = 350;
+	game->object[4].center.x = 8;
+	game->object[4].center.y = 300;
+
+	//declare wall 3 shape
+	game->object[5].width = 600;
+	game->object[5].height = 12;
+	game->object[5].center.x = 600;
+	game->object[5].center.y = 8;
+	
+	//declare wall 4 shape
+        game->object[6].width = 12;
+        game->object[6].height = 350;
+        game->object[6].center.x = 1192;
+        game->object[6].center.y = 300;
+
+	//declare wall 5 shape
+	game->object[7].width = 12;
+	game->object[7].height = 350;
+	game->object[7].center.x = 600;
+	game->object[7].center.y = 600;
+
+	//declare wall 6 shape
+	game->object[8].width = 180;
+	game->object[8].height = 12;
+	game->object[8].center.x = 1050;
+	game->object[8].center.y = 892;
+
+	game->num_objects = 9;
+
+	//walls
+	for (int i=3; i<game->num_objects; i++) {
+	    glColor3ub(130,130,130);
+	    drawobject(game, i);
+	}
+    }
+    //warden's office
+    else if (game->map[0] == 4 && game->map[1] == -1) {
+        //declare wall 1 shape
+        game->object[3].width = 600;
+        game->object[3].height = 12;
+        game->object[3].center.x = 600;
+        game->object[3].center.y = 892;
+
+        //declare wall 2 shape
+        game->object[4].width = 12;
+        game->object[4].height = 350;
+        game->object[4].center.x = 8;
+        game->object[4].center.y = 300;
+
+        //declare wall 3 shape
+        game->object[5].width = 600;
+        game->object[5].height = 12;
+        game->object[5].center.x = 600;
+        game->object[5].center.y = 8;
+
+        //declare wall 4 shape
+        game->object[6].width = 12;
+        game->object[6].height = 500;
+        game->object[6].center.x = 1192;
+        game->object[6].center.y = 500;
+
+        game->num_objects = 7;
         
 	//walls
         for (int i=3; i<game->num_objects; i++) {
