@@ -1,9 +1,11 @@
 //Elijah Davis
-//335
-//screen transitions and collisions
+//cs 335
+//screen transitions and collision detection of player
+//and bullets with each other, the walls, and objects
 #include <iostream>
 #include "main.h"
 using namespace std;
+//used when player collides with wall to shift to new tile
 void shiftScreen(Game *game, char direction)
 {
 	if (direction == 'u') {
@@ -30,29 +32,7 @@ void playerCollision(Game *game)
 	Shape *s;
 	for (int i = 0; i < game->num_objects; i++) {
 		s = &game->object[i];
-		//bad and buggy
-		/*if (p->s.center.y + p->s.height >= s->center.y- s->height
-		&& p->s.center.y - p->s.height <= s->center.y + s->height
-		&& p->s.center.x  + p->s.width >= s->center.x - s->width
-		&& p->s.center.x - p->s.width <= s->center.x + s->width) {
-			if (p->velocity.y > 0) {
-				p->s.center.y -= p->velocity.y;
-				p->velocity.y = 0;
-			}
-			if (p->velocity.y < 0) {
-				p->s.center.y += p->velocity.y;
-				p->velocity.y = 0;
-			}
-			if (p->velocity.x < 0) {
-				p->s.center.x -= p->velocity.x;
-				p->velocity.x = 0;
-			}
-			if (p->velocity.x > 0) {
-				p->s.center.x += p->velocity.x;
-				p->velocity.x = 0;
-			}
-		}*/
-		//fixed
+		//defined edges
 		float top = p->s.center.y  + p->s.height;
 		float bot = p->s.center.y  - p->s.height;
 		float left = p->s.center.x - p->s.width;
@@ -93,31 +73,41 @@ void playerCollision(Game *game)
 	//floor
 	if (p->s.center.y - p->s.height == 0 && p->velocity.y < 0) {
 		p->s.center.y = WINDOW_HEIGHT - p->s.height;
-		//p->s.center.y = p->s.height;
-		//p->velocity.y = 0;
+		//change when multiple weapons implemented
+		game->knife.k.center.x = p->s.center.x + 20;
+		game->knife.k.center.y = p->s.center.y +5;
+		//
 		shiftScreen(game, 'd');
 	}
 	//roof
 	if (p->s.center.y + p->s.height == WINDOW_HEIGHT && p->velocity.y > 0) {
-		//p->s.center.y = WINDOW_HEIGHT - p->s.height;
 		p->s.center.y = p->s.height;
-		//p->velocity.y = 0;
+		//
+		game->knife.k.center.x = p->s.center.x + 20;
+		game->knife.k.center.y = p->s.center.y +5;
+		//
 		shiftScreen(game, 'u');
 	}
 	//left wall
 	if (p->s.center.x - p->s.width <= 0 && p->velocity.x < 0) {
 		p->s.center.x = WINDOW_WIDTH - p->s.width;
-		//p->s.center.x = p->s.width;
-		//p->velocity.x = 0;
+		//
+		game->knife.k.center.x = p->s.center.x + 20;
+		game->knife.k.center.y = p->s.center.y +5;
+		//
 		shiftScreen(game, 'l');
 	}
 	//right wall
 	if (p->s.center.x + p->s.width >= WINDOW_WIDTH && p->velocity.x > 0) {
 		p->s.center.x = p->s.width;
-		//p->s.center.x = WINDOW_WIDTH - p->s.width;
-		//p->velocity.x = 0;
+		//
+		game->knife.k.center.x = p->s.center.x + 20;
+		game->knife.k.center.y = p->s.center.y +5;
+		//
 		shiftScreen(game, 'r');
 	}
+	//player-enemy collision
+	
 	
 }
 void particleCollision(Game *game) 
@@ -140,19 +130,21 @@ void particleCollision(Game *game)
 		&& p->s.center.y < right) {
 			*p = game->particle[i-1];
 			i--;
-			
+			cout << "shot" << endl;
 			//decrease lives once lives implemented
-		} else 
+			play->health--;
+		} 
 		//check for bullet collision with enviornment
-
 		for (int j = 0; j < game->num_objects; j++) {
-			s = &game->object[j];
-		    	if (p->s.center.x < s->center.x + s->height
-			&& p->s.center.x > s->center.x - s->height
-			&& p->s.center.y > s->center.y 	+ s->width
-			&& p->s.center.y < s->center.y - s->width) {
+		    	s = &game->object[j];
+
+		    	if (p->s.center.x < s->center.x + s->width
+			&& p->s.center.x > s->center.x - s->width
+			&& p->s.center.y > s->center.y 	+ s->height
+			&& p->s.center.y < s->center.y - s->height) {
 				*p = game->particle[i-1];
 				i--;
+				cout << "hit a wall" << endl;
 				break;
 			}
 		}

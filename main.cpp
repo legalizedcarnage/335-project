@@ -303,8 +303,9 @@ void charMovement( Game *game)
 {
     Player *p;
     p = &game->player;
-
+    particleCollision(game);
     playerCollision(game);
+     
     p->s.center.x += p->velocity.x;
     p->s.center.y += p->velocity.y;
 
