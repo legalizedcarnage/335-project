@@ -1,22 +1,37 @@
 //Name: 	Julia Acosta
+//Written:	04/27/16
+//Modified:	05/02/16
 //Project 335: 	Prison Escape
 //Design/Layout:Creating the walls for each tile of the game
 //		and the layout of the prison cell/hallways etc.
-//		Eventually put an image for the floor and more objects 
-//		in the prison cells. 
+//		Adding  objects in the prison cells. 
 
 #include <iostream>
-#include "main.h"
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <GL/glx.h>
+#include "main.h"
 using namespace std;
 
-void printtile(Game *game) 
+void drawobject(Game *game, int i)
 {
     Shape *s;
     float w, h;
-
+    s = &game->object[i];
+    glPushMatrix();
+    glTranslatef(s->center.x, s->center.y, s->center.z);
+    w = s->width;
+    h = s->height;
+    glBegin(GL_QUADS);
+    glVertex2i(-w,-h);
+    glVertex2i(-w, h);
+    glVertex2i( w, h);
+    glVertex2i( w,-h);
+    glEnd();
+    glPopMatrix();
+}
+void printtile(Game *game) 
+{
     //prison cell 1
     if (game->map[0] == 0 && game->map[1] == 0) {
 
@@ -60,49 +75,16 @@ void printtile(Game *game)
 
 	//bed 1
 	glColor3ub(69,69,69);
-	s = &game->object[1];
-	glPushMatrix();
-	glTranslatef(s->center.x, s->center.y, s->center.z);
-	w = s->width;
-	h = s->height;
-	glBegin(GL_QUADS);
-	glVertex2i(-w,-h);
-	glVertex2i(-w, h);
-	glVertex2i( w, h);
-	glVertex2i( w,-h);
-	glEnd();
-	glPopMatrix();
-
+	drawobject(game, 1);
+	
 	//pillow 1
 	glColor3ub(250,250,250);
-	s = &game->object[2];
-	glPushMatrix();
-	glTranslatef(s->center.x, s->center.y, s->center.z);
-	w = s->width;
-	h = s->height;
-	glBegin(GL_QUADS);
-	glVertex2i(-w,-h);
-	glVertex2i(-w, h);
-	glVertex2i( w, h);
-	glVertex2i( w,-h);
-	glEnd();
-	glPopMatrix();
-
+	drawobject(game, 2);
+	
 	//walls
 	for (int i=3; i<game->num_objects; i++) {
 	    glColor3ub(130,130,130);
-	    s = &game->object[i];
-	    glPushMatrix();
-	    glTranslatef(s->center.x, s->center.y, s->center.z);
-	    w = s->width;
-	    h = s->height;
-	    glBegin(GL_QUADS);
-	    glVertex2i(-w,-h);
-	    glVertex2i(-w, h);
-	    glVertex2i( w, h);
-	    glVertex2i( w,-h);
-	    glEnd();
-	    glPopMatrix();
+	    drawobject(game, i);
 	}
     }
     //hallway 1
@@ -125,21 +107,8 @@ void printtile(Game *game)
 	//walls
         for (int i=0; i<game->num_objects; i++) {
             glColor3ub(130,130,130);
-            s = &game->object[i];
-            glPushMatrix();
-            glTranslatef(s->center.x, s->center.y, s->center.z);
-            w = s->width;
-            h = s->height;
-            glBegin(GL_QUADS);
-            glVertex2i(-w,-h);
-            glVertex2i(-w, h);
-            glVertex2i( w, h);
-            glVertex2i( w,-h);
-            glEnd();
-            glPopMatrix();
+	    drawobject(game, i);
         }
-
-
     }
     //prison cell 2
     else if (game->map[0] == 2 && game->map[1] == 0) {
@@ -184,49 +153,16 @@ void printtile(Game *game)
 
         //bed 1
         glColor3ub(69,69,69);
-        s = &game->object[1];
-        glPushMatrix();
-        glTranslatef(s->center.x, s->center.y, s->center.z);
-        w = s->width;
-        h = s->height;
-        glBegin(GL_QUADS);
-        glVertex2i(-w,-h);
-        glVertex2i(-w, h);
-        glVertex2i( w, h);
-        glVertex2i( w,-h);
-        glEnd();
-        glPopMatrix();
-
+	drawobject(game, 1);
+	
 	//pillow 1
         glColor3ub(250,250,250);
-        s = &game->object[2];
-        glPushMatrix();
-        glTranslatef(s->center.x, s->center.y, s->center.z);
-        w = s->width;
-        h = s->height;
-        glBegin(GL_QUADS);
-        glVertex2i(-w,-h);
-        glVertex2i(-w, h);
-        glVertex2i( w, h);
-        glVertex2i( w,-h);
-        glEnd();
-        glPopMatrix();
-
-        //walls
+	drawobject(game, 2);
+        
+	//walls
         for (int i=3; i<game->num_objects; i++) {
             glColor3ub(130,130,130);
-            s = &game->object[i];
-            glPushMatrix();
-            glTranslatef(s->center.x, s->center.y, s->center.z);
-            w = s->width;
-            h = s->height;
-            glBegin(GL_QUADS);
-            glVertex2i(-w,-h);
-            glVertex2i(-w, h);
-            glVertex2i( w, h);
-            glVertex2i( w,-h);
-            glEnd();
-            glPopMatrix();
+	    drawobject(game, i);
         }
 
     }
@@ -256,18 +192,7 @@ void printtile(Game *game)
 	//walls
         for (int i=0; i<game->num_objects; i++) {
             glColor3ub(130,130,130);
-            s = &game->object[i];
-            glPushMatrix();
-            glTranslatef(s->center.x, s->center.y, s->center.z);
-            w = s->width;
-            h = s->height;
-            glBegin(GL_QUADS);
-            glVertex2i(-w,-h);
-            glVertex2i(-w, h);
-            glVertex2i( w, h);
-            glVertex2i( w,-h);
-            glEnd();
-            glPopMatrix();
+	    drawobject(game, i);
         }
 
     }
@@ -314,49 +239,16 @@ void printtile(Game *game)
 
 	//bed 1
 	glColor3ub(69,69,69);
-	s = &game->object[1];
-	glPushMatrix();
-	glTranslatef(s->center.x, s->center.y, s->center.z);
-	w = s->width;
-	h = s->height;
-	glBegin(GL_QUADS);
-	glVertex2i(-w,-h);
-	glVertex2i(-w, h);
-	glVertex2i( w, h);
-	glVertex2i( w,-h);
-	glEnd();
-	glPopMatrix();
-
+	drawobject(game, 1);
+	
 	//pillow 1
 	glColor3ub(250,250,250);
-	s = &game->object[2];
-	glPushMatrix();
-	glTranslatef(s->center.x, s->center.y, s->center.z);
-	w = s->width;
-	h = s->height;
-	glBegin(GL_QUADS);
-	glVertex2i(-w,-h);
-	glVertex2i(-w, h);
-	glVertex2i( w, h);
-	glVertex2i( w,-h);
-	glEnd();
-	glPopMatrix();
-
+	drawobject(game, 2);
+	
 	//walls
 	for (int i=3; i<game->num_objects; i++) {
 	    glColor3ub(130,130,130);
-	    s = &game->object[i];
-	    glPushMatrix();
-	    glTranslatef(s->center.x, s->center.y, s->center.z);
-	    w = s->width;
-	    h = s->height;
-	    glBegin(GL_QUADS);
-	    glVertex2i(-w,-h);
-	    glVertex2i(-w, h);
-	    glVertex2i( w, h);
-	    glVertex2i( w,-h);
-	    glEnd();
-	    glPopMatrix();
+	    drawobject(game, i);
 	}
 
     }
@@ -403,54 +295,19 @@ void printtile(Game *game)
 
         //bed 1
         glColor3ub(69,69,69);
-        s = &game->object[1];
-        glPushMatrix();
-        glTranslatef(s->center.x, s->center.y, s->center.z);
-        w = s->width;
-        h = s->height;
-        glBegin(GL_QUADS);
-        glVertex2i(-w,-h);
-        glVertex2i(-w, h);
-        glVertex2i( w, h);
-        glVertex2i( w,-h);
-        glEnd();
-        glPopMatrix();
-
+	drawobject(game, 1);
+	
 	//pillow 1
         glColor3ub(250,250,250);
-        s = &game->object[2];
-        glPushMatrix();
-        glTranslatef(s->center.x, s->center.y, s->center.z);
-        w = s->width;
-        h = s->height;
-        glBegin(GL_QUADS);
-        glVertex2i(-w,-h);
-        glVertex2i(-w, h);
-        glVertex2i( w, h);
-        glVertex2i( w,-h);
-        glEnd();
-        glPopMatrix();
-
-        //walls
+	drawobject(game, 2);
+        
+	//walls
         for (int i=3; i<game->num_objects; i++) {
             glColor3ub(130,130,130);
-            s = &game->object[i];
-            glPushMatrix();
-            glTranslatef(s->center.x, s->center.y, s->center.z);
-            w = s->width;
-            h = s->height;
-            glBegin(GL_QUADS);
-            glVertex2i(-w,-h);
-            glVertex2i(-w, h);
-            glVertex2i( w, h);
-            glVertex2i( w,-h);
-            glEnd();
-            glPopMatrix();
+	    drawobject(game, i);
         }
     }
     else 
 	game->num_objects = 0;
-
-
 }
 
