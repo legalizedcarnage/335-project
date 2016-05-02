@@ -30,6 +30,7 @@ struct Particle {
 
 struct Player {
     	Shape s;
+    	int health;
 	Vec velocity;
 };
 struct Pistol {
