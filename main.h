@@ -33,28 +33,8 @@ struct Player {
     	int health;
 	Vec velocity;
 };
-struct Pistol {
-	Shape p;
-	Vec velocity;
-};
-struct Shield {	
-	Shape s2;
-	Vec velocity;
-};
-struct Shotgun {
-	Shape sh;
-	Vec velocity;
-};
 struct Knife {
 	Shape k;
-	Vec velocity;
-};
-struct Crowbar {
-	Shape c;
-	Vec velocity;
-};
-struct Rifle {
-	Shape r;
 	Vec velocity;
 };
 struct Game {
@@ -67,13 +47,7 @@ struct Game {
 	Shape button2; //quit
 	Shape object[Max_Objects];
 	//weapons
-	Shield shield;
-	Shotgun shotgun;
 	Knife knife;
-	Crowbar crowbar;
-	Rifle rifle;
-	Pistol pistol;
-	//wepaons
 	Particle particle[Max_Particles];
 	Shape box;
 	int n;
