@@ -1,7 +1,9 @@
 // Miguel Barrales
 // 335
 // Prison Escape
-// Weapon Design/Inventory
+// 4/24/16
+// Weapon Design : Creates a weapon for the player to shoot enemies
+// and movement for the weapon to traverse with the player
 
 #include <iostream>
 #include <cstdlib>
