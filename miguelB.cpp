@@ -13,7 +13,8 @@
 #include "main.h"
 using namespace std;
 
-//initilaze
+//initilaze weapon on top of player to layer
+//in main its set to player to follow the player around
 void knife(Game *game)
 {	
 	game->knife.k.width = 10;
@@ -24,7 +25,7 @@ void knife(Game *game)
         game->knife.velocity.y = 0;
 
 }
-//render weapons
+//render weapons && in main it layer on top of player
 void renderKnife(Game *game)
 {
 	Shape *k;
