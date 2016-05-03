@@ -1,5 +1,6 @@
 //Elijah Davis
 //cs 335
+//started 4/22/16
 //screen transitions and collision detection of player
 //and bullets with each other, the walls, and objects
 #include <iostream>
@@ -140,8 +141,8 @@ void particleCollision(Game *game)
 
 		    	if (p->s.center.x < s->center.x + s->width
 			&& p->s.center.x > s->center.x - s->width
-			&& p->s.center.y > s->center.y 	+ s->height
-			&& p->s.center.y < s->center.y - s->height) {
+			&& p->s.center.y < s->center.y 	+ s->height
+			&& p->s.center.y > s->center.y - s->height) {
 				*p = game->particle[i-1];
 				i--;
 				cout << "hit a wall" << endl;
