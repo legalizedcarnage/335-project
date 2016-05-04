@@ -10,7 +10,7 @@ using namespace std;
 void shiftScreen(Game *game, char direction)
 {
 	if (direction == 'u') {
-    		game->map[1]++;
+		game->map[1]++;
 	}
 	if (direction == 'd') {
 		game->map[1]--;
@@ -19,7 +19,7 @@ void shiftScreen(Game *game, char direction)
 		game->map[0]--;
 	}
 	if (direction == 'r') {
-    		game->map[0]++;
+		game->map[0]++;
 	}
 	std::cout << game->map[0]  << ", " << game->map[1] << endl;
 
@@ -43,29 +43,29 @@ void playerCollision(Game *game)
 		&& top <= s->center.y + s->height
 		&& left < s->center.x + s->width
 		&& right > s->center.x - s->width
-	        && p->velocity.y > 0 ) {
-		    	p->velocity.y = 0;
+		&& p->velocity.y > 0 ) {
+			p->velocity.y = 0;
 		} 
 		
 		if (bot >= s->center.y - s->height
 		&& bot <= s->center.y + s->height
 		&& left < s->center.x + s->width
 		&& right > s->center.x - s->width
-	        && p->velocity.y < 0 ) {
+		&& p->velocity.y < 0 ) {
 			p->velocity.y = 0;
 		} 
 		if (left >= s->center.x - s->width
 		&& left <= s->center.x + s->width
 		&& bot < s->center.y + s->height
 		&& top > s->center.y - s->height
-	        && p->velocity.x < 0 ) {
+		&& p->velocity.x < 0 ) {
 			p->velocity.x = 0;
 		} 
 		if (right >= s->center.x - s->width
 		&& right <= s->center.x + s->width
 		&& bot < s->center.y + s->height
 		&& top > s->center.y - s->height
-	        && p->velocity.x > 0 ) {
+		&& p->velocity.x > 0 ) {
 			p->velocity.x = 0;
 		} 
 		
@@ -119,12 +119,12 @@ void particleCollision(Game *game)
 	float bot = play->s.center.y  - play->s.height;
 	float left = play->s.center.x - play->s.width;
 	float right = play->s.center.x + play->s.width;
-    	
+	
 	Particle *p;
 	Shape *s;
 	for (int i = 0; i < game->n; i++) {
 		p = &game->particle[i];
-	    	//check for bullet collision with player
+		//check for bullet collision with player
 		if (p->s.center.x > bot
 		&& p->s.center.x < top
 		&& p->s.center.y >left	
@@ -137,9 +137,9 @@ void particleCollision(Game *game)
 		} 
 		//check for bullet collision with enviornment
 		for (int j = 0; j < game->num_objects; j++) {
-		    	s = &game->object[j];
-
-		    	if (p->s.center.x < s->center.x + s->width
+			s = &game->object[j];
+			
+			if (p->s.center.x < s->center.x + s->width
 			&& p->s.center.x > s->center.x - s->width
 			&& p->s.center.y < s->center.y 	+ s->height
 			&& p->s.center.y > s->center.y - s->height) {
