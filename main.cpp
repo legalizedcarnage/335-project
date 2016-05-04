@@ -68,11 +68,11 @@ int main(void)
     //start animation
     while(!done) {
 	while(XPending(dpy)) {
-	    XEvent e;
-	    XNextEvent(dpy, &e);
-	    check_mouse(&e, &game);
-	    done = check_keys(&e, &game);
-	    mainMenuCursor(&e, &game); //main menu
+		XEvent e;
+		XNextEvent(dpy, &e);
+		check_mouse(&e, &game);
+		done = check_keys(&e, &game);
+		mainMenuCursor(&e, &game); //main menu
 	}
 	physics(&game);
 	render(&game);
@@ -109,7 +109,7 @@ void initXWindows(void)
     }
     Window root = DefaultRootWindow(dpy);
     XVisualInfo *vi = glXChooseVisual(dpy, 0, att);
-    if(vi == NULL) {
+    if (vi == NULL) {
 	std::cout << "\n\tno appropriate visual found\n" << std::endl;
 	exit(EXIT_FAILURE);
     } 
@@ -121,7 +121,7 @@ void initXWindows(void)
 	PointerMotionMask |
 	StructureNotifyMask | SubstructureNotifyMask;
     win = XCreateWindow(dpy, root, 0, 0, w, h, 0, vi->depth,
-	    InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
+	InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
     set_title();
     glc = glXCreateContext(dpy, vi, NULL, GL_TRUE);
     glXMakeCurrent(dpy, win, glc);
@@ -143,8 +143,9 @@ void init_opengl(void)
 
 }
 
-void makeParticle(Game *game, int x, int y) {
-    if(game->n > Max_Particles)
+void makeParticle(Game *game, int x, int y) 
+{
+    if (game->n > Max_Particles)
 	return;	    
     std::cout << "makeParticle() " << x << " " << y << std::endl;
     //position of particle
@@ -169,15 +170,15 @@ void check_mouse(XEvent *e, Game *game)
     }
     if (e->type == ButtonPress) {
 	if (e->xbutton.button==1) {
-	    //Left button was pressed
-	    //int y = WINDOW_HEIGHT - e->xbutton.y - game->player.s.center.y;
-	    //int x = e->xbutton.x - game->player.s.center.x;
-	    //makeParticle(game, x, y);
-	    return;
+		//Left button was pressed
+		//int y = WINDOW_HEIGHT - e->xbutton.y - game->player.s.center.y;
+		//int x = e->xbutton.x - game->player.s.center.x;
+		//makeParticle(game, x, y);
+		return;
 	}
 	if (e->xbutton.button==3) {
-	    //Right button was pressed
-	    return;
+		//Right button was pressed
+		return;
 	}
     }
     //Did the mouse move?
@@ -185,7 +186,7 @@ void check_mouse(XEvent *e, Game *game)
 	savex = e->xbutton.x;
 	savey = e->xbutton.y;
 	if (++n < 10)
-	    return;
+		return;
     }
 }
 
@@ -199,36 +200,36 @@ int check_keys(XEvent *e, Game *game)
 	}
 
 	switch(key) {
-	    case XK_Left:
+		case XK_Left:
 		//may need to adjust
 		game->player.velocity.x -= 5;
 		game->direction = 'l';
 		break;
-	    case XK_Right:
+		case XK_Right:
 		game->player.velocity.x += 5;
 		game->direction = 'r';
 
 		break;
-	    case XK_Up:
+		case XK_Up:
 		game->player.velocity.y += 5;
 		game->direction = 'u';
 		break;
-	    case XK_Down:
+		case XK_Down:
 		game->player.velocity.y -= 5;
 		game->direction = 'd';
 		break;
-	    case XK_space:
+		case XK_space:
 		switch(game->direction) {
 		    case 'l':
 			makeParticle(game, -8, 0);
 			break;
-		    case 'r':
+			case 'r':
 			makeParticle(game, 8, 0);
 			break;
-		    case 'u':
+			case 'u':
 			makeParticle(game, 0, 8);
 			break;
-		    case 'd':
+			case 'd':
 			makeParticle(game, 0, -8);
 			break;
 		}
@@ -238,19 +239,19 @@ int check_keys(XEvent *e, Game *game)
     if ( e->type == KeyRelease) {
 	int key = XLookupKeysym(&e->xkey, 0);
 	switch(key) {
-	    case XK_Left:
+		case XK_Left:
 		if (game->player.velocity.x < 0)	
 		    game->player.velocity.x = 0;
 		break;
-	    case XK_Right:
+		case XK_Right:
 		if (game->player.velocity.x > 0)	
 		    game->player.velocity.x = 0;
 		break;
-	    case XK_Up:
+		case XK_Up:
 		if (game->player.velocity.y > 0)	
 		    game->player.velocity.y = 0;
 		break;
-	    case XK_Down:
+		case XK_Down:
 		if (game->player.velocity.y < 0)	
 		    game->player.velocity.y = 0;
 		break;
@@ -278,24 +279,24 @@ void movement(Game *game)
 
 	//check for off-screen
 	if (p->s.center.x > WINDOW_WIDTH + p->s.width) {
-	    std::cout << "off screen" << std::endl;
-	    game->particle[i] = game->particle[game->n-1];
-	    game->n--;
+		std::cout << "off screen" << std::endl;
+		game->particle[i] = game->particle[game->n-1];
+		game->n--;
 	}
 	if (p->s.center.x < 0.0) {
-	    std::cout << "off screen" << std::endl;
-	    game->particle[i] = game->particle[game->n-1];
-	    game->n--;
+		 std::cout << "off screen" << std::endl;
+		game->particle[i] = game->particle[game->n-1];
+		game->n--;
 	}
 	if (p->s.center.y > WINDOW_HEIGHT + p->s.height) {
-	    std::cout << "off screen" << std::endl;
-	    game->particle[i] = game->particle[game->n-1];
-	    game->n--;
+		std::cout << "off screen" << std::endl;
+		game->particle[i] = game->particle[game->n-1];
+		game->n--;
 	}
 	if (p->s.center.y < 0.0) {
-	    std::cout << "off screen" << std::endl;
-	    game->particle[i] = game->particle[game->n-1];
-	    game->n--;
+		std::cout << "off screen" << std::endl;
+		game->particle[i] = game->particle[game->n-1];
+		game->n--;
 	}
     }
 }
@@ -339,34 +340,34 @@ void render(Game *game)
 	//draw current tile
 	Shape *s;
 	for (int i = 0; i < game->num_objects; i++ ) {
-	    glColor3ub(90,140,90);
-	    s = &game->box;
-	    glPushMatrix();
-	    glTranslatef(s->center.x, s->center.y, s->center.z);
-	    w = s->width;
-	    h = s->height;
-	    glBegin(GL_QUADS);
-	    glVertex2i(-w,-h);
-	    glVertex2i(-w, h);
-	    glVertex2i( w, h);
-	    glVertex2i( w,-h);
-	    glEnd();
-	    glPopMatrix();
+		glColor3ub(90,140,90);
+		s = &game->box;
+		glPushMatrix();
+		glTranslatef(s->center.x, s->center.y, s->center.z);
+		w = s->width;
+		h = s->height;
+		glBegin(GL_QUADS);
+		glVertex2i(-w,-h);
+		glVertex2i(-w, h);
+		glVertex2i( w, h);
+		glVertex2i( w,-h);
+		glEnd();
+		glPopMatrix();
 	}
 	//draw all particles here
 	for (int i = 0; i < game->n; i++) {
-	    glPushMatrix();
-	    glColor3ub(150,160,220);
-	    Vec *c = &game->particle[i].s.center;
-	    w = 2;
-	    h = 2;
-	    glBegin(GL_QUADS);
-	    glVertex2i(c->x-w, c->y-h);
-	    glVertex2i(c->x-w, c->y+h);
-	    glVertex2i(c->x+w, c->y+h);
-	    glVertex2i(c->x+w, c->y-h);
-	    glEnd();
-	    glPopMatrix();
+		glPushMatrix();
+		glColor3ub(150,160,220);
+		Vec *c = &game->particle[i].s.center;
+		w = 2;
+		h = 2;
+		glBegin(GL_QUADS);
+		glVertex2i(c->x-w, c->y-h);
+		glVertex2i(c->x-w, c->y+h);
+		glVertex2i(c->x+w, c->y+h);
+		glVertex2i(c->x+w, c->y-h);
+		glEnd();
+		glPopMatrix();
 	}
 	//draw player	
 	glColor3ub(150,160,220);
