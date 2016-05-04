@@ -72,7 +72,8 @@ int main(void)
 		XNextEvent(dpy, &e);
 		check_mouse(&e, &game);
 		done = check_keys(&e, &game);
-		mainMenuCursor(&e, &game); //main menu
+		if (mainMenuCursor(&e, &game) ==1) //main menu
+			return 1;
 	}
 	physics(&game);
 	render(&game);
