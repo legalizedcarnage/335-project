@@ -1,8 +1,12 @@
 //Author: Miguel Trigueros
-//Purpose: I will be creating the enemies and allowing them to move and hunt the player.
-//Progress: Currently have basic movement but I need to make an enemy stay within its own tile.
-//	    Was able to add more enemies with their own movement, still need to make them be associated with a tile.
-//Update May 2: Added basic detection of player if they are within a threshold, still working on keeping them on their own tile. 
+//Purpose: I will be creating the enemies and 
+//         allowing them to move and hunt the player.
+//Progress: Currently have basic movement but I need
+//          to make an enemy stay within its own tile.
+//	    Was able to add more enemies with their own movement, 
+//          still need to make them be associated with a tile.
+//Update May 2: Added basic detection of player if they are within a 
+//              threshold still working on keeping them on their own tile.
 #include <iostream>
 #include "main.h"
 #include <cstdlib>
@@ -122,7 +126,8 @@ void playerFound(Game *game, int i)
     p = &game->player;
     //Checks distance between current enemy and player
     //still need to improve how the enemy acts when its within threshold
-    if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + (pow(e->s.center.y - p->s.center.y, 2))) <= 150) {
+    if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
+        (pow(e->s.center.y - p->s.center.y, 2))) <= 150) {
         cout << "Player Found!" << endl;
         if (p->s.center.x < e->s.center.x && e->velocity.x > 0) {
             e->velocity.x *= -1;
