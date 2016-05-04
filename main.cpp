@@ -277,27 +277,6 @@ void movement(Game *game)
 	p->s.center.x += p->velocity.x;
 	p->s.center.y += p->velocity.y;
 
-	//check for off-screen
-	if (p->s.center.x > WINDOW_WIDTH + p->s.width) {
-		std::cout << "off screen" << std::endl;
-		game->particle[i] = game->particle[game->n-1];
-		game->n--;
-	}
-	if (p->s.center.x < 0.0) {
-		 std::cout << "off screen" << std::endl;
-		game->particle[i] = game->particle[game->n-1];
-		game->n--;
-	}
-	if (p->s.center.y > WINDOW_HEIGHT + p->s.height) {
-		std::cout << "off screen" << std::endl;
-		game->particle[i] = game->particle[game->n-1];
-		game->n--;
-	}
-	if (p->s.center.y < 0.0) {
-		std::cout << "off screen" << std::endl;
-		game->particle[i] = game->particle[game->n-1];
-		game->n--;
-	}
     }
 }
 void charMovement( Game *game) 
