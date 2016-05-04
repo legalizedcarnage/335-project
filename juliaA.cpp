@@ -1,6 +1,6 @@
 //Name: 	Julia Acosta
 //Written:	04/27/16
-//Modified:	05/03/16
+//Modified:	05/04/16
 //Project 335: 	Prison Escape
 //Design/Layout:Creating the walls for each tile of the game
 //		and the layout of the prison cell/hallways etc.
@@ -66,8 +66,8 @@ void printtile(Game *game)
 
 	//walls
 	for (int i=3; i<game->num_objects; i++) {
-	    glColor3ub(130,130,130);
-	    drawobject(game, i);
+		glColor3ub(130,130,130);
+		drawobject(game, i);
 	}
     }
     //hallway 1
@@ -80,8 +80,8 @@ void printtile(Game *game)
 
 	//walls
 	for (int i=0; i<game->num_objects; i++) {
-	    glColor3ub(130,130,130);
-	    drawobject(game, i);
+		glColor3ub(130,130,130);
+		drawobject(game, i);
 	}
     }
     //prison cell 2
@@ -110,8 +110,8 @@ void printtile(Game *game)
 
 	//walls
 	for (int i=3; i<game->num_objects; i++) {
-	    glColor3ub(130,130,130);
-	    drawobject(game, i);
+		glColor3ub(130,130,130);
+		drawobject(game, i);
 	}
 
     }
@@ -126,8 +126,8 @@ void printtile(Game *game)
 
 	//walls
 	for (int i=0; i<game->num_objects; i++) {
-	    glColor3ub(130,130,130);
-	    drawobject(game, i);
+		glColor3ub(130,130,130);
+		drawobject(game, i);
 	}
 
     }
@@ -157,8 +157,8 @@ void printtile(Game *game)
 
 	//walls
 	for (int i=3; i<game->num_objects; i++) {
-	    glColor3ub(130,130,130);
-	    drawobject(game, i);
+		glColor3ub(130,130,130);
+		drawobject(game, i);
 	}
 
     }
@@ -188,8 +188,8 @@ void printtile(Game *game)
 
 	//walls
 	for (int i=3; i<game->num_objects; i++) {
-	    glColor3ub(130,130,130);
-	    drawobject(game, i);
+		glColor3ub(130,130,130);
+		drawobject(game, i);
 	}
     }
     //hallway 3
@@ -203,8 +203,8 @@ void printtile(Game *game)
 
 	//walls
 	for (int i=0; i<game->num_objects; i++) {
-	    glColor3ub(130,130,130);
-	    drawobject(game, i);
+		glColor3ub(130,130,130);
+		drawobject(game, i);
 	}
     }
     //shower
@@ -219,8 +219,8 @@ void printtile(Game *game)
 
 	//walls
 	for (int i=0; i<game->num_objects; i++) {
-	    glColor3ub(130,130,130);
-	    drawobject(game, i);
+		glColor3ub(130,130,130);
+		drawobject(game, i);
 	}
     }
     //security guard office
@@ -236,8 +236,8 @@ void printtile(Game *game)
 
 	//walls
 	for (int i=0; i<game->num_objects; i++) {
-	    glColor3ub(130,130,130);
-	    drawobject(game, i);
+		glColor3ub(130,130,130);
+		drawobject(game, i);
 	}
     }
     //level 2
@@ -254,8 +254,8 @@ void printtile(Game *game)
 
 	//walls
 	for (int i=0; i<game->num_objects; i++) {
-	    glColor3ub(130,130,130);
-	    drawobject(game, i);
+		glColor3ub(130,130,130);
+		drawobject(game, i);
 	}
     }
     //warden's office
@@ -270,8 +270,8 @@ void printtile(Game *game)
 
 	//walls
 	for (int i=0; i<game->num_objects; i++) {
-	    glColor3ub(130,130,130);
-	    drawobject(game, i);
+		glColor3ub(130,130,130);
+		drawobject(game, i);
 	}
     }
     else 
