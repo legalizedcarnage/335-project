@@ -197,7 +197,7 @@ int check_keys(XEvent *e, Game *game)
     if (e->type == KeyPress) {
 	int key = XLookupKeysym(&e->xkey, 0);
 	if (key == XK_Escape) {
-	    return 1;
+		return 1;
 	}
 
 	switch(key) {
@@ -221,7 +221,7 @@ int check_keys(XEvent *e, Game *game)
 		break;
 		case XK_space:
 		switch(game->direction) {
-		    case 'l':
+			case 'l':
 			makeParticle(game, -8, 0);
 			break;
 			case 'r':
@@ -242,19 +242,19 @@ int check_keys(XEvent *e, Game *game)
 	switch(key) {
 		case XK_Left:
 		if (game->player.velocity.x < 0)	
-		    game->player.velocity.x = 0;
+			game->player.velocity.x = 0;
 		break;
 		case XK_Right:
 		if (game->player.velocity.x > 0)	
-		    game->player.velocity.x = 0;
+			game->player.velocity.x = 0;
 		break;
 		case XK_Up:
 		if (game->player.velocity.y > 0)	
-		    game->player.velocity.y = 0;
+			game->player.velocity.y = 0;
 		break;
 		case XK_Down:
 		if (game->player.velocity.y < 0)	
-		    game->player.velocity.y = 0;
+			game->player.velocity.y = 0;
 		break;
 	}
 
