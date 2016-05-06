@@ -309,18 +309,8 @@ void render(Game *game)
 	glClearColor(0.0,0.0,0.0,1.0);
 	float w, h;
 	glClear(GL_COLOR_BUFFER_BIT);
-	//Draw text
-	Rect r[5];
-	//	glClear(GL_COLOR_BUFFER_BIT);
-	//
-	r[0].bot = 800;
-	r[0].left = 95;
-	r[0].center = 0;
-	ggprint8b(&r[0], 16, 0x00ff0000, "Jail Break");
-
 	//print tiles
 	printtile(game);
-
 	//draw current tile
 	Shape *s;
 	for (int i = 0; i < game->num_objects; i++ ) {
@@ -386,6 +376,7 @@ void render(Game *game)
 	//renders enemies
 	renderKnife(game);
 	renderEnemies(game);
+	hudDisplay(game);
     }
 }
 

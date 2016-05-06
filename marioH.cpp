@@ -22,8 +22,6 @@ void displayMenu(Game * game)
 	glColor3ub(0,60,200);
 	declareobject(game,1,150,50,250+5*65,800-5*60);//play button
 	declareobject(game,2,150,50,250+5*65,650-5*60);//quit button
-	glColor3ub(100,0,0);
-	//declareobject(game,3,150,20,100,100);
 	drawobject(game,1);
 	drawobject(game,2);
 	Rect pButton;
@@ -48,6 +46,17 @@ void displayMenu(Game * game)
 	ggprint16(&qButton, 76, 0x00000000, "Quit Game");
 }
 
+void hudDisplay(Game * game) 
+{
+	glColor3ub(100,0,0);
+	declareobject(game,game->num_objects,150,10,250,860);
+	drawobject(game,game->num_objects);
+	Rect health;
+	health.bot = 870;
+	health.left = 210;
+	health.center = 0;
+	ggprint16(&health, 76, 0x00ffffff, "Health Bar");
+}
 int mainMenuCursor(XEvent *e,Game * game)
 {
 	if (game->state ==0) {
