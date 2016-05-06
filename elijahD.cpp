@@ -28,16 +28,16 @@ void playerCollision(Game *game)
 {
 	Player *p;
 	p = &game->player;
+	//defined edges
+	float top = p->s.center.y  + p->s.height;
+	float bot = p->s.center.y  - p->s.height;
+	float left = p->s.center.x - p->s.width;
+	float right = p->s.center.x + p->s.width;
 
 	//detect object collisions 
 	Shape *s;
 	for (int i = 0; i < game->num_objects; i++) {
 		s = &game->object[i];
-		//defined edges
-		float top = p->s.center.y  + p->s.height;
-		float bot = p->s.center.y  - p->s.height;
-		float left = p->s.center.x - p->s.width;
-		float right = p->s.center.x + p->s.width;
 
 		if (top >= s->center.y - s->height
 		&& top <= s->center.y + s->height
@@ -72,7 +72,7 @@ void playerCollision(Game *game)
 	}
 	//detect screen collisions
 	//floor
-	if (p->s.center.y - p->s.height == 0 && p->velocity.y < 0) {
+	if (bot == 0 && p->velocity.y < 0) {
 		p->s.center.y = WINDOW_HEIGHT - p->s.height;
 		//change when multiple weapons implemented
 		game->knife.k.center.x = p->s.center.x + 20;
@@ -81,7 +81,7 @@ void playerCollision(Game *game)
 		shiftScreen(game, 'd');
 	}
 	//roof
-	if (p->s.center.y + p->s.height == WINDOW_HEIGHT && p->velocity.y > 0) {
+	if (top == WINDOW_HEIGHT && p->velocity.y > 0) {
 		p->s.center.y = p->s.height;
 		//
 		game->knife.k.center.x = p->s.center.x + 20;
@@ -90,7 +90,7 @@ void playerCollision(Game *game)
 		shiftScreen(game, 'u');
 	}
 	//left wall
-	if (p->s.center.x - p->s.width <= 0 && p->velocity.x < 0) {
+	if (left <= 0 && p->velocity.x < 0) {
 		p->s.center.x = WINDOW_WIDTH - p->s.width;
 		//
 		game->knife.k.center.x = p->s.center.x + 20;
@@ -99,7 +99,7 @@ void playerCollision(Game *game)
 		shiftScreen(game, 'l');
 	}
 	//right wall
-	if (p->s.center.x + p->s.width >= WINDOW_WIDTH && p->velocity.x > 0) {
+	if (right >= WINDOW_WIDTH && p->velocity.x > 0) {
 		p->s.center.x = p->s.width;
 		//
 		game->knife.k.center.x = p->s.center.x + 20;
@@ -108,7 +108,31 @@ void playerCollision(Game *game)
 		shiftScreen(game, 'r');
 	}
 	//player-enemy collision
-	
+	for ( int i = 0; i < 5/*game->num_enemies*/; i++) {
+		Player *e;
+		e = &game->enemies[i];	
+		float enemy_b = 
+			e->s.center.y - e->s.height;
+		float enemy_t = 
+			e->s.center.y + e->s.height;
+		float enemy_l = 
+			e->s.center.x - e->s.width;
+		float enemy_r = 
+			e->s.center.x + e->s.width;
+		if (top >= enemy_b &&
+		bot <= enemy_t &&
+		left <= enemy_r &&
+		right >= enemy_l) {
+		    //knocked back when hit enemy
+			p->s.center.x += (p->s.center.x - e->s.center.x);
+			e->s.center.x -= (p->s.center.x - e->s.center.x);
+			e->velocity.x *= -1;
+			p->s.center.y += (p->s.center.y - e->s.center.y);
+			e->s.center.y -= (p->s.center.y - e->s.center.y);
+			e->velocity.y *= -1;
+		}
+	}
+			
 	
 }
 void particleCollision(Game *game) 

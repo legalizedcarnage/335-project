@@ -75,7 +75,8 @@ int main(void)
 		if (mainMenuCursor(&e, &game) ==1) //main menu
 			return 1;
 	}
-	physics(&game);
+	if (game.state == 1) 
+		physics(&game);
 	render(&game);
 	glXSwapBuffers(dpy, win);
     }
@@ -292,8 +293,11 @@ void charMovement( Game *game)
 
     Knife *k;
     k = &game->knife;
-    k->k.center.x += p->velocity.x;
-    k->k.center.y += p->velocity.y;
+    k->k.center.x = p->s.center.x;
+    k->k.center.y = p->s.center.y;
+
+    //k->k.center.x += p->velocity.x;
+    //k->k.center.y += p->velocity.y;
 }
 
 void render(Game *game)
