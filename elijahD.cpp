@@ -123,13 +123,13 @@ void playerCollision(Game *game)
 		bot <= enemy_t &&
 		left <= enemy_r &&
 		right >= enemy_l) {
-		    //knocked back when hit enemy
+		//knocked back when hit enemy
 			p->s.center.x += (p->s.center.x - e->s.center.x);
 			e->s.center.x -= (p->s.center.x - e->s.center.x);
 			e->velocity.x *= -1;
 			p->s.center.y += (p->s.center.y - e->s.center.y);
 			e->s.center.y -= (p->s.center.y - e->s.center.y);
-			e->velocity.y *= -1;
+		
 		}
 	}
 			
@@ -155,10 +155,19 @@ void particleCollision(Game *game)
 		&& p->s.center.y < right) {
 			*p = game->particle[game->n-1];
 			game->n--;
-			cout << "shot" << endl;
-			//decrease lives once lives implemented
 			play->health--;
 		} 
+		//check for bullet collisions with enemies
+		//for (int j = 0; j < 5/*game->num_enemies*/; j++) {
+		/*	Player *e = game->enemies[j];
+			if (p->s.center.x > bot
+			&& p->s.center.x < top
+			&& p->s.center.y >left	
+			&& p->s.center.y < right) {
+				*p = game->particle[game->n-1];
+				game->n--;
+				e->health--;
+		}*/
 		//check for bullet collision with enviornment
 		for (int j = 0; j < game->num_objects; j++) {
 			s = &game->object[j];
