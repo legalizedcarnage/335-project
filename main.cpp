@@ -309,7 +309,7 @@ void render(Game *game)
 	glClearColor(0.0,0.0,0.0,1.0);
 	float w, h;
 	glClear(GL_COLOR_BUFFER_BIT);
-	//print tiles
+	//Layout of the game
 	printtile(game);
 	//draw current tile
 	Shape *s;
@@ -375,8 +375,8 @@ void render(Game *game)
 	*/
 	//renders enemies
 	renderKnife(game);
-	renderEnemies(game);
-	hudDisplay(game);
+	//renderEnemies(game);
+	//hudDisplay(game);
     }
 }
 
