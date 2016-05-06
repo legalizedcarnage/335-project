@@ -274,6 +274,120 @@ void printtile(Game *game)
 		drawobject(game, i);
 	}
     }
+    //Level 3
+    else if (game->map[0] == 3 && game->map[1] == 0) {
+	//Tower 1/wall 1-4 shape
+	declareobject(game, 1, 300, 12, 200, 892);
+	declareobject(game, 2, 12, 450, 8, 450);
+	declareobject(game, 3, 400, 12, 200, 8);
+	declareobject(game, 4, 12, 200, 1192, 150);
+	declareobject(game, 5, 180, 12, 1050, 8);
+	declareobject(game, 6, 250, 12, 1050, 892);
+	declareobject(game, 7, 12, 200, 1192, 800);
+
+	game->num_objects = 8;
+
+	//walls
+	for (int i=0; i<game->num_objects; i++) {
+		glColor3ub(130,130,130);
+		drawobject(game, i);
+	}
+    }
+    //bridge 1
+    else if (game->map[0] == 3 && game->map[1] == 1) {
+	//bridge 1
+	declareobject(game, 1, 300, 12, 200, 892);
+	declareobject(game, 2, 12, 450, 8, 450);
+	declareobject(game, 3, 300, 12, 200, 8);
+	declareobject(game, 4, 12, 200, 1192, 150);
+	declareobject(game, 5, 250, 12, 1050, 8);
+	declareobject(game, 6, 250, 12, 1050, 892);
+	declareobject(game, 7, 12, 200, 1192, 800);
+
+	game->num_objects = 8;
+
+	//walls
+	for (int i=0; i<game->num_objects; i++) {
+		glColor3ub(130,130,130);
+		drawobject(game, i);
+	}
+    }
+    //Tower 2
+    else if (game->map[0] == 3 && game->map[1] == 2) {
+	//wals 1-4 shape
+	declareobject(game, 1, 600, 12, 600, 892);
+	declareobject(game, 2, 12, 450, 8, 450);
+	declareobject(game, 3, 300, 12, 200, 8);
+	declareobject(game, 4, 12, 200, 1192, 150);
+	declareobject(game, 5, 250, 12, 1050, 8);
+	declareobject(game, 6, 12, 200, 1192, 800);
+
+	game->num_objects = 7;
+
+	//walls
+	for (int i=0; i<game->num_objects; i++) {
+		glColor3ub(130,130,130);
+		drawobject(game, i);
+	}
+    }
+    //bridge 2
+    else if (game->map[0] == 4 && game->map[1] == 0) {
+	//walls 1-7
+	declareobject(game, 1, 300, 12, 200, 892);
+	declareobject(game, 2, 12, 200, 8, 150);
+	declareobject(game, 3, 600, 12, 600, 8);
+	declareobject(game, 4, 12, 200, 1192, 150);
+	declareobject(game, 5, 12, 200, 8, 800);
+	declareobject(game, 6, 250, 12, 1050, 892);
+	declareobject(game, 7, 12, 200, 1192, 800);
+
+	game->num_objects = 8;
+
+	//walls
+	for (int i=0; i<game->num_objects; i++) {
+		glColor3ub(130,130,130);
+		drawobject(game, i);
+	}
+    }
+    //yard
+    else if (game->map[0] == 4 && game->map[1] == 1) {
+	//walls 1-8 shape
+	declareobject(game, 1, 300, 12, 200, 892);
+	declareobject(game, 2, 12, 200, 8, 150);
+	declareobject(game, 3, 300, 12, 200, 8);
+	declareobject(game, 4, 12, 200, 1192, 150);
+	declareobject(game, 5, 12, 200, 8, 800);
+	declareobject(game, 6, 250, 12, 1050, 892);
+	declareobject(game, 7, 12, 200, 1192, 800);
+	declareobject(game, 8, 250, 12, 1050, 8);
+
+	game->num_objects = 9;
+
+	//walls
+	for (int i=0; i<game->num_objects; i++) {
+		glColor3ub(130,130,130);
+		drawobject(game, i);
+	}
+    }
+    //bridge 3
+    else if (game->map[0] == 4 && game->map[1] == 2) {
+	//walls 1-7 shape
+	declareobject(game, 1, 600, 12, 600, 892);
+	declareobject(game, 2, 12, 200, 8, 150);
+	declareobject(game, 3, 300, 12, 200, 8);
+	declareobject(game, 4, 12, 200, 1192, 150);
+	declareobject(game, 5, 12, 200, 8, 800);
+	declareobject(game, 6, 12, 200, 1192, 800);
+	declareobject(game, 7, 250, 12, 1050, 8);
+
+	game->num_objects = 8;
+
+	//walls
+	for (int i=0; i<game->num_objects; i++) {
+		glColor3ub(130,130,130);
+		drawobject(game, i);
+	}
+    }
     else 
 	game->num_objects = 0;
 }
