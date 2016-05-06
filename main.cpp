@@ -375,8 +375,8 @@ void render(Game *game)
 	*/
 	//renders enemies
 	renderKnife(game);
-	//renderEnemies(game);
-	//hudDisplay(game);
+	renderEnemies(game);
+	hudDisplay(game);
     }
 }
 
