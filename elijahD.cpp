@@ -5,6 +5,7 @@
 //and bullets with each other, the walls, and objects
 #include <iostream>
 #include "main.h"
+#include "miguelT.h"
 using namespace std;
 //used when player collides with wall to shift to new tile
 void shiftScreen(Game *game, char direction)
@@ -22,7 +23,7 @@ void shiftScreen(Game *game, char direction)
 		game->map[0]++;
 	}
 	std::cout << game->map[0]  << ", " << game->map[1] << endl;
-
+	initEnemies(game);
 }
 void playerCollision(Game *game)
 {
@@ -72,7 +73,7 @@ void playerCollision(Game *game)
 	}
 	//detect screen collisions
 	//floor
-	if (bot == 0 && p->velocity.y < 0) {
+	if (bot <= 0 && p->velocity.y < 0) {
 		p->s.center.y = WINDOW_HEIGHT - p->s.height;
 		//change when multiple weapons implemented
 		game->knife.k.center.x = p->s.center.x + 20;
@@ -81,7 +82,7 @@ void playerCollision(Game *game)
 		shiftScreen(game, 'd');
 	}
 	//roof
-	if (top == WINDOW_HEIGHT && p->velocity.y > 0) {
+	if (top >= WINDOW_HEIGHT && p->velocity.y > 0) {
 		p->s.center.y = p->s.height;
 		//
 		game->knife.k.center.x = p->s.center.x + 20;
@@ -129,7 +130,7 @@ void playerCollision(Game *game)
 			e->velocity.x *= -1;
 			p->s.center.y += (p->s.center.y - e->s.center.y);
 			e->s.center.y -= (p->s.center.y - e->s.center.y);
-		
+			e->velocity.y *= -1;	
 		}
 	}
 			
@@ -146,6 +147,7 @@ void particleCollision(Game *game)
 	
 	Particle *p;
 	Shape *s;
+	
 	for (int i = 0; i < game->n; i++) {
 		p = &game->particle[i];
 		//check for bullet collision with player
@@ -156,18 +158,26 @@ void particleCollision(Game *game)
 			*p = game->particle[game->n-1];
 			game->n--;
 			play->health--;
-		} 
+		}
+			
 		//check for bullet collisions with enemies
-		//for (int j = 0; j < 5/*game->num_enemies*/; j++) {
-		/*	Player *e = game->enemies[j];
-			if (p->s.center.x > bot
-			&& p->s.center.x < top
-			&& p->s.center.y >left	
-			&& p->s.center.y < right) {
+		for (int j = 0; j < 5/*game->num_enemies*/; j++) {
+			Player *e = &game->enemies[j];
+			float botE = e->s.center.y - e->s.height;
+			float topE = e->s.center.y  + e->s.height;
+			float leftE = e->s.center.x - e->s.width;
+			float rightE = e->s.center.x + e->s.width;
+
+			if (p->s.center.y > botE
+			&& p->s.center.y < topE
+			&& p->s.center.x >leftE	
+			&& p->s.center.x < rightE) {
 				*p = game->particle[game->n-1];
 				game->n--;
 				e->health--;
-		}*/
+		
+			}
+		}
 		//check for bullet collision with enviornment
 		for (int j = 0; j < game->num_objects; j++) {
 			s = &game->object[j];
