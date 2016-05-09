@@ -25,6 +25,53 @@ void shiftScreen(Game *game, char direction)
 	std::cout << game->map[0]  << ", " << game->map[1] << endl;
 	initEnemies(game);
 }
+void Player_Object(Game *game, Player *p)
+{
+	p = & game->player;
+	//defined edges
+	float top = p->s.center.y  + p->s.height;
+	float bot = p->s.center.y  - p->s.height;
+	float left = p->s.center.x - p->s.width;
+	float right = p->s.center.x + p->s.width;
+	
+	Shape *s;
+	for (int i = 0; i < game->num_objects; i++) {
+		s = &game->object[i];
+		
+		if (top >= s->center.y - s->height
+		&& top <= s->center.y + s->height
+		&& left < s->center.x + s->width
+		&& right > s->center.x - s->width
+		&& p->velocity.y > 0 ) {
+			p->velocity.y = 0;
+			p->s.center.y -= top -  (s->center.y -s->height);
+		}
+		if (bot >= s->center.y - s->height
+		&& bot <= s->center.y + s->height
+		&& left < s->center.x + s->width
+		&& right > s->center.x - s->width
+		&& p->velocity.y < 0 ) {
+			p->velocity.y = 0;
+			p->s.center.y -= bot -  (s->center.y + s->height);
+		}
+		if (left >= s->center.x - s->width
+		&& left <= s->center.x + s->width
+		&& bot < s->center.y + s->height
+		&& top > s->center.y - s->height
+		&& p->velocity.x < 0 ) {
+			p->velocity.x = 0;
+			p->s.center.x -= left -  (s->center.x + s->width);
+		} 
+		if (right >= s->center.x - s->width
+		&& right <= s->center.x + s->width
+		&& bot < s->center.y + s->height
+		&& top > s->center.y - s->height
+		&& p->velocity.x > 0 ) {
+			p->velocity.x = 0;
+			p->s.center.x -= right -  (s->center.x - s->width);
+		} 
+	}
+}
 void playerCollision(Game *game)
 {
 	Player *p;
@@ -36,7 +83,8 @@ void playerCollision(Game *game)
 	float right = p->s.center.x + p->s.width;
 
 	//detect object collisions 
-	Shape *s;
+	Player_Object(game, &game->player);
+	/*Shape *s;
 	for (int i = 0; i < game->num_objects; i++) {
 		s = &game->object[i];
 
@@ -70,7 +118,7 @@ void playerCollision(Game *game)
 			p->velocity.x = 0;
 		} 
 		
-	}
+	}*/
 	//detect screen collisions
 	//floor
 	if (bot <= 0 && p->velocity.y < 0) {
@@ -125,6 +173,9 @@ void playerCollision(Game *game)
 		left <= enemy_r &&
 		right >= enemy_l) {
 		//knocked back when hit enemy
+			/*for (int j = 0; j < num_objects; j++) {
+				if (top - (game->object[j].center.x - game->object[j].height) < (p->s.center.y - e->s.center.y)
+			*/
 			p->s.center.x += (p->s.center.x - e->s.center.x);
 			e->s.center.x -= (p->s.center.x - e->s.center.x);
 			e->velocity.x *= -1;
