@@ -7,6 +7,10 @@
 //          still need to make them be associated with a tile.
 //Update May 2: Added basic detection of player if they are within a 
 //              threshold still working on keeping them on their own tile.
+//Update May 8: I am converting the initEnemies fuction to be dynamic.
+//              I will be converting the enemies class to be dual array.
+//              This will also fix the problem of enemies not being tile dependent.
+
 #include <iostream>
 #include "main.h"
 #include <cstdlib>
