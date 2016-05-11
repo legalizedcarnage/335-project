@@ -279,6 +279,18 @@ int check_keys(XEvent *e, Game *game)
 			break;
 		}
 		break;
+		case XK_p:
+                std::cout << "p button pressed" << std::endl;
+                if (game->state==1) {
+                        game->state=2;
+                        break;
+                }
+                else if (game->state==2) {
+                        game->state=1;
+                        break;
+                }
+                break;
+
 	}
     }
     if ( e->type == KeyRelease) {
@@ -366,7 +378,7 @@ void render(Game *game)
     //game->state = 0;
     if (game->state == 0)
 	displayMenu(game);
-    else {
+    else if (game->state==1) {
 	glClearColor(0.0,0.0,0.0,1.0);
 	float w, h;
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -439,6 +451,8 @@ void render(Game *game)
 	//renderEnemies(game);
 	hudDisplay(game);
     }
+    else if (game->state==2)
+    	pauseMenu(game);
 }
 
 
