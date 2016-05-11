@@ -24,8 +24,8 @@ void shiftScreen(Game *game, char direction)
 		game->map[0]++;
 	}
 	std::cout << game->map[0]  << ", " << game->map[1] << endl;
-	
-	initEnemies(game, game->map[0], game->map[1], 2);
+	if(!game->enemies[game->map[0]][game->map[1]][0].enemiesInit)	
+		initEnemies(game, game->map[0], game->map[1], 2);
 }
 void Player_Object(Game *game, Player *p)
 {
@@ -86,41 +86,6 @@ void playerCollision(Game *game)
 
 	//detect object collisions 
 	Player_Object(game, &game->player);
-	/*Shape *s;
-	for (int i = 0; i < game->num_objects; i++) {
-		s = &game->object[i];
-
-		if (top >= s->center.y - s->height
-		&& top <= s->center.y + s->height
-		&& left < s->center.x + s->width
-		&& right > s->center.x - s->width
-		&& p->velocity.y > 0 ) {
-			p->velocity.y = 0;
-		} 
-		
-		if (bot >= s->center.y - s->height
-		&& bot <= s->center.y + s->height
-		&& left < s->center.x + s->width
-		&& right > s->center.x - s->width
-		&& p->velocity.y < 0 ) {
-			p->velocity.y = 0;
-		} 
-		if (left >= s->center.x - s->width
-		&& left <= s->center.x + s->width
-		&& bot < s->center.y + s->height
-		&& top > s->center.y - s->height
-		&& p->velocity.x < 0 ) {
-			p->velocity.x = 0;
-		} 
-		if (right >= s->center.x - s->width
-		&& right <= s->center.x + s->width
-		&& bot < s->center.y + s->height
-		&& top > s->center.y - s->height
-		&& p->velocity.x > 0 ) {
-			p->velocity.x = 0;
-		} 
-		
-	}*/
 	//detect screen collisions
 	//floor
 	if (bot <= 0 && p->velocity.y < 0) {
@@ -174,53 +139,51 @@ void playerCollision(Game *game)
 		bot <= enemy_t &&
 		left <= enemy_r &&
 		right >= enemy_l) {
+			p->health--;
 		//knocked back when hit enemy
-		//this looks disgusting
 			int min_distY = 100;
-			int min_distX = 1;
+			int min_distX = 100;
 			for (int j = 0; j < game->num_objects; j++) {
-				cout << "stuff" << endl;
+				cout << top-(game->object[j].center.y-game->object[j].height) << endl;
 				if (abs(top - (game->object[j].center.y - 
 				game->object[j].height))  >= 
-				abs(p->s.center.y - e->s.center.y)) {
-					cout << "enemy closer than wall" << endl;
+				abs(.5*(p->s.center.y - e->s.center.y))) {
+					cout << "enemy closer than wallY" << endl;
 					if (abs(p->s.center.y-e->s.center.y) < abs(min_distY)) {
 						min_distY = 
-						( p->s.center.y - e->s.center.y);
+						.5*( p->s.center.y - e->s.center.y);
 					}
 				} else {
-					min_distY =
-					top - (game->object[j].center.y - 
-					game->object[j].height);
-					cout << "wall" << endl;
+					if (min_distY > game->object[j].center.y-game->object[j].height) {	
+						min_distY =
+						top - (game->object[j].center.y - 
+						game->object[j].height);
+					}
+					cout << "wallY" << endl;
 				}
-				/*if ((game->object[j].center.x -
-				game->object[j].width) - right >=
-				(p->s.center.x = e->s.center.x)) {
-					if (p->s.center.x-e->s.center.x < min_distX) {
+				if (abs(right - (game->object[j].center.x - 
+				game->object[j].width))  >= 
+				abs(p->s.center.x - e->s.center.x)) {
+					cout << "enemy closer than wallX" << endl;
+					if (abs(p->s.center.x-e->s.center.x) < abs(min_distX)) {
 						min_distX = 
-						( p->s.center.x - e->s.center.x);
+						(p->s.center.x - e->s.center.x);
 					}
 				} else {
-					min_distX = 
-					(game->object[j].center.x - 
-					game->object[j].height)-right;
+					min_distX =
+					right - (game->object[j].center.x - 
+					game->object[j].width);
+					cout << "wallX" << endl;
 				}
-				*/
 			}
 			p->s.center.x += min_distX;
-			//(p->s.center.x - e->s.center.x);
 			e->s.center.x -= min_distX;
-			//(p->s.center.x - e->s.center.x);
 			e->velocity.x *= -1;
 			p->s.center.y += min_distY;
-			//(p->s.center.y - e->s.center.y);
 			e->s.center.y -= min_distY;
-			//(p->s.center.y - e->s.center.y);
 			e->velocity.y *= -1;	
 		}
 	}
-			
 	
 }
 void KnockBack(Game *game)
