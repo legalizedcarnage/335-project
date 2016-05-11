@@ -20,35 +20,36 @@
 using namespace std;
 // Using these counts to keep track of an emenies moves
 // This is so it doesnt get stuck doing the same thing.
-int xcount[10][1];
-int ycount[10][1];
+int xcount[100][100][1];
+int ycount[100][100][1];
 int directionx;
 int directiony;
 
-void initEnemies(Game *game) 
+void initEnemies(Game *game, int x, int y, int count) 
 {
     //Currently initializing 5 enemies for testing
     //will become dynamic when I apply difficulty per level
-    for (int i = 0; i < 5; i++) {
-        game->enemies[i].s.width = 20;
-        game->enemies[i].s.height = 30;
-        game->enemies[i].velocity.x = 4;
-        game->enemies[i].velocity.y = 0;
-        game->enemies[i].s.center.x = 120 + 5*65;
-        game->enemies[i].s.center.y = 500 - 5*60;
-        ycount[i][0] = 0;
-        xcount[i][0] = 0;
+    for(int i = 0; i < count; i++) {
+        game->enemies[x][y][i].s.width = 20;
+        game->enemies[x][y][i].s.height = 30;
+        game->enemies[x][y][i].velocity.x = 4;
+        game->enemies[x][y][i].velocity.y = 0;
+        game->enemies[x][y][i].s.center.x = 120 + 5*65;
+        game->enemies[x][y][i].s.center.y = 500 - 5*60;
+        ycount[x][y][0] = 0;
+        xcount[x][y][0] = 0;
+	game->enemies[x][y][i].enemiesInit = true;
     }
 }
 
-void enemiesMovement(Game *game, int i) 
+void enemiesMovement(Game *game, int x, int y, int i) 
 {
     Player *p;
-    p = &game->enemies[i];
+    p = &game->enemies[x][y][i];
 
-    if (xcount[i][0] == 0)
+    if (xcount[x][y][0] == 0)
         directionx = p->velocity.x;
-    if (ycount[i][0] == 0)
+    if (ycount[x][y][0] == 0)
         directiony = p->velocity.y;
 
     //Checks for collision with walls
@@ -56,8 +57,8 @@ void enemiesMovement(Game *game, int i)
     if (p->s.center.y - p->s.height <= 20 && p->velocity.y < 0) {
         p->s.center.y = p->s.height + 20;
         p->velocity.y *= -1;
-        ycount[i][0] += 1;
-        if (ycount[i][0] >= 2) {
+        ycount[x][y][0] += 1;
+        if (ycount[x][y][0] >= 2) {
             int randx = rand() % 10;
             cout << "randx: " << randx << endl;
             p->velocity.x = 0;
@@ -66,14 +67,14 @@ void enemiesMovement(Game *game, int i)
                 p->velocity.x = 4;
             if (randx > 5)
                 p->velocity.x = -4;
-            ycount[i][0] = 0;
+            ycount[x][y][0] = 0;
         }
     }
     if (p->s.center.y + p->s.height >= WINDOW_HEIGHT-20 && p->velocity.y > 0) {
         p->s.center.y = WINDOW_HEIGHT - p->s.height - 20;
         p->velocity.y *= -1;
-        ycount[i][0] += 1;
-        if (ycount[i][0] >= 2) {
+        ycount[x][y][0] += 1;
+        if (ycount[x][y][0] >= 2) {
             int randx = rand() % 10;
             cout << "randx: " << randx << endl;
             p->velocity.x = 0;
@@ -82,14 +83,14 @@ void enemiesMovement(Game *game, int i)
                 p->velocity.x = 4;
             if (randx > 5)
                 p->velocity.x = -4;
-            ycount[i][0] = 0;
+            ycount[x][y][0] = 0;
         }
     }
     if (p->s.center.x - p->s.width <= 20 && p->velocity.x < 0) {
         p->s.center.x = p->s.width + 20;
         p->velocity.x *= -1;
-        xcount[i][0] += 1;
-        if (xcount[i][0] >= 2) {
+        xcount[x][y][0] += 1;
+        if (xcount[x][y][0] >= 2) {
             int randy = rand() % 10;
             cout << "randy: " << randy << endl;
             p->velocity.x = 0;
@@ -98,21 +99,21 @@ void enemiesMovement(Game *game, int i)
                 p->velocity.y = 4;
             if (randy > 5)
                 p->velocity.y = -4;
-            xcount[i][0] = 0;
+            xcount[x][y][0] = 0;
         }
     }
     if (p->s.center.x + p->s.width >= WINDOW_WIDTH-20 && p->velocity.x > 0) {
         p->s.center.x = WINDOW_WIDTH - 20;
         p->velocity.x *= -1;
-        xcount[i][0] += 1;
-        if (xcount[i][0] >= 2) {
+        xcount[x][y][0] += 1;
+        if (xcount[x][y][0] >= 2) {
             int randy = rand() % 10;
             cout << "randy: " << randy << endl;
             if (randy <= 5)
                 p->velocity.y = 4;
             if (randy > 5)
                 p->velocity.y = -4;
-            xcount[i][0] = 0;
+            xcount[x][y][0] = 0;
         }
     }
     p->s.center.x += p->velocity.x;
@@ -122,10 +123,10 @@ void enemiesMovement(Game *game, int i)
 }
 
 
-void playerFound(Game *game, int i)
+void playerFound(Game *game, int x, int y, int i)
 {
     Player *e;
-    e = &game->enemies[i];
+    e = &game->enemies[x][y][i];
     Player *p;
     p = &game->player;
     //Checks distance between current enemy and player
@@ -154,15 +155,15 @@ void playerFound(Game *game, int i)
     cout << "y: " << e->velocity.y << endl;
 }
 
-void renderEnemies(Game *game)
+void renderEnemies(Game *game, int x, int y, int count)
 {
-    for (int i = 0; i < 5; i++) {
-        enemiesMovement(game, i);
-        playerFound(game, i);
+    for (int i = 0; i < count; i++) {
+        enemiesMovement(game, x, y, i);
+        playerFound(game, x, y,  i);
         float h, w;
         Shape *s;
         glColor3ub(250,50,50);
-        s = &game->enemies[i].s;
+        s = &game->enemies[x][y][i].s;
         glPushMatrix();
         glTranslatef(s->center.x, s->center.y, s->center.z);
         w = s->width;

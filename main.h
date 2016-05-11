@@ -27,13 +27,14 @@ struct Player {
     	Shape s;
     	int health;
 	Vec velocity;
+	bool enemiesInit;
 };
 struct Game {
 	int state;
     	char direction;
 	char gun;
         int map[2];
-	Player enemies[Max_Enemies] ;
+	Player enemies[100][100][10] ;
 	Player player;
 	Shape button1; //play
 	Shape button2; //quit
@@ -42,7 +43,7 @@ struct Game {
 	Shape box;
 	int n;
 	int num_objects;
-
+	int num_enemies;
 };
 
 
