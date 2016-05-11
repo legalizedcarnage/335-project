@@ -124,8 +124,8 @@ void playerCollision(Game *game)
 	if (bot <= 0 && p->velocity.y < 0) {
 		p->s.center.y = WINDOW_HEIGHT - p->s.height;
 		//change when multiple weapons implemented
-		game->knife.k.center.x = p->s.center.x + 20;
-		game->knife.k.center.y = p->s.center.y +5;
+		//game->knife.k.center.x = p->s.center.x + 20;
+		//game->knife.k.center.y = p->s.center.y +5;
 		//
 		shiftScreen(game, 'd');
 	}
@@ -133,8 +133,8 @@ void playerCollision(Game *game)
 	if (top >= WINDOW_HEIGHT && p->velocity.y > 0) {
 		p->s.center.y = p->s.height;
 		//
-		game->knife.k.center.x = p->s.center.x + 20;
-		game->knife.k.center.y = p->s.center.y +5;
+		//game->knife.k.center.x = p->s.center.x + 20;
+		//game->knife.k.center.y = p->s.center.y +5;
 		//
 		shiftScreen(game, 'u');
 	}
@@ -142,8 +142,8 @@ void playerCollision(Game *game)
 	if (left <= 0 && p->velocity.x < 0) {
 		p->s.center.x = WINDOW_WIDTH - p->s.width;
 		//
-		game->knife.k.center.x = p->s.center.x + 20;
-		game->knife.k.center.y = p->s.center.y +5;
+		//game->knife.k.center.x = p->s.center.x + 20;
+		//game->knife.k.center.y = p->s.center.y +5;
 		//
 		shiftScreen(game, 'l');
 	}
@@ -151,8 +151,8 @@ void playerCollision(Game *game)
 	if (right >= WINDOW_WIDTH && p->velocity.x > 0) {
 		p->s.center.x = p->s.width;
 		//
-		game->knife.k.center.x = p->s.center.x + 20;
-		game->knife.k.center.y = p->s.center.y +5;
+		//game->knife.k.center.x = p->s.center.x + 20;
+		//game->knife.k.center.y = p->s.center.y +5;
 		//
 		shiftScreen(game, 'r');
 	}
