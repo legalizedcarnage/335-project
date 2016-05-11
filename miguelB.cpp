@@ -6,13 +6,13 @@
 // and movement for the weapon to traverse with the player
 // May:8 Shorten function with Julia function and adding them to key to call the function to render each weapon.
 
-// 90 = knife
-// 91 = crowbar
-// 92 = shield
-// 93 = pistol
-// 94 = shotgun
-// 95 = rifle
-// 96  = stun gun
+// 91 = knife
+// 92 = crowbar
+// 93 = shield
+// 94 = pistol
+// 95 = shotgun
+// 96 = rifle
+// 97 = stun gun
 
 #include <iostream>
 #include <cstdlib>
@@ -29,11 +29,48 @@ void weapon(Game *game)
 {
 	declareobject(game, 91, 10, 10, 465, 205);
 	declareobject(game, 92, 10, 10, 465, 205);
-	declareobject(game, 93, 30, 30, 465, 205);
+	declareobject(game, 93, 5, 30, 465, 205);
 	declareobject(game, 94, 10, 10, 465, 205);
 	declareobject(game, 95, 20, 5, 465, 205);
 	declareobject(game, 96, 20, 5, 465, 205);
 	declareobject(game, 97, 20, 5, 465, 205);
+}
+void weaponMov(Game *game)
+{
+        Player *p;
+        p = &game->player;
+	for(int i = 91; i <98; i ++) {
+        if(game->direction == 'l'){
+        game->object[i].center.x = p->s.center.x - 20;
+        game->object[i].center.y = p->s.center.y;
+        }if(game->direction == 'r'){
+        game->object[i].center.x = p->s.center.x + 20;
+        game->object[i].center.y = p->s.center.y;
+        }if(game->direction == 'u'){
+        game->object[i].center.x = p->s.center.x;
+        game->object[i].center.y = p->s.center.y + 25;
+	}if(game->direction == 'd'){
+        game->object[i].center.x = p->s.center.x;
+        game->object[i].center.y = p->s.center.y - 25;
+        	}
+	}
+	if(game->direction == 'l' || game->direction == 'r'){
+	game->object[93].width = 5;
+	game->object[93].height = 30;
+	for(int i = 95; i<98; i ++){
+	game->object[i].width = 20;
+        game->object[i].height = 5;
+  		}
+	}
+
+	if(game->direction == 'u' || game->direction == 'd'){
+        game->object[93].width = 30;
+        game->object[93].height = 5;
+	for(int i = 95; i<98; i ++){
+        game->object[i].width = 5;
+        game->object[i].height = 20;
+                }
+	}
 }
 //render weapons && in main it layer on top of player
 void renderWeapon(Game *game)
