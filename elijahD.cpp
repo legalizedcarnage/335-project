@@ -24,7 +24,8 @@ void shiftScreen(Game *game, char direction)
 		game->map[0]++;
 	}
 	std::cout << game->map[0]  << ", " << game->map[1] << endl;
-	initEnemies(game);
+	
+	initEnemies(game, game->map[0], game->map[1], 2);
 }
 void Player_Object(Game *game, Player *p)
 {
@@ -158,9 +159,9 @@ void playerCollision(Game *game)
 		shiftScreen(game, 'r');
 	}
 	//player-enemy collision
-	for ( int i = 0; i < 1/*game->num_enemies*/; i++) {
+	for ( int i = 0; i < 2/*game->num_enemies*/; i++) {
 		Player *e;
-		e = &game->enemies[i];	
+		e = &game->enemies[game->map[0]][game->map[1]][i];	
 		float enemy_b = 
 			e->s.center.y - e->s.height;
 		float enemy_t = 
@@ -253,7 +254,8 @@ void particleCollision(Game *game)
 			
 		//check for bullet collisions with enemies
 		for (int j = 0; j < 5/*game->num_enemies*/; j++) {
-			Player *e = &game->enemies[j];
+		Player *e = &game->enemies[game->map[0]][game->map[1]][i];	
+			//Player *e = &game->enemies[j];
 			float botE = e->s.center.y - e->s.height;
 			float topE = e->s.center.y  + e->s.height;
 			float leftE = e->s.center.x - e->s.width;

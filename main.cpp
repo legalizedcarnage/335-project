@@ -40,7 +40,7 @@ void movement(Game *game);
 void charMovement(Game *game);
 void render(Game *game);
 //void enemiesMovement(Game *game);
-void initEnemies(Game *game);
+//void initEnemies(Game *game);
 void physics(Game *game);
 //global variable
 //int click = 0;
@@ -64,7 +64,7 @@ int main(void)
     game.map[0] = 0;
     game.map[1] = 0;
     //init enemies
-    initEnemies(&game);
+ //   initEnemies(&game);
     //init enemies
     weapon(&game);
     //start animation
@@ -411,7 +411,7 @@ void render(Game *game)
 	*/
 	//renders enemies
 	renderWeapon(game);
-	//renderEnemies(game);
+	renderEnemies(game, game->map[0], game->map[1], 2);
 	hudDisplay(game);
     }
 }
