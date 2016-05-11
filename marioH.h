@@ -17,5 +17,5 @@ struct MainMenu {
 void displayMenu(Game * game);
 int mainMenuCursor(XEvent *e,Game * game);
 void hudDisplay(Game *game);
-
+void pauseMenu(Game * game);
 #endif
