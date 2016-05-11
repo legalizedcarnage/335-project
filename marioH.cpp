@@ -67,7 +67,6 @@ int mainMenuCursor(XEvent *e,Game * game)
 	if (game->state ==0) {
 		if (e->type == KeyPress) {
 			int key = XLookupKeysym(&e->xkey, 0);
-			cout << key << endl;
 			if (key == XK_Escape) {
 				return 1;	
 			}
@@ -104,7 +103,6 @@ void pauseMenuCursor(XEvent *e,Game * game)
         if (game->state == 2) {
                 if (e->type == KeyPress) {
                         int key = XLookupKeysym(&e->xkey, 0);
-                        cout << key << endl;
                         if (key == XK_Escape) {
 			    game->state = 0;
                         }
