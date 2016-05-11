@@ -76,6 +76,8 @@ int main(void)
 		done = check_keys(&e, &game);
 		if (mainMenuCursor(&e, &game) ==1) //main menu
 			return 1;
+		if (game.state == 2)
+                        pauseMenuCursor(&e,&game);//pause menu
 	}
 	if (game.state == 1) 
 		physics(&game);
