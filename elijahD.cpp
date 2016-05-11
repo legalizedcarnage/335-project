@@ -4,6 +4,7 @@
 //screen transitions and collision detection of player
 //and bullets with each other, the walls, and objects
 #include <iostream>
+#include <stdlib.h>
 #include "main.h"
 #include "miguelT.h"
 using namespace std;
@@ -157,7 +158,7 @@ void playerCollision(Game *game)
 		shiftScreen(game, 'r');
 	}
 	//player-enemy collision
-	for ( int i = 0; i < 5/*game->num_enemies*/; i++) {
+	for ( int i = 0; i < 1/*game->num_enemies*/; i++) {
 		Player *e;
 		e = &game->enemies[i];	
 		float enemy_b = 
@@ -173,19 +174,58 @@ void playerCollision(Game *game)
 		left <= enemy_r &&
 		right >= enemy_l) {
 		//knocked back when hit enemy
-			/*for (int j = 0; j < num_objects; j++) {
-				if (top - (game->object[j].center.x - game->object[j].height) < (p->s.center.y - e->s.center.y)
-			*/
-			p->s.center.x += (p->s.center.x - e->s.center.x);
-			e->s.center.x -= (p->s.center.x - e->s.center.x);
+		//this looks disgusting
+			int min_distY = 100;
+			int min_distX = 1;
+			for (int j = 0; j < game->num_objects; j++) {
+				cout << "stuff" << endl;
+				if (abs(top - (game->object[j].center.y - 
+				game->object[j].height))  >= 
+				abs(p->s.center.y - e->s.center.y)) {
+					cout << "enemy closer than wall" << endl;
+					if (abs(p->s.center.y-e->s.center.y) < abs(min_distY)) {
+						min_distY = 
+						( p->s.center.y - e->s.center.y);
+					}
+				} else {
+					min_distY =
+					top - (game->object[j].center.y - 
+					game->object[j].height);
+					cout << "wall" << endl;
+				}
+				/*if ((game->object[j].center.x -
+				game->object[j].width) - right >=
+				(p->s.center.x = e->s.center.x)) {
+					if (p->s.center.x-e->s.center.x < min_distX) {
+						min_distX = 
+						( p->s.center.x - e->s.center.x);
+					}
+				} else {
+					min_distX = 
+					(game->object[j].center.x - 
+					game->object[j].height)-right;
+				}
+				*/
+			}
+			p->s.center.x += min_distX;
+			//(p->s.center.x - e->s.center.x);
+			e->s.center.x -= min_distX;
+			//(p->s.center.x - e->s.center.x);
 			e->velocity.x *= -1;
-			p->s.center.y += (p->s.center.y - e->s.center.y);
-			e->s.center.y -= (p->s.center.y - e->s.center.y);
+			p->s.center.y += min_distY;
+			//(p->s.center.y - e->s.center.y);
+			e->s.center.y -= min_distY;
+			//(p->s.center.y - e->s.center.y);
 			e->velocity.y *= -1;	
 		}
 	}
 			
 	
+}
+void KnockBack(Game *game)
+{	
+	for (int j = 0; j<game->num_objects;j++) {
+	}
 }
 void particleCollision(Game *game) 
 {
