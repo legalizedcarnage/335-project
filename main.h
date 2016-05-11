@@ -15,7 +15,7 @@ struct Shape {
 	float width, height;
 	float radius;
 	Vec center;
-	Vec velocity;
+	//Vec velocity;
 };
 
 struct Particle {
