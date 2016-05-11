@@ -15,16 +15,11 @@ struct Shape {
 	float width, height;
 	float radius;
 	Vec center;
+	Vec velocity;
 };
 
 struct Particle {
 	Shape s;
-	Shape p;
-	Shape k;
-	Shape c;
-	Shape r;
-	Shape s2;
-	Shape sh;
 	Vec velocity;
 };
 
@@ -33,21 +28,16 @@ struct Player {
     	int health;
 	Vec velocity;
 };
-struct Knife {
-	Shape k;
-	Vec velocity;
-};
 struct Game {
 	int state;
     	char direction;
+	char gun;
         int map[2];
 	Player enemies[Max_Enemies] ;
 	Player player;
 	Shape button1; //play
 	Shape button2; //quit
 	Shape object[Max_Objects];
-	//weapons
-	Knife knife;
 	Particle particle[Max_Particles];
 	Shape box;
 	int n;

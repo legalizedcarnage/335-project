@@ -42,6 +42,8 @@ void render(Game *game);
 //void enemiesMovement(Game *game);
 void initEnemies(Game *game);
 void physics(Game *game);
+//global variable
+//int click = 0;
 int main(void)
 {
     int done=0;
@@ -64,7 +66,7 @@ int main(void)
     //init enemies
     initEnemies(&game);
     //init enemies
-    knife(&game);
+    weapon(&game);
     //start animation
     while(!done) {
 	while(XPending(dpy)) {
@@ -152,8 +154,28 @@ void makeParticle(Game *game, int x, int y)
     std::cout << "makeParticle() " << x << " " << y << std::endl;
     //position of particle
     Particle *p = &game->particle[game->n];
-    p->s.center.x = game->knife.k.center.x;
-    p->s.center.y = game->knife.k.center.y;
+    if(game->gun == '1') {
+    p->s.center.x = game->object[91].center.x;
+    p->s.center.y = game->object[91].center.y;
+    }if(game->gun == '2') {
+    p->s.center.x = game->object[92].center.x;
+    p->s.center.y = game->object[92].center.y;
+    }if(game->gun == '3') {
+    p->s.center.x = game->object[93].center.x;
+    p->s.center.y = game->object[93].center.y;
+    }if(game->gun == '4') {
+    p->s.center.x = game->object[94].center.x;
+    p->s.center.y = game->object[94].center.y;
+    }if(game->gun == '5') {
+    p->s.center.x = game->object[95].center.x;
+    p->s.center.y = game->object[95].center.y;
+    }if(game->gun == '6') {
+    p->s.center.x = game->object[96].center.x;
+    p->s.center.y = game->object[96].center.y;
+    }if(game->gun == '7') {
+    p->s.center.x = game->object[97].center.x;
+    p->s.center.y = game->object[97].center.y;
+    }
     //double z = sqrt(x*x + y*y);
     p->velocity.y = y;
     p->velocity.x = x;
@@ -219,6 +241,27 @@ int check_keys(XEvent *e, Game *game)
 		case XK_Down:
 		game->player.velocity.y -= 5;
 		game->direction = 'd';
+		break;
+		case XK_1:
+		game->gun = '1';
+		break;
+		case XK_2:
+		game->gun = '2';
+		break;
+		case XK_3:
+		game->gun = '3';
+		break;
+		case XK_4:
+		game->gun = '4';
+		break;
+		case XK_5:
+		game->gun = '5';
+		break;
+		case XK_6:
+		game->gun = '6';
+		break;
+		case XK_7:
+		game->gun = '7';
 		break;
 		case XK_space:
 		switch(game->direction) {
@@ -291,10 +334,28 @@ void charMovement( Game *game)
     p->s.center.x += p->velocity.x;
     p->s.center.y += p->velocity.y;
 
-    Knife *k;
-    k = &game->knife;
-    k->k.center.x = p->s.center.x;
-    k->k.center.y = p->s.center.y;
+    if(game->gun == '1'){    
+    game->object[91].center.x += p->velocity.x;
+    game->object[91].center.y += p->velocity.y;
+    }if(game->gun == '2'){
+    game->object[92].center.x += p->velocity.x;
+    game->object[92].center.y += p->velocity.y;
+    }if(game->gun == '3'){
+    game->object[93].center.x += p->velocity.x;
+    game->object[93].center.y += p->velocity.y;
+    } if(game->gun == '4'){
+    game->object[94].center.x += p->velocity.x;
+    game->object[94].center.y += p->velocity.y;
+    }if(game->gun == '5'){
+    game->object[95].center.x += p->velocity.x;
+    game->object[95].center.y += p->velocity.y;
+    }if(game->gun == '6'){
+    game->object[96].center.x += p->velocity.x;
+    game->object[96].center.y += p->velocity.y;
+    }if(game->gun == '7'){
+    game->object[97].center.x += p->velocity.x;
+    game->object[97].center.y += p->velocity.y;
+    }    
 
     //k->k.center.x += p->velocity.x;
     //k->k.center.y += p->velocity.y;
@@ -374,8 +435,8 @@ void render(Game *game)
 	glPopMatrix();
 	*/
 	//renders enemies
-	renderKnife(game);
-	renderEnemies(game);
+	renderWeapon(game);
+	//renderEnemies(game);
 	hudDisplay(game);
     }
 }
