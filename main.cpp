@@ -16,6 +16,7 @@
 #include "juliaA.h"
 #include "miguelT.h"
 #include "miguelB.h"
+#include "ppm.h"
 extern "C" {
 #include "fonts.h"
 }
@@ -25,6 +26,15 @@ extern "C" {
 
 #define MAX_PARTICLES 100
 #define GRAVITY 0.1
+
+//backgroung image
+Ppmimage *bgImage = NULL;
+Ppmimage *bgTransImage = NULL;
+GLuint bgTexture;
+GLuint bgTransTexture;
+int bg = 1;
+int w = WINDOW_WIDTH;
+int h = WINDOW_HEIGHT;
 
 //X Windows variables
 Display *dpy;
@@ -132,6 +142,37 @@ void initXWindows(void)
     glXMakeCurrent(dpy, win, glc);
 }
 
+unsigned char *buildAlphaData(Ppmimage *img)
+{
+	//add 4th component to RGB stream...
+	int i;
+	int a,b,c;
+	unsigned char *newdata, *ptr;
+	unsigned char *data = (unsigned char *)img->data;
+	newdata = (unsigned char *)malloc(img->width * img->height * 4);
+	ptr = newdata;
+	for (i=0; i<img->width * img->height * 3; i+=3) {
+		a = *(data+0);
+		b = *(data+1);
+		c = *(data+2);
+		*(ptr+0) = a;
+		*(ptr+1) = b;
+		*(ptr+2) = c;
+		//get largest color component...
+		//*(ptr+3) = (unsigned char)((
+		//		(int)*(ptr+0) +
+		//		(int)*(ptr+1) +
+		//		(int)*(ptr+2)) / 3);
+		//d = a;
+		//if (b >= a && b >= c) d = b;
+		//if (c >= a && c >= b) d = c;
+		//*(ptr+3) = d;
+		*(ptr+3) = (a|b|c);
+		ptr += 4;
+		data += 3;
+	}
+	return newdata;
+}
 void init_opengl(void)
 {
     //OpenGL initialization
@@ -146,6 +187,34 @@ void init_opengl(void)
     glEnable(GL_TEXTURE_2D);
     initialize_fonts();
 
+    //background image
+    bgImage = ppm6GetImage("bg.ppm");
+
+    glGenTextures(1, &bgTexture);
+
+	//background
+	glBindTexture(GL_TEXTURE_2D, bgTexture);
+	
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3,
+			bgImage->width, bgImage->height,
+			0, GL_RGB, GL_UNSIGNED_BYTE, bgImage->data);
+	//background transparent part
+	//
+/*	glBindTexture(GL_TEXTURE_2D, bgTransTexture);
+	//
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+	//
+	//must build a new set of data...
+	int w = bgTransImage->width;
+	int h = bgTransImage->height;
+	unsigned char *ftData = buildAlphaData(bgTransImage);	
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0,
+			GL_RGBA, GL_UNSIGNED_BYTE, ftData);
+	free(ftData);
+*/
 }
 
 void makeParticle(Game *game, int x, int y) 
@@ -226,6 +295,9 @@ int check_keys(XEvent *e, Game *game)
 	}
 
 	switch(key) {
+	    	case XK_b:
+		    bg ^=1;
+		    break;
 		case XK_Left:
 		//may need to adjust
 		game->player.velocity.x -= 5;
@@ -353,12 +425,23 @@ void charMovement( Game *game)
 void render(Game *game)
 {
     //game->state = 0;
-    if (game->state == 0)
+    if (game->state == 0) {
 	displayMenu(game);
+    }
     else if (game->state ==1) {
 	glClearColor(0.0,0.0,0.0,1.0);
 	float w, h;
 	glClear(GL_COLOR_BUFFER_BIT);
+        if (bg) {
+            glBindTexture(GL_TEXTURE_2D, bgTexture);
+            glBegin(GL_QUADS);
+                glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
+                glTexCoord2f(0.0f, 0.0f); glVertex2i(0, WINDOW_HEIGHT);
+                glTexCoord2f(1.0f, 0.0f); glVertex2i(WINDOW_WIDTH, WINDOW_HEIGHT);
+                glTexCoord2f(1.0f, 1.0f); glVertex2i(WINDOW_WIDTH, 0);
+                glEnd();
+        }
+
 	//Layout of the game
 	printtile(game);
 	//draw current tile
