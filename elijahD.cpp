@@ -126,7 +126,7 @@ void playerCollision(Game *game)
 	//player-enemy collision
 	for ( int i = 0; i < 2/*game->num_enemies*/; i++) {
 		Player *e;
-		e = &game->enemies[game->map[0]][game->map[1]][i];	
+		e = &game->enemies[game->map[0]+1][game->map[1]+1][i];	
 		float enemy_b = 
 			e->s.center.y - e->s.height;
 		float enemy_t = 
@@ -171,8 +171,8 @@ void playerCollision(Game *game)
 					}
 				} else {
 					min_distX =
-					right - (game->object[j].center.x - 
-					game->object[j].width);
+					-(right - (game->object[j].center.x - 
+					game->object[j].width));
 					cout << "wallX" << endl;
 				}
 			}
