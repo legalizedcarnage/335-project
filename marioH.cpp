@@ -10,6 +10,7 @@
 #include "main.h"
 #include "marioH.h"
 #include "juliaA.h"
+#include "miguelT.h"
 #include <GL/glx.h>
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
@@ -87,6 +88,7 @@ int mainMenuCursor(XEvent *e,Game * game)
 				switch(cursorPos) {
 					case 0:
 					game->state = 1; //play button case
+					initPlayer(game);//initialize players
 					break;
 					case 1:
 					return 1; // quit button case
@@ -97,6 +99,25 @@ int mainMenuCursor(XEvent *e,Game * game)
 	}
 	return 0;
 	
+}
+void initPlayer (Game * game)
+{
+	//Game game;
+	//game->state = 0;
+	game->n=0;
+	game->num_objects=0;
+	game->player.s.width = 20;
+	game->player.s.height = 30;
+	game->player.s.center.x = 120 + 5*65;
+	game->player.s.center.y = 500 - 5*60;
+	game->player.velocity.x = 0;
+	game->player.velocity.y = 0;
+	game->map[0] = 0;
+	game->map[1] = 0;
+	game->gun = 0;
+	if(!game->enemies[game->map[0]][game->map[1]][0].enemiesInit)
+		initEnemies(game, game->map[0], game->map[1], 2);
+
 }
 
 void pauseMenuCursor(XEvent *e,Game * game)
@@ -134,6 +155,7 @@ void pauseMenuCursor(XEvent *e,Game * game)
                                         case 3:
                                         game->state = 0; // quit button case
 					cursorPos = 0;
+
                                         break;
                                 }
                         }
