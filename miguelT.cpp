@@ -1,15 +1,10 @@
 //Author: Miguel Trigueros
 //Purpose: I will be creating the enemies and 
 //         allowing them to move and hunt the player.
-//Progress: Currently have basic movement but I need
-//          to make an enemy stay within its own tile.
-//	    Was able to add more enemies with their own movement, 
-//          still need to make them be associated with a tile.
-//Update May 2: Added basic detection of player if they are within a 
-//              threshold still working on keeping them on their own tile.
-//Update May 8: I am converting the initEnemies fuction to be dynamic.
-//          I will be converting the enemies class to be dual array.
-//          This will fix the problem of enemies not being tile dependent.
+//Progress: Enemies are now tile dependent, now to work on enemy
+//          Collision with themselves and objects. Weapons afterwards.
+//Update May 19: Fixed the bug where the enemy would not initialize
+//               at map position 0,-1. 
 
 #include <iostream>
 #include "main.h"
