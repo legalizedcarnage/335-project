@@ -42,8 +42,6 @@ void render(Game *game);
 //void enemiesMovement(Game *game);
 //void initEnemies(Game *game);
 void physics(Game *game);
-//global variable
-//int click = 0;
 int main(void)
 {
     int done=0;
@@ -64,8 +62,9 @@ int main(void)
     game.map[0] = 0;
     game.map[1] = 0;
     //init enemies
- //   initEnemies(&game);
+    //initEnemies(&game);
     //init enemies
+    //knife(&game);
     weapon(&game);
     //start animation
     while(!done) {
@@ -76,6 +75,8 @@ int main(void)
 		done = check_keys(&e, &game);
 		if (mainMenuCursor(&e, &game) ==1) //main menu
 			return 1;
+		if (game.state == 2)
+			pauseMenuCursor(&e,&game);//pause menu
 	}
 	if (game.state == 1) 
 		physics(&game);
@@ -176,7 +177,8 @@ void makeParticle(Game *game, int x, int y)
     p->s.center.x = game->object[97].center.x;
     p->s.center.y = game->object[97].center.y;
     }
-    //double z = sqrt(x*x + y*y);
+    //double z = sqrt(x*x + y*y);  
+    
     p->velocity.y = y;
     p->velocity.x = x;
     game->n++;
@@ -279,6 +281,18 @@ int check_keys(XEvent *e, Game *game)
 			break;
 		}
 		break;
+		
+		case XK_p:
+		std::cout << "p button pressed" << std::endl;
+		if (game->state==1) {
+		    	game->state=2;
+			break;
+		}
+		else if (game->state==2) {
+		    	game->state=1;
+			break;
+		}
+		break;
 	}
     }
     if ( e->type == KeyRelease) {
@@ -333,15 +347,15 @@ void charMovement( Game *game)
      
     p->s.center.x += p->velocity.x;
     p->s.center.y += p->velocity.y;
-
     weaponMov(game);
 }
+
 void render(Game *game)
 {
     //game->state = 0;
     if (game->state == 0)
 	displayMenu(game);
-    else {
+    else if (game->state ==1) {
 	glClearColor(0.0,0.0,0.0,1.0);
 	float w, h;
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -410,10 +424,13 @@ void render(Game *game)
 	glPopMatrix();
 	*/
 	//renders enemies
+	//renderKnife(game);
 	renderWeapon(game);
 	renderEnemies(game, game->map[0], game->map[1], 2);
 	hudDisplay(game);
     }
+    else if (game->state==2)
+	pauseMenu(game);
 }
 
 
