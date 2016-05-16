@@ -33,8 +33,6 @@ Ppmimage *bgTransImage = NULL;
 GLuint bgTexture;
 GLuint bgTransTexture;
 int bg = 1;
-int w = WINDOW_WIDTH;
-int h = WINDOW_HEIGHT;
 
 //X Windows variables
 Display *dpy;
@@ -191,15 +189,14 @@ void init_opengl(void)
     bgImage = ppm6GetImage("bg.ppm");
 
     glGenTextures(1, &bgTexture);
-
-	//background
-	glBindTexture(GL_TEXTURE_2D, bgTexture);
-	
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3,
-			bgImage->width, bgImage->height,
-			0, GL_RGB, GL_UNSIGNED_BYTE, bgImage->data);
+    
+    //background
+    glBindTexture(GL_TEXTURE_2D, bgTexture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+		bgImage->width, bgImage->height,
+		0, GL_RGB, GL_UNSIGNED_BYTE, bgImage->data);
 	//background transparent part
 	//
 /*	glBindTexture(GL_TEXTURE_2D, bgTransTexture);
@@ -432,16 +429,15 @@ void render(Game *game)
 	glClearColor(0.0,0.0,0.0,1.0);
 	float w, h;
 	glClear(GL_COLOR_BUFFER_BIT);
-        if (bg) {
-            glBindTexture(GL_TEXTURE_2D, bgTexture);
-            glBegin(GL_QUADS);
-                glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
-                glTexCoord2f(0.0f, 0.0f); glVertex2i(0, WINDOW_HEIGHT);
-                glTexCoord2f(1.0f, 0.0f); glVertex2i(WINDOW_WIDTH, WINDOW_HEIGHT);
-                glTexCoord2f(1.0f, 1.0f); glVertex2i(WINDOW_WIDTH, 0);
-                glEnd();
+	if (bg) {
+		glBindTexture(GL_TEXTURE_2D, bgTexture);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
+			glTexCoord2f(0.0f, 0.0f); glVertex2i(0, WINDOW_HEIGHT);
+			glTexCoord2f(1.0f, 0.0f); glVertex2i(WINDOW_WIDTH, WINDOW_HEIGHT);
+			glTexCoord2f(1.0f, 1.0f); glVertex2i(WINDOW_WIDTH, 0);
+		glEnd();
         }
-
 	//Layout of the game
 	printtile(game);
 	//draw current tile
