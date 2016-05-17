@@ -1,11 +1,13 @@
 //Author:Mario Hernandez
 //Purpose: to render the main menu and functionality of the menu buttons
 //Written:	4/27/16
-//Modified:	5/11/16
+//Modified:	5/17/16
 //Progress, Currently have the basic main menu working by jumping into the game
 // and a quit button. Also working on a pause menu with basic button functions
 // and leaving room to include inventory functionality and option menu
-// functionality
+// functionality. In the process of working with textures but there seems to be
+// a bug when switching buttons on the main menu that the background texture
+// disappears.
 #include <iostream>
 #include "main.h"
 #include "marioH.h"
@@ -19,11 +21,38 @@ extern "C" {
 }
 
 using namespace std;
+
 int cursorPos = 0;
+Ppmimage *mainbgImage = NULL;
+GLuint mainbgTexture;
+GLuint mainbgTransTexture;
+int mainBg = 1;
+
 void displayMenu(Game * game)
 {
-	glClearColor(0.5,0.5,0.5,1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
+	mainbgImage = ppm6GetImage("img7.ppm");
+	glGenTextures(1, &mainbgTexture);
+    
+	//background
+	glBindTexture(GL_TEXTURE_2D, mainbgTexture);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3,
+		mainbgImage->width, mainbgImage->height,
+		0, GL_RGB, GL_UNSIGNED_BYTE, mainbgImage->data);
+
+	glBindTexture(GL_TEXTURE_2D, mainbgTexture);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
+			glTexCoord2f(0.0f, 0.0f); glVertex2i(0, WINDOW_HEIGHT);
+			glTexCoord2f(1.0f, 0.0f); glVertex2i(WINDOW_WIDTH, 
+				WINDOW_HEIGHT);
+			glTexCoord2f(1.0f, 1.0f); glVertex2i(WINDOW_WIDTH, 0);
+		glEnd();
+	//
+
+	//glClearColor(0.5,0.5,0.5,1.0);
+	//glClear(GL_COLOR_BUFFER_BIT);
 	glColor3ub(0,60,200);
 	declareobject(game,1,150,50,250+5*65,800-5*60);//play button
 	declareobject(game,2,150,50,250+5*65,650-5*60);//quit button
@@ -49,6 +78,7 @@ void displayMenu(Game * game)
 	}
 	else
 	ggprint16(&qButton, 76, 0x00000000, "Quit Game");
+	
 }
 
 void hudDisplay(Game * game) 
@@ -102,8 +132,6 @@ int mainMenuCursor(XEvent *e,Game * game)
 }
 void initPlayer (Game * game)
 {
-	//Game game;
-	//game->state = 0;
 	game->n=0;
 	game->num_objects=0;
 	game->player.s.width = 20;
@@ -142,12 +170,13 @@ void pauseMenuCursor(XEvent *e,Game * game)
                                 }
                         }
                         if (key == XK_space || key == 65293) {
-                                switch(cursorPos) {
+				switch(cursorPos) {
                                         case 0:
                                         game->state = 1; //play button case
                                         break;
 					case 1:
 					//Check Inventory button case
+					invMenu(game);
 					break;
 					case 2:
 					//Change Settings button case
@@ -163,7 +192,10 @@ void pauseMenuCursor(XEvent *e,Game * game)
         }
 }
 
+void invMenu(Game * game)
+{
 
+}
 void pauseMenu(Game * game) 
 {
 	glClearColor(0.5,0.5,0.5,1.0);

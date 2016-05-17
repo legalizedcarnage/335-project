@@ -3,6 +3,7 @@
 #ifndef MARIOH_H
 #define MARIOH_H
 #include "main.h"
+#include "ppm.h"
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 
@@ -19,5 +20,6 @@ int mainMenuCursor(XEvent *e,Game * game);
 void pauseMenuCursor(XEvent *e,Game * game);
 void hudDisplay(Game *game);
 void pauseMenu(Game * game);
+void invMenu(Game * game);
 void initPlayer(Game * game);
 #endif
