@@ -138,9 +138,9 @@ void playerFound(Game *game, int x, int y, int i)
     //Checks distance between current enemy and player
     //still need to improve how the enemy acts when its within threshold
     if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
-                (pow(e->s.center.y - p->s.center.y, 2))) <= 150) {
+        (pow(e->s.center.y - p->s.center.y, 2))) <= 150) {
         if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
-                    (pow(e->s.center.y - p->s.center.y, 2))) >= 50) {
+            (pow(e->s.center.y - p->s.center.y, 2))) >= 50) {
             //cout << "Player Found!" << endl;
             if (p->s.center.x < e->s.center.x && e->velocity.x > 0) {
                 e->velocity.x *= -1.0;
@@ -154,8 +154,13 @@ void playerFound(Game *game, int x, int y, int i)
             if (p->s.center.y > e->s.center.y && e->velocity.y < 0) {
                 e->velocity.y *= -1.0;
             }
+        }
             //e->velocity.x = p->velocity.x;
             //e->velocity.y = p->velocity.y;
+        if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
+            (pow(e->s.center.y - p->s.center.y, 2))) < 50) {
+                e->velocity.x *= -1.0;
+                e->velocity.y *= -1.0;
         }
     }
     e->s.center.x += e->velocity.x;
