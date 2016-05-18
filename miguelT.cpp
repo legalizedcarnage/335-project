@@ -29,20 +29,20 @@ void initEnemies(Game *game, int x, int y, int count)
     for(int i = 0; i < count; i++) {
         game->enemies[x+1][y+1][i].s.width = 20;
         game->enemies[x+1][y+1][i].s.height = 30;
-	int temp = rand() % 100;
-	if (temp <= 50) {
+        int temp = rand() % 100;
+        if (temp <= 50) {
             game->enemies[x+1][y+1][i].velocity.y = 0;
             game->enemies[x+1][y+1][i].velocity.x = VEL;
-	}
-	if (temp > 50) {
+        }
+        if (temp > 50) {
             game->enemies[x+1][y+1][i].velocity.y = VEL;
             game->enemies[x+1][y+1][i].velocity.x = 0;
-	}
+        }
         game->enemies[x+1][y+1][i].s.center.x = 120 + 5*65;
         game->enemies[x+1][y+1][i].s.center.y = 500 - 5*60;
         ycount[x+1][y+1][0] = 0;
         xcount[x+1][y+1][0] = 0;
-	game->enemies[x+1][y+1][i].enemiesInit = true;
+        game->enemies[x+1][y+1][i].enemiesInit = true;
     }
 }
 
@@ -139,49 +139,51 @@ void playerFound(Game *game, int x, int y, int i)
     //still need to improve how the enemy acts when its within threshold
     if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
         (pow(e->s.center.y - p->s.center.y, 2))) <= 150) {
-        //cout << "Player Found!" << endl;
-        if (p->s.center.x < e->s.center.x && e->velocity.x > 0) {
-            e->velocity.x *= -1.0;
+        if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
+            (pow(e->s.center.y - p->s.center.y, 2))) >= 50) {
+            //cout << "Player Found!" << endl;
+            if (p->s.center.x < e->s.center.x && e->velocity.x > 0) {
+                e->velocity.x *= -1.0;
+            }
+            if (p->s.center.x > e->s.center.x && e->velocity.x < 0) {
+                e->velocity.x *= -1.0;
+            }
+            if (p->s.center.y < e->s.center.y && e->velocity.y > 0) {
+                e->velocity.y *= -1.0;
+            }
+            if (p->s.center.y > e->s.center.y && e->velocity.y < 0) {
+                e->velocity.y *= -1.0;
+            }
+            //e->velocity.x = p->velocity.x;
+            //e->velocity.y = p->velocity.y;
         }
-        if (p->s.center.x > e->s.center.x && e->velocity.x < 0) {
-            e->velocity.x *= -1.0;
-        }
-        if (p->s.center.y < e->s.center.y && e->velocity.y > 0) {
-            e->velocity.y *= -1.0;
-        }
-        if (p->s.center.y > e->s.center.y && e->velocity.y < 0) {
-            e->velocity.y *= -1.0;
-        }
-        //e->velocity.x = p->velocity.x;
-        //e->velocity.y = p->velocity.y;
+        e->s.center.x += e->velocity.x;
+        e->s.center.y += e->velocity.y;
+        cout << "x: " << e->velocity.x << endl;
+        cout << "y: " << e->velocity.y << endl;
     }
-    e->s.center.x += e->velocity.x;
-    e->s.center.y += e->velocity.y;
-    cout << "x: " << e->velocity.x << endl;
-    cout << "y: " << e->velocity.y << endl;
-}
 
-void renderEnemies(Game *game, int x, int y, int count)
-{
-    for (int i = 0; i < count; i++) {
-        enemiesMovement(game, x, y, i);
-        playerFound(game, x, y,  i);
-        float h, w;
-        Shape *s;
-        glColor3ub(250,50,50);
-        s = &game->enemies[x+1][y+1][i].s;
-        glPushMatrix();
-        glTranslatef(s->center.x, s->center.y, s->center.z);
-        w = s->width;
-        h = s->height;
-        glBegin(GL_QUADS);
-        glVertex2i(-w,-h);
-        glVertex2i(-w, h);
-        glVertex2i( w, h);
-        glVertex2i( w,-h);
-        glEnd();
-        glPopMatrix();
+    void renderEnemies(Game *game, int x, int y, int count)
+    {
+        for (int i = 0; i < count; i++) {
+            enemiesMovement(game, x, y, i);
+            playerFound(game, x, y,  i);
+            float h, w;
+            Shape *s;
+            glColor3ub(250,50,50);
+            s = &game->enemies[x+1][y+1][i].s;
+            glPushMatrix();
+            glTranslatef(s->center.x, s->center.y, s->center.z);
+            w = s->width;
+            h = s->height;
+            glBegin(GL_QUADS);
+            glVertex2i(-w,-h);
+            glVertex2i(-w, h);
+            glVertex2i( w, h);
+            glVertex2i( w,-h);
+            glEnd();
+            glPopMatrix();
+        }
     }
-}
 
 
