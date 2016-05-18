@@ -221,16 +221,7 @@ void makeParticle(Game *game, int x, int y)
     std::cout << "makeParticle() " << x << " " << y << std::endl;
     //position of particle
     Particle *p = &game->particle[game->n];
-    if(game->gun == '1') {
-    p->s.center.x = game->object[91].center.x;
-    p->s.center.y = game->object[91].center.y;
-    }if(game->gun == '2') {
-    p->s.center.x = game->object[92].center.x;
-    p->s.center.y = game->object[92].center.y;
-    }if(game->gun == '3') {
-    p->s.center.x = game->object[93].center.x;
-    p->s.center.y = game->object[93].center.y;
-    }if(game->gun == '4') {
+    if(game->gun == '4') {
     p->s.center.x = game->object[94].center.x;
     p->s.center.y = game->object[94].center.y;
     }if(game->gun == '5') {
@@ -335,18 +326,27 @@ int check_keys(XEvent *e, Game *game)
 		game->gun = '7';
 		break;
 		case XK_space:
+		game->space = 's';
 		switch(game->direction) {
 			case 'l':
+			if(game->gun > 3){
 			makeParticle(game, -8, 0);
+			}
 			break;
 			case 'r':
+			if(game->gun > 3){
 			makeParticle(game, 8, 0);
+			}
 			break;
 			case 'u':
+			if(game->gun > 3){
 			makeParticle(game, 0, 8);
+			}
 			break;
 			case 'd':
+			if(game->gun > 3){
 			makeParticle(game, 0, -8);
+			}
 			break;
 		}
 		break;
@@ -505,7 +505,7 @@ void render(Game *game)
 	//renders enemies
 	//renderKnife(game);
 	renderWeapon(game);
-	renderEnemies(game, game->map[0], game->map[1], 2);
+	//renderEnemies(game, game->map[0], game->map[1], 2);
 	hudDisplay(game);
     }
     else if (game->state==2)

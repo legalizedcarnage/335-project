@@ -6,10 +6,10 @@
 // and movement for the weapon to traverse with the player
 // May:8 Shorten function with Julia function and adding them to key to call the function to render each weapon.
 
-// 91 = knife
-// 92 = crowbar
-// 93 = shield
-// 94 = pistol
+// 91 = knife<>
+// 92 = crowbar<>
+// 93 = shield<>
+// 94 = pistol`
 // 95 = shotgun
 // 96 = rifle
 // 97 = stun gun
@@ -35,6 +35,30 @@ void weapon(Game *game)
 	declareobject(game, 96, 20, 5, 465, 205);
 	declareobject(game, 97, 20, 5, 465, 205);
 }
+void mele(Game *game)
+{
+    static int count = 0;
+    if(game->space == 's'){
+	for(int i =91; i<94; i++){
+	    	if(game->direction == 'l'){
+		game->object[i].center.x = game->object[i].center.x - 1;
+	    	}if(game->direction == 'r'){
+		game->object[i].center.x = game->object[i].center.x + 2;
+		}if(game->direction == 'u'){
+		    game->object[i].center.y = game->object[i].center.y + 2;
+		}if(game->direction == 'd'){
+		    game->object[i].center.y = game->object[i].center.y - 1;
+		}
+	}
+	count ++;
+	if(count == 100){
+	    game->mele = false;
+	    game->space = 0;
+	    count = 0;
+    	}
+    }
+}
+
 void weaponMov(Game *game)
 {
         Player *p;
@@ -43,15 +67,39 @@ void weaponMov(Game *game)
         if(game->direction == 'l'){
         game->object[i].center.x = p->s.center.x - 20;
         game->object[i].center.y = p->s.center.y;
+		if(game->space == 's'){
+	    	game->mele = true;
+			if(game->mele == true){
+			mele(game);
+			}	
+		}
         }if(game->direction == 'r'){
         game->object[i].center.x = p->s.center.x + 20;
         game->object[i].center.y = p->s.center.y;
+		if(game->space == 's'){
+            	game->mele = true;
+			if(game->mele == true){
+                	mele(game);
+                }
+        }
         }if(game->direction == 'u'){
         game->object[i].center.x = p->s.center.x;
         game->object[i].center.y = p->s.center.y + 25;
+		if(game->space == 's'){
+            	game->mele = true;
+        		if(game->mele == true){
+                	mele(game);
+                	}
+		}
 	}if(game->direction == 'd'){
         game->object[i].center.x = p->s.center.x;
         game->object[i].center.y = p->s.center.y - 25;
+		if(game->space == 's'){
+		game->mele = true;
+			if(game->mele == true){
+			 mele(game);
+                		}
+        		}
         	}
 	}
 	if(game->direction == 'l' || game->direction == 'r'){
@@ -62,7 +110,7 @@ void weaponMov(Game *game)
         game->object[i].height = 5;
   		}
 	}
-
+	
 	if(game->direction == 'u' || game->direction == 'd'){
         game->object[93].width = 30;
         game->object[93].height = 5;
