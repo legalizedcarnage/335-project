@@ -3,8 +3,9 @@
 //         allowing them to move and hunt the player.
 //Progress: Enemies are now tile dependent, now to work on enemy
 //          Collision with themselves and objects. Weapons afterwards.
-//Update May 19: Fixed the bug where the enemy would not initialize
-//               at map position 0,-1. 
+//Update May 18: Fixed the bug where the enemy would not initialize
+//               at map position 0,-1. Have made the Enemies not stick
+//               to walls.
 
 #include <iostream>
 #include "main.h"
@@ -19,6 +20,7 @@ int xcount[100][100][1];
 int ycount[100][100][1];
 int directionx;
 int directiony;
+float VEL=2.0;
 
 void initEnemies(Game *game, int x, int y, int count) 
 {
@@ -27,8 +29,15 @@ void initEnemies(Game *game, int x, int y, int count)
     for(int i = 0; i < count; i++) {
         game->enemies[x+1][y+1][i].s.width = 20;
         game->enemies[x+1][y+1][i].s.height = 30;
-        game->enemies[x+1][y+1][i].velocity.x = 4;
-        game->enemies[x+1][y+1][i].velocity.y = 0;
+	int temp = rand() % 100;
+	if (temp <= 50) {
+            game->enemies[x+1][y+1][i].velocity.y = 0;
+            game->enemies[x+1][y+1][i].velocity.x = VEL;
+	}
+	if (temp > 50) {
+            game->enemies[x+1][y+1][i].velocity.y = VEL;
+            game->enemies[x+1][y+1][i].velocity.x = 0;
+	}
         game->enemies[x+1][y+1][i].s.center.x = 120 + 5*65;
         game->enemies[x+1][y+1][i].s.center.y = 500 - 5*60;
         ycount[x+1][y+1][0] = 0;
@@ -57,11 +66,11 @@ void enemiesMovement(Game *game, int x, int y, int i)
             int randx = rand() % 10;
             cout << "randx: " << randx << endl;
             p->velocity.x = 0;
-            p->velocity.y = 0;
+            p->velocity.y *= -1.0;
             if (randx <= 5)
-                p->velocity.x = 4;
+                p->velocity.x = VEL;
             if (randx > 5)
-                p->velocity.x = -4;
+                p->velocity.x = -(VEL);
             ycount[x+1][y+1][0] = 0;
         }
     }
@@ -73,11 +82,11 @@ void enemiesMovement(Game *game, int x, int y, int i)
             int randx = rand() % 10;
             cout << "randx: " << randx << endl;
             p->velocity.x = 0;
-            p->velocity.y = 0;
+            p->velocity.y *= 1.0;
             if (randx <= 5)
-                p->velocity.x = 4;
+                p->velocity.x = VEL;
             if (randx > 5)
-                p->velocity.x = -4;
+                p->velocity.x = -(VEL);
             ycount[x+1][y+1][0] = 0;
         }
     }
@@ -88,12 +97,12 @@ void enemiesMovement(Game *game, int x, int y, int i)
         if (xcount[x+1][y+1][0] >= 2) {
             int randy = rand() % 10;
             cout << "randy: " << randy << endl;
-            p->velocity.x = 0;
-            p->velocity.x = 0;
+            p->velocity.x *= 1.0;
+            p->velocity.y = 0;
             if (randy <= 5)
-                p->velocity.y = 4;
+                p->velocity.y = VEL;
             if (randy > 5)
-                p->velocity.y = -4;
+                p->velocity.y = -(VEL);
             xcount[x+1][y+1][0] = 0;
         }
     }
@@ -104,10 +113,12 @@ void enemiesMovement(Game *game, int x, int y, int i)
         if (xcount[x+1][y+1][0] >= 2) {
             int randy = rand() % 10;
             cout << "randy: " << randy << endl;
+            p->velocity.x *= 1.0;
+            p->velocity.y = 0;
             if (randy <= 5)
-                p->velocity.y = 4;
+                p->velocity.y = VEL;
             if (randy > 5)
-                p->velocity.y = -4;
+                p->velocity.y = -(VEL);
             xcount[x+1][y+1][0] = 0;
         }
     }
@@ -128,18 +139,18 @@ void playerFound(Game *game, int x, int y, int i)
     //still need to improve how the enemy acts when its within threshold
     if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
         (pow(e->s.center.y - p->s.center.y, 2))) <= 150) {
-        cout << "Player Found!" << endl;
+        //cout << "Player Found!" << endl;
         if (p->s.center.x < e->s.center.x && e->velocity.x > 0) {
-            e->velocity.x *= -1;
+            e->velocity.x *= -1.0;
         }
         if (p->s.center.x > e->s.center.x && e->velocity.x < 0) {
-            e->velocity.x *= -1;
+            e->velocity.x *= -1.0;
         }
         if (p->s.center.y < e->s.center.y && e->velocity.y > 0) {
-            e->velocity.y *= -1;
+            e->velocity.y *= -1.0;
         }
         if (p->s.center.y > e->s.center.y && e->velocity.y < 0) {
-            e->velocity.y *= -1;
+            e->velocity.y *= -1.0;
         }
         //e->velocity.x = p->velocity.x;
         //e->velocity.y = p->velocity.y;
