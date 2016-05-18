@@ -60,17 +60,28 @@ void printtile(Game *game)
 	declareobject(game, 6, 12, 350, 1192, 600);
 	
 	//jail cell gate
-/*	declareobject(game, 7, 12, 10, 1192, 200);
-	declareobject(game, 8, 12, 10, 1192, 150);
-	declareobject(game, 9, 12, 10, 1192, 100);
-	declareobject(game, 10, 12, 10, 1192, 50);
-
+/*	int gate = 1;
+	if (gate == 1) {
+		declareobject(game, 7, 12, 10, 1192, 200);
+		declareobject(game, 8, 12, 10, 1192, 150);
+		declareobject(game, 9, 12, 10, 1192, 100);
+		declareobject(game, 10, 12, 10, 1192, 50);
+	}
+	else 
+	    gate = 2;
 	//card
-	declareobject(game, 11, 10, 10, 1000, 800);
-	glColor3ub(255,0,0);
-	drawobject(game, 11);
+	int card = 1;
+	if (card == 1) {
+		declareobject(game, 11, 10, 10, 1000, 800);
+		glColor3ub(255,0,0);
+		drawobject(game, 11);
+	}
+	if () {
+	   card = 0;	
+	   gate = 0;
+	}
 */
-	game->num_objects = 7; //11;
+	game->num_objects = 11; //7 or 11;
 
 	//bed 1
 	glColor3ub(69,69,69);
