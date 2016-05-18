@@ -1,16 +1,18 @@
 //Name: 	Julia Acosta
 //Written:	04/27/16
-//Modified:	05/16/16
+//Modified:	05/18/16
 //Project 335: 	Prison Escape
 //Design/Layout:Creating the walls for each tile of the game
 //		and the layout of the prison cell/hallways etc.
-//		Adding  objects in the prison cells. 
+//		Adding  objects in the prison cells. Adding different
+//		background images. 
 
 #include <iostream>
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <GL/glx.h>
 #include "main.h"
+#include "ppm.h"
 using namespace std;
 
 void drawobject(Game *game, int i)
@@ -37,6 +39,9 @@ void declareobject(Game *game, int i, int a, int b, int c, int d)
     game->object[i].center.x = c;
     game->object[i].center.y = d;
 
+}
+void function(Game *game) 
+{
 }
 void printtile(Game *game) 
 {
