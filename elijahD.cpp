@@ -45,32 +45,36 @@ void Player_Object(Game *game, Player *p)
 		&& left < s->center.x + s->width
 		&& right > s->center.x - s->width
 		&& p->velocity.y > 0 ) {
+			if ( top > s->center.y - s->height) 
+				p->s.center.y -= top -  (s->center.y -s->height);
 			p->velocity.y = 0;
-			p->s.center.y -= top -  (s->center.y -s->height);
 		}
 		if (bot >= s->center.y - s->height
 		&& bot <= s->center.y + s->height
 		&& left < s->center.x + s->width
 		&& right > s->center.x - s->width
 		&& p->velocity.y < 0 ) {
+			if ( bot < s->center.y + s->height) 
+				p->s.center.y -= bot -  (s->center.y + s->height);
 			p->velocity.y = 0;
-			p->s.center.y -= bot -  (s->center.y + s->height);
 		}
 		if (left >= s->center.x - s->width
 		&& left <= s->center.x + s->width
 		&& bot < s->center.y + s->height
 		&& top > s->center.y - s->height
 		&& p->velocity.x < 0 ) {
+			if ( left < s->center.x + s->width) 
+				p->s.center.x -= left -  (s->center.x + s->width);
 			p->velocity.x = 0;
-			p->s.center.x -= left -  (s->center.x + s->width);
 		} 
 		if (right >= s->center.x - s->width
 		&& right <= s->center.x + s->width
 		&& bot < s->center.y + s->height
 		&& top > s->center.y - s->height
 		&& p->velocity.x > 0 ) {
+			if ( right > s->center.x - s->width) 
+				p->s.center.x -= right -  (s->center.x -s->width);
 			p->velocity.x = 0;
-			p->s.center.x -= right -  (s->center.x - s->width);
 		} 
 	}
 }
@@ -90,7 +94,7 @@ void playerCollision(Game *game)
 	//floor
 	if (bot <= 0 && p->velocity.y < 0) {
 		p->s.center.y = WINDOW_HEIGHT - p->s.height;
-		//change when multiple weapons implemented
+		//change when mdltiple weapons implemented
 		//game->knife.k.center.x = p->s.center.x + 20;
 		//game->knife.k.center.y = p->s.center.y +5;
 		//
@@ -148,28 +152,48 @@ void playerCollision(Game *game)
 				if (abs(top - (game->object[j].center.y - 
 				game->object[j].height))  >= 
 				abs(.5*(p->s.center.y - e->s.center.y))) {
-					cout << "enemy closer than wallY" << endl;
 					if (abs(p->s.center.y-e->s.center.y) < abs(min_distY)) {
 						min_distY = 
 						.5*( p->s.center.y - e->s.center.y);
+						cout << "enemy closer than wallY" << endl;
 					}
+					else  if (abs(top - (game->object[j].center.y-
+					game->object[j].height)) >= 
+					abs(bot + 
+					(game->object[j].center.y-game->object[j].height))) {
+					
+					cout << "enemy closer than wally2" << endl;
+					min_distX = 
+					(bot - (game->object[j].center.y + 
+						 game->object[j].height)); 
+					}
+
 				} else {
-					if (min_distY > game->object[j].center.y-game->object[j].height) {	
-						min_distY =
-						top - (game->object[j].center.y - 
-						game->object[j].height);
-					}
+					min_distY =
+					-(top - (game->object[j].center.y - 
+					game->object[j].height));
 					cout << "wallY" << endl;
 				}
 				if (abs(right - (game->object[j].center.x - 
 				game->object[j].width))  >= 
 				abs(p->s.center.x - e->s.center.x)) {
-					cout << "enemy closer than wallX" << endl;
 					if (abs(p->s.center.x-e->s.center.x) < abs(min_distX)) {
 						min_distX = 
 						(p->s.center.x - e->s.center.x);
+						cout << "enemy closer than wallX" << endl;
 					}
-				} else {
+				}
+				else  if (abs(right - (game->object[j].center.x-
+				game->object[j].width)) >= 
+				abs(left - 
+				(game->object[j].center.x+game->object[j].width))) {
+				
+				cout << "wallx2" << endl;
+				min_distX = 
+				(left + (game->object[j].center.x - 
+					 game->object[j].width)); 
+				}
+				else {	
 					min_distX =
 					-(right - (game->object[j].center.x - 
 					game->object[j].width));
