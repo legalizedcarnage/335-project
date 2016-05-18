@@ -157,6 +157,7 @@ void playerFound(Game *game, int x, int y, int i)
             //e->velocity.x = p->velocity.x;
             //e->velocity.y = p->velocity.y;
         }
+        }
         e->s.center.x += e->velocity.x;
         e->s.center.y += e->velocity.y;
         cout << "x: " << e->velocity.x << endl;
