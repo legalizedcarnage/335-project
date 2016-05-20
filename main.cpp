@@ -69,6 +69,8 @@ int main(void)
     game.player.velocity.y = 0;	
     game.map[0] = 0;
     game.map[1] = 0;
+    game.player.health = Start_HP;
+    game.current_enemies = 2;
     //init enemies
     //initEnemies(&game);
     //init enemies
@@ -359,6 +361,9 @@ int check_keys(XEvent *e, Game *game)
 			break;
 		}
 		break;
+		case 92:
+		Respawn(game);
+		break;		
 	}
     }
     if ( e->type == KeyRelease) {
