@@ -3,6 +3,8 @@
 //started 4/22/16
 //screen transitions and collision detection of player
 //and bullets with each other, the walls, and objects
+//started 5/19/16
+//interactable objects such as walls and gates that need to be matched with correct keys
 #include <iostream>
 #include <stdlib.h>
 #include "main.h"
@@ -88,8 +90,10 @@ void playerCollision(Game *game)
 	float left = p->s.center.x - p->s.width;
 	float right = p->s.center.x + p->s.width;
 
-	//detect object collisions 
+	//detect object collisions //added enemy collision
 	Player_Object(game, &game->player);
+	//for (int i = 0; i<game->num_enemies; i++)
+		//Player_Object(game, &game->enemies[i]);
 	//detect screen collisions
 	//floor
 	if (bot <= 0 && p->velocity.y < 0) {
@@ -295,4 +299,8 @@ void particleCollision(Game *game)
 		}
 	
 	}
+}
+// interactables
+void interact(Game game) {
+	
 }
