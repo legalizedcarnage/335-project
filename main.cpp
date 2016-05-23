@@ -362,6 +362,15 @@ int check_keys(XEvent *e, Game *game)
 			break;
 		}
 		break;
+		case XK_m:
+		if (game->state == 1) {
+		    game->state = 3;
+		    break;
+		} else if (game->state == 3) {
+		    game->state = 1;
+		    break;
+		}
+		break;
 		case 92:
 		Respawn(game);
 		break;		
@@ -515,6 +524,8 @@ void render(Game *game)
     }
     else if (game->state==2)
 	pauseMenu(game);
+    else if (game->state == 3)
+	map(game);
 }
 
 

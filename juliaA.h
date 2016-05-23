@@ -3,6 +3,6 @@
 void printtile(Game *game);
 void declareobject(Game *game, int i, int a, int b, int c, int d);
 void drawobject(Game *game, int i);
-void function(Game *game);
+void map(Game *game);
 #endif
 

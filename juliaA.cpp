@@ -4,8 +4,8 @@
 //Project 335: 	Prison Escape
 //Design/Layout:Creating the walls for each tile of the game
 //		and the layout of the prison cell/hallways etc.
-//		Adding  objects in the prison cells. Adding different
-//		background images. 
+//		Adding  objects in the prison cells. Adding a map
+//		image for the function. 
 
 #include <iostream>
 #include <X11/Xlib.h>
@@ -40,8 +40,28 @@ void declareobject(Game *game, int i, int a, int b, int c, int d)
     game->object[i].center.y = d;
 
 }
-void function(Game *game) 
+void map(Game *game) 
 {
+    Ppmimage *mapImage = NULL;
+    GLuint mapTexture;
+    
+    mapImage = ppm6GetImage("img7.ppm");
+    glGenTextures(1, &mapTexture);
+    //map image
+    glBindTexture(GL_TEXTURE_2D, mapTexture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+	mapImage->width, mapImage->height,
+	0, GL_RGB, GL_UNSIGNED_BYTE, mapImage->data);
+    
+    glBindTexture(GL_TEXTURE_2D, mapTexture);
+    glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
+	glTexCoord2f(0.0f, 0.0f); glVertex2i(0, WINDOW_HEIGHT);
+	glTexCoord2f(1.0f, 0.0f); glVertex2i(WINDOW_WIDTH, WINDOW_HEIGHT);
+	glTexCoord2f(1.0f, 1.0f); glVertex2i(WINDOW_WIDTH, 0);
+	glEnd();
 }
 void printtile(Game *game) 
 {
