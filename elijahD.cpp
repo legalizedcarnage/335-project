@@ -317,22 +317,62 @@ void init_keys(Game *game)
 		game->inv[i] = false;
 	}
 	game->key_num = -1;
-	game->keys[0].center.x = 600;
+	game->keys[0].center.x = 700;
 	game->keys[0].center.y = 200;
 	game->keys[0].width = 5;
 	game->keys[0].height = 3;
+	game->keys[1].center.x = 700;
+	game->keys[1].center.y = 200;
+	game->keys[1].width = 5;
+	game->keys[1].height = 3;
+	game->keys[2].center.x = 700;
+	game->keys[2].center.y = 200;
+	game->keys[2].width = 5;
+	game->keys[2].height = 3;
+	game->keys[3].center.x = 100;
+	game->keys[3].center.y = 200;
+	game->keys[3].width = 5;
+	game->keys[3].height = 3;
+	game->keys[4].center.x = 600;
+	game->keys[4].center.y = 200;
+	game->keys[4].width = 5;
+	game->keys[4].height = 3;
 	
 }
 void Print_keys(Game *game) 
 {
 	game->key_num = -1;
-	//check if key should be printed on this tile
+	//check if key should be printed on tile
 	if (game->map[0] == 0 && game->map[1] ==1) {
 		game->key_num = 0;
 		if (game->inv[game->key_num] == true) {
 			game->key_num = -1;
 		}
 	}
+	if (game->map[0] == 4 && game->map[1] ==-1) {
+		game->key_num = 1;
+		if (game->inv[game->key_num] == true) {
+			game->key_num = -1;
+		}
+	}	
+	if (game->map[0] == 5 && game->map[1] ==0) {
+		game->key_num = 2;
+		if (game->inv[game->key_num] == true) {
+			game->key_num = -1;
+		}
+	}	
+	if (game->map[0] == 3 && game->map[1] ==2) {
+		game->key_num = 3;
+		if (game->inv[game->key_num] == true) {
+			game->key_num = -1;
+		}
+	}	
+	if (game->map[0] == 5 && game->map[1] ==2) {
+		game->key_num = 4;
+		if (game->inv[game->key_num] == true) {
+			game->key_num = -1;
+		}
+	}	
 	if (game->key_num >= 0) {
 		Shape *s;
 		float w, h;
@@ -363,7 +403,6 @@ void key(Game *game)
 		&& game->player.s.center.y - game->player.s.height 
 		< game->keys[game->key_num].center.y) {
 			game->inv[game->key_num] = true;	
-			cout << "key" << endl;
 		}
 	}
 }
