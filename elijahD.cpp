@@ -317,23 +317,27 @@ void init_keys(Game *game)
 		game->inv[i] = false;
 	}
 	game->key_num = -1;
-	game->keys[0].center.x = 700;
+	game->keys[0].center.x = 1000;
 	game->keys[0].center.y = 200;
 	game->keys[0].width = 5;
 	game->keys[0].height = 3;
-	game->keys[1].center.x = 700;
+
+	game->keys[1].center.x = 1000;
 	game->keys[1].center.y = 200;
 	game->keys[1].width = 5;
 	game->keys[1].height = 3;
-	game->keys[2].center.x = 700;
+
+	game->keys[2].center.x = 1000;
 	game->keys[2].center.y = 200;
 	game->keys[2].width = 5;
 	game->keys[2].height = 3;
+
 	game->keys[3].center.x = 100;
-	game->keys[3].center.y = 200;
+	game->keys[3].center.y = 800;
 	game->keys[3].width = 5;
 	game->keys[3].height = 3;
-	game->keys[4].center.x = 600;
+
+	game->keys[4].center.x = 1000;
 	game->keys[4].center.y = 200;
 	game->keys[4].width = 5;
 	game->keys[4].height = 3;
