@@ -1,6 +1,6 @@
 //Name: 	Julia Acosta
 //Written:	04/27/16
-//Modified:	05/18/16
+//Modified:	05/23/16
 //Project 335: 	Prison Escape
 //Design/Layout:Creating the walls for each tile of the game
 //		and the layout of the prison cell/hallways etc.
@@ -439,18 +439,25 @@ void printtile(Game *game)
         declareobject(game, 1, 300, 12, 200, 892);
         declareobject(game, 2, 12, 200, 8, 150);
         declareobject(game, 3, 300, 12, 200, 8);
-        declareobject(game, 4, 22, 200, 1192, 150);
-        declareobject(game, 5, 12, 200, 8, 800);
-        declareobject(game, 6, 250, 12, 1050, 892);
-        declareobject(game, 7, 22, 200, 1192, 800);
-        declareobject(game, 8, 250, 12, 1050, 8);
+        declareobject(game, 4, 12, 200, 8, 800);
+        declareobject(game, 5, 250, 12, 1050, 892);
+        declareobject(game, 6, 250, 12, 1050, 8);
 
-        game->num_objects = 9;
+        game->num_objects = 7;
 
         //walls
         for (int i=0; i<game->num_objects; i++) {
                 glColor3ub(130,130,130);
                 drawobject(game, i);
+	}
+	declareobject(game, 1, 22, 200, 1192, 150);
+	declareobject(game, 2, 22, 200, 1192, 800);
+
+	game->num_objects = 3;
+
+	for (int i=0; i<game->num_objects; i++) {
+		glColor3ub(0, 255, 127);
+		drawobject(game, i);
 	}
     }
     //Tower 3
