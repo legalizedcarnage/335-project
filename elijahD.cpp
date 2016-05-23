@@ -7,6 +7,8 @@
 //interactable objects such as walls and gates that need to be matched with correct keys
 #include <iostream>
 #include <stdlib.h>
+#include <GL/glx.h>
+
 #include "main.h"
 #include "miguelT.h"
 #include "marioH.h"
@@ -87,6 +89,8 @@ void playerCollision(Game *game)
 	Player *p;
 	p = &game->player;
 	//defined edges
+	void key(Game *game);
+	key(game);
 	float top = p->s.center.y  + p->s.height;
 	float bot = p->s.center.y  - p->s.height;
 	float left = p->s.center.x - p->s.width;
@@ -306,7 +310,66 @@ void particleCollision(Game *game)
 	
 	}
 }
-// interactable
-void interact(Game *game) {
+// interactables
+void init_keys(Game *game)
+{
+	for (int i = 0; i< 5; i++) {
+		game->inv[i] = false;
+	}
+	game->key_num = -1;
+	game->keys[0].center.x = 600;
+	game->keys[0].center.y = 200;
+	game->keys[0].width = 5;
+	game->keys[0].height = 3;
+	
+}
+void Print_keys(Game *game) 
+{
+	game->key_num = -1;
+	//check if key should be printed on this tile
+	if (game->map[0] == 0 && game->map[1] ==1) {
+		game->key_num = 0;
+		if (game->inv[game->key_num] == true) {
+			game->key_num = -1;
+		}
+	}
+	if (game->key_num >= 0) {
+		Shape *s;
+		float w, h;
+		s = &game->keys[game->key_num];
+		glColor3ub(10,10,10);
+		glPushMatrix();
+		glTranslatef(s->center.x, s->center.y, s->center.z);
+		w = s->width;
+		h = s->height;
+		glBegin(GL_QUADS);
+		glVertex2i(-w,-h);
+		glVertex2i(-w, h);
+		glVertex2i( w, h);
+		glVertex2i( w,-h);
+		glEnd();
+		glPopMatrix();
+	}
+}
+void key(Game *game) 
+{
+	if (game->key_num >= 0) {
+		if (game->player.s.center.x + game->player.s.width  
+		> game->keys[game->key_num].center.x
+		&& game->player.s.center.x - game->player.s.width 
+		< game->keys[game->key_num].center.x
+		&& game->player.s.center.y + game->player.s.height 
+		> game->keys[game->key_num].center.y
+		&& game->player.s.center.y - game->player.s.height 
+		< game->keys[game->key_num].center.y) {
+			game->inv[game->key_num] = true;	
+			cout << "key" << endl;
+		}
+	}
+}
+
+void interact(Game *game) 
+{
 	//Player_Object(game, &game->player, game->interact, game->num_interact);	
 }
+

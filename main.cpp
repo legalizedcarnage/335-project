@@ -71,6 +71,7 @@ int main(void)
     game.map[1] = 0;
     game.player.health = Start_HP;
     game.current_enemies = 2;
+    init_keys(&game);
     //init enemies
     //initEnemies(&game);
     //init enemies
@@ -474,6 +475,8 @@ void render(Game *game)
 		glEnd();
 		glPopMatrix();
 	}
+	//draw keys
+	Print_keys(game);
 	//draw player	
 	glColor3ub(150,160,220);
 	s = &game->player.s;

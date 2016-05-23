@@ -49,6 +49,9 @@ struct Game {
 	int num_objects;
 	int num_enemies;
 	int current_enemies;
+	Shape keys[5];
+	bool inv[5];
+	int key_num;
 	//int num_interact;
 	//Shape interact[Max_Objects];
 };
