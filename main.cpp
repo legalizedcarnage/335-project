@@ -61,6 +61,7 @@ int main(void)
     game.state = 0;
     game.n=0;
     game.num_objects=0;
+    game.num_interact=0;
     game.player.s.width = 20;
     game.player.s.height = 30;
     game.player.s.center.x = 120 + 5*65;
@@ -71,7 +72,14 @@ int main(void)
     game.map[1] = 0;
     game.player.health = Start_HP;
     game.current_enemies = 2;
+    game.text_box.center.x = WINDOW_WIDTH/2;
+    game.text_box.center.y = 0;
+    game.text_box.width = WINDOW_WIDTH/2;
+    game.text_box.height = WINDOW_HEIGHT/3;
+    game.tutorial = false; 
+    game.text_count =0;
     init_keys(&game);
+    
     //init enemies
     //initEnemies(&game);
     //init enemies
@@ -338,6 +346,11 @@ int check_keys(XEvent *e, Game *game)
 		game->gun = '7';
 		break;
 		case XK_space:
+		if (game->state == 4) {
+			if (game->text_count == 2)
+				game->state = 1;
+	    		game->text_count++;
+    		}		
 		game->space = 's';
 		switch(game->direction) {
 			case 'l':
@@ -384,7 +397,7 @@ int check_keys(XEvent *e, Game *game)
 		}
 		break;
 		case 92:
-		Respawn(game);
+		elijah(game);
 		break;		
 	}
     }
@@ -437,16 +450,14 @@ void charMovement( Game *game)
     p = &game->player;
     particleCollision(game);
     playerCollision(game);
-     
+    interact(game);
     p->s.center.x += p->velocity.x;
     p->s.center.y += p->velocity.y;
-    playerCollision(game);
     weaponMov(game);
 }
 
 void render(Game *game)
 {
-    //game->state = 0;
     if (game->state == 0) {
 	displayMenu(game);
     }
@@ -498,6 +509,7 @@ void render(Game *game)
 		glPopMatrix();
 	}
 	//draw keys
+
 	Print_keys(game);
 	//draw player	
 	glColor3ub(150,160,220);
@@ -534,11 +546,18 @@ void render(Game *game)
 	renderWeapon(game);
 	renderEnemies(game, game->map[0], game->map[1], 2);
 	hudDisplay(game);
+	if (game->tutorial == true) {
+	    game->state = 4;
+	    game->tutorial = false;
+	}
     }
     else if (game->state==2)
 	pauseMenu(game);
     else if (game->state == 3)
 	map(game);
+    else if (game->state == 4) {
+	text(game);
+    }
 }
 
 

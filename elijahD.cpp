@@ -19,6 +19,13 @@ GLuint keyTexture;
 
 using namespace std;
 //used when player collides with wall to shift to new tile
+void Respawn(Game *game)
+{	
+	game->map[0] = 0;
+	game->map[1] = 0;
+	game->player.health = Start_HP;	
+	initPlayer(game);
+}
 void shiftScreen(Game *game, char direction)
 {
 	if (direction == 'u') {
@@ -39,7 +46,7 @@ void shiftScreen(Game *game, char direction)
 }
 void Player_Object(Game *game, Player *p, Shape *objects, int num)
 {
-	p = &game->player;
+	//p = &game->player;
 	//defined edges
 	float top = p->s.center.y  + p->s.height;
 	float bot = p->s.center.y  - p->s.height;
@@ -58,6 +65,7 @@ void Player_Object(Game *game, Player *p, Shape *objects, int num)
 			if ( top > s->center.y - s->height) 
 				p->s.center.y -= top -  (s->center.y -s->height);
 			p->velocity.y = 0;
+			cout << i << " stuff " << endl;
 		}
 		if (bot >= s->center.y - s->height
 		&& bot <= s->center.y + s->height
@@ -67,6 +75,7 @@ void Player_Object(Game *game, Player *p, Shape *objects, int num)
 			if ( bot < s->center.y + s->height) 
 				p->s.center.y -= bot -  (s->center.y + s->height);
 			p->velocity.y = 0;
+			cout << i << " stuff " << endl;
 		}
 		if (left >= s->center.x - s->width
 		&& left <= s->center.x + s->width
@@ -76,6 +85,7 @@ void Player_Object(Game *game, Player *p, Shape *objects, int num)
 			if ( left < s->center.x + s->width) 
 				p->s.center.x -= left -  (s->center.x + s->width);
 			p->velocity.x = 0;
+			cout << i << " stuff " << endl;
 		} 
 		if (right >= s->center.x - s->width
 		&& right <= s->center.x + s->width
@@ -85,11 +95,12 @@ void Player_Object(Game *game, Player *p, Shape *objects, int num)
 			if ( right > s->center.x - s->width) 
 				p->s.center.x -= right -  (s->center.x -s->width);
 			p->velocity.x = 0;
+			cout << i << " stuff " << endl;
 		}	
 	}
 }
-void playerCollision(Game *game)
-{
+void player_Wall (Game *game) {
+	//detect screen collisions
 	Player *p;
 	p = &game->player;
 	//defined edges
@@ -97,18 +108,6 @@ void playerCollision(Game *game)
 	float bot = p->s.center.y  - p->s.height;
 	float left = p->s.center.x - p->s.width;
 	float right = p->s.center.x + p->s.width;
-	
-	void key(Game *game);
-	key(game);
-
-	//detect object collisions //added enemy collision
-	Player_Object(game, &game->player,game->object,game->num_objects);
-	for (int i = 0; i<game->num_enemies; i++)
-		Player_Object(game
-			, &game->enemies[game->map[0]][game->map[1]][i]
-			,game->object
-			,game->num_objects);
-	//detect screen collisions
 	//floor
 	if (bot <= 0 && p->velocity.y < 0) {
 		p->s.center.y = WINDOW_HEIGHT - p->s.height;
@@ -129,6 +128,31 @@ void playerCollision(Game *game)
 		p->s.center.x = p->s.width;
 		shiftScreen(game, 'r');
 	}
+
+
+}
+void playerCollision(Game *game)
+{
+	Player *p;
+	p = &game->player;
+	//defined edges
+	float top = p->s.center.y  + p->s.height;
+	float bot = p->s.center.y  - p->s.height;
+	float left = p->s.center.x - p->s.width;
+	float right = p->s.center.x + p->s.width;
+	
+	void key(Game *game);
+	key(game);
+
+	player_Wall(game);
+	//detect object collisions //added enemy collision
+	Player_Object(game, &game->player,game->object,game->num_objects);
+	/*for (int i = 0; i<game->num_enemies; i++)
+		Player_Object(game
+			, &game->enemies[game->map[0]][game->map[1]][i]
+			,game->object
+			,game->num_objects);
+	*/
 	//player-enemy collision
 	for ( int i = 0; i < 2/*game->num_enemies*/; i++) {
 		Player *e;
@@ -145,7 +169,7 @@ void playerCollision(Game *game)
 		bot <= enemy_t &&
 		left <= enemy_r &&
 		right >= enemy_l) {
-			p->health--;
+			cout << p->health-- << endl;
 		//knocked back when hit enemy
 			int min_distY = 100;
 			int min_distX = 100;
@@ -155,14 +179,14 @@ void playerCollision(Game *game)
 				if (abs(top - (game->object[j].center.y - 
 				game->object[j].height))  >= 
 				base) {
-				//abs(r*(p->s.center.y - e->s.center.y))) {
 					if (base
-				    	//if (abs(p->s.center.y-e->s.center.y) 
 					<= abs(min_distY)) {
 						min_distY = 
 						base*( p->s.center.y - e->s.center.y)
 						/abs(p->s.center.y - e->s.center.y);
-						//r*(p->s.center.y - e->s.center.y);
+						if (p->s.center.y - e->s.center.y == 0) {
+							min_distY = 0;
+						}
 					}
 				
 				} else {
@@ -174,14 +198,15 @@ void playerCollision(Game *game)
 				//floor
 				if (abs(bot - (game->object[j].center.y + 
 				game->object[j].height)) >=
-				//abs(r*(p->s.center.y - e->s.center.y))) {
 				base) {
-			    		if (base//abs(p->s.center.y-e->s.center.y) 
+			    		if (base 
 					<= abs(min_distY)) {
 						min_distY =
 						base*( p->s.center.y - e->s.center.y)
 						/abs(p->s.center.y - e->s.center.y);
-						//r*(p->s.center.y - e->s.center.y);
+						if (p->s.center.y - e->s.center.y == 0) {
+							min_distY = 0;
+						}
 					}
 				} else {
 					min_distY =
@@ -193,13 +218,14 @@ void playerCollision(Game *game)
 				if (abs(right - (game->object[j].center.x - 
 				game->object[j].width))  >= 
 				base) {
-				//abs(p->s.center.x - e->s.center.x)) {
-					if (base//abs(p->s.center.x-e->s.center.x) 
+					if (base 
 					<= abs(min_distX)) {
 						min_distX = 
 						base*(p->s.center.x - e->s.center.x)/
 						abs(p->s.center.x - e->s.center.x);
-						//(p->s.center.x - e->s.center.x);
+						if (p->s.center.x - e->s.center.x == 0) {
+							min_distX = 0;
+						}
 					}
 				} else {	
 					min_distX =
@@ -210,13 +236,14 @@ void playerCollision(Game *game)
 				if (abs(left - (game->object[j].center.x + 
 				game->object[j].width)) >=
 				base) {
-				//abs((p->s.center.x - e->s.center.x))) {
-					if (base //abs(p->s.center.x-e->s.center.x) 
+					if (base  
 					<= abs(min_distX)) {
 						min_distX =
 						base*(p->s.center.x - e->s.center.x)/
 						abs(p->s.center.x - e->s.center.x);
-						//(p->s.center.x - e->s.center.x);
+						if (p->s.center.x - e->s.center.x == 0) {
+							min_distX = 0;
+						}
 					}
 				} else {
 					min_distX =
@@ -234,14 +261,10 @@ void playerCollision(Game *game)
 		}
 	}	
 	//Player_Object(game, &game->player);
-	Player_Object(game, &game->player,game->object,game->num_objects);
-}
-void Respawn(Game *game)
-{	
-	game->map[0] = 0;
-	game->map[1] = 0;
-	game->player.health = Start_HP;	
-	initPlayer(game);
+	//Player_Object(game, &game->player,game->object,game->num_objects);
+	if (game->player.health <= 0) {
+		Respawn(game);
+	}
 }
 void particleCollision(Game *game) 
 {
@@ -375,37 +398,41 @@ void Print_keys(Game *game)
 	//check if key should be printed on tile
 	if (game->map[0] == 0 && game->map[1] ==1) {
 		game->key_num = 0;
-		cout << "key" << endl;
 		if (game->inv[game->key_num] == true) {
 			game->key_num = -1;
 		}
+		glColor3ub(90,140,90);
 	}
 	if (game->map[0] == 4 && game->map[1] ==-1) {
 		game->key_num = 1;
 		if (game->inv[game->key_num] == true) {
 			game->key_num = -1;
 		}
+		glColor3ub(90,90,140);
 	}	
 	if (game->map[0] == 5 && game->map[1] ==0) {
 		game->key_num = 2;
 		if (game->inv[game->key_num] == true) {
 			game->key_num = -1;
 		}
+		glColor3ub(140,90,90);
 	}	
 	if (game->map[0] == 3 && game->map[1] ==2) {
 		game->key_num = 3;
 		if (game->inv[game->key_num] == true) {
 			game->key_num = -1;
 		}
+		glColor3ub(140,140,90);
 	}	
 	if (game->map[0] == 5 && game->map[1] ==2) {
 		game->key_num = 4;
 		if (game->inv[game->key_num] == true) {
 			game->key_num = -1;
 		}
+		glColor3ub(200,160,150);
 	}	
 	if (game->key_num >= 0) {
-	    	Shape *s;
+		Shape *s;
 		float w, h;
 		s = &game->keys[game->key_num];
 		w = s->width;
@@ -424,7 +451,6 @@ void Print_keys(Game *game)
                         glTexCoord2f(1.0f, 1.0f); glVertex2i( w,-h);
                 glEnd();
 		glPopMatrix();
-		glColor3ub(0,60,200);
 	}
 }
 void key(Game *game) 
@@ -438,13 +464,75 @@ void key(Game *game)
 		> game->keys[game->key_num].center.y
 		&& game->player.s.center.y - game->player.s.height 
 		< game->keys[game->key_num].center.y) {
-			game->inv[game->key_num] = true;	
+			game->inv[game->key_num] = true;
+			cout << game->key_num+1 << endl;	
 		}
 	}
 }
 
 void interact(Game *game) 
 {
-	//Player_Object(game, &game->player, game->interact, game->num_interact);	
+	Shape *p = &game->player.s;
+	if(game->inv[0] == true) {
+		//change this to be more accurate
+		if (p->center.x == game->interact[0].center.x
+		&& p->center.y == game->interact[0].center.y) {
+			game->interact[0] = game->interact[game->num_interact-1];
+			game->num_interact--;
+		}
+	}
+	if(game->inv[1] == true) {
+		//change this to be more accurate
+		if (p->center.x == game->interact[1].center.x
+		&& p->center.y == game->interact[1].center.y) {
+			game->interact[1] = game->interact[game->num_interact-1];
+			game->num_interact--;
+		}
+	}
+	if(game->inv[2] == true) {
+		//change this to be more accurate
+		if (p->center.x == game->interact[2].center.x
+		&& p->center.y == game->interact[2].center.y) {
+			game->interact[2] = game->interact[game->num_interact-1];
+			game->num_interact--;
+		}
+	}
+	if(game->inv[3] == true) {
+		//change this to be more accurate
+		if (p->center.x == game->interact[3].center.x
+		&& p->center.y == game->interact[3].center.y) {
+			game->interact[3] = game->interact[game->num_interact-1];
+			game->num_interact--;
+		}
+	}
+	if(game->inv[4] == true) {
+		//change this to be more accurate
+		if (p->center.x == game->interact[4].center.x
+		&& p->center.y == game->interact[4].center.y) {
+			game->interact[4] = game->interact[game->num_interact-1];
+			game->num_interact--;
+		}
+	}
+	Player_Object(game, &game->player, game->interact, game->num_interact);	
 }
-
+void text(Game *game) {
+	Shape *s = &game->text_box;
+	float w, h;
+	glColor3ub(50,50,50);
+	glPushMatrix();
+	glTranslatef(s->center.x, s->center.y, s->center.z);
+	w = s->width;
+	h = s->height;
+	glBegin(GL_QUADS);
+		glVertex2i(-w,-h);
+		glVertex2i(-w, h);
+		glVertex2i( w, h);
+		glVertex2i( w,-h);
+	glEnd();
+	glPopMatrix();
+	//print text	
+}
+//my requirement function- key "\"
+void elijah(Game *game) {
+	game->tutorial = true;
+}

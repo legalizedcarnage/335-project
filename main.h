@@ -7,7 +7,7 @@
 const unsigned int Max_Enemies = 10;
 const int Max_Objects = 100;
 const int Max_Particles = 100;
-const int Start_HP = 5;
+const int Start_HP = 10;
 struct Vec {
 	float x, y, z;
 };
@@ -52,8 +52,11 @@ struct Game {
 	Shape keys[5];
 	bool inv[5];
 	int key_num;
-	//int num_interact;
-	//Shape interact[Max_Objects];
+	int num_interact;
+	Shape interact[5];
+	Shape text_box;
+	bool tutorial;
+	int text_count;
 };
 
 
