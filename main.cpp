@@ -200,6 +200,17 @@ void init_opengl(void)
     glTexImage2D(GL_TEXTURE_2D, 0, 3,
 		bgImage->width, bgImage->height,
 		0, GL_RGB, GL_UNSIGNED_BYTE, bgImage->data);
+    //key 
+    /*
+    keyImage = ppm6GetImage("key.ppm");
+    glGenTextures(1,&keyTexture);
+    glBindTexture(GL_TEXTURE_2D, keyTexture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+		keyImage->width, keyImage->height,
+		0, GL_RGB, GL_UNSIGNED_BYTE, keyImage->data);
+*/
     //background transparent part
 /*    glBindTexture(GL_TEXTURE_2D, bgTransTexture);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
@@ -288,20 +299,21 @@ int check_keys(XEvent *e, Game *game)
 		    break;
 		case XK_Left:
 		//may need to adjust
-		game->player.velocity.x -= 5;
+		
+		game->player.velocity.x = -5;
 		game->direction = 'l';
 		break;
 		case XK_Right:
-		game->player.velocity.x += 5;
+		game->player.velocity.x = 5;
 		game->direction = 'r';
 
 		break;
 		case XK_Up:
-		game->player.velocity.y += 5;
+		game->player.velocity.y = 5;
 		game->direction = 'u';
 		break;
 		case XK_Down:
-		game->player.velocity.y -= 5;
+		game->player.velocity.y = -5;
 		game->direction = 'd';
 		break;
 		case XK_1:
@@ -428,6 +440,7 @@ void charMovement( Game *game)
      
     p->s.center.x += p->velocity.x;
     p->s.center.y += p->velocity.y;
+    playerCollision(game);
     weaponMov(game);
 }
 

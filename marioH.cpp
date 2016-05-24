@@ -78,14 +78,14 @@ void displayMenu(Game * game)
 	}
 	else
 	ggprint16(&qButton, 76, 0x00000000, "Quit Game");
-	
+	glColor3ub(200,200,200);
 }
 
 void hudDisplay(Game * game) 
 {
 	glColor3ub(100,0,0);
-	declareobject(game,game->num_objects,150,10,250,860);
-	drawobject(game,game->num_objects);
+	declareobject(game,game->num_objects+1,150,10,250,860);
+	drawobject(game,game->num_objects+1);
 	Rect health;
 	health.bot = 870;
 	health.left = 210;
@@ -143,7 +143,7 @@ void initPlayer (Game * game)
 	game->map[0] = 0;
 	game->map[1] = 0;
 	game->gun = 0;
-	if(!game->enemies[game->map[0]][game->map[1]][0].enemiesInit)
+	if(!game->enemies[game->map[0]+1][game->map[1]+1][0].enemiesInit)
 		initEnemies(game, game->map[0], game->map[1], 2);
 
 }

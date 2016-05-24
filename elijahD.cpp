@@ -8,10 +8,15 @@
 #include <iostream>
 #include <stdlib.h>
 #include <GL/glx.h>
-
+#include "ppm.h"
 #include "main.h"
 #include "miguelT.h"
 #include "marioH.h"
+//#include "images.h"
+//key image
+Ppmimage *keyImage = NULL;
+GLuint keyTexture;
+
 using namespace std;
 //used when player collides with wall to shift to new tile
 void shiftScreen(Game *game, char direction)
@@ -43,9 +48,8 @@ void Player_Object(Game *game, Player *p, Shape *objects, int num)
 	
 	Shape *s;
 	for (int i = 0; i < num; i++) {
-	//for (int i = 0; i < game->num_objects; i++) {
-		//s = &game->object[i];
 		s = &objects[i];
+
 		if (top >= s->center.y - s->height
 		&& top <= s->center.y + s->height
 		&& left < s->center.x + s->width
@@ -81,7 +85,7 @@ void Player_Object(Game *game, Player *p, Shape *objects, int num)
 			if ( right > s->center.x - s->width) 
 				p->s.center.x -= right -  (s->center.x -s->width);
 			p->velocity.x = 0;
-		} 
+		}	
 	}
 }
 void playerCollision(Game *game)
@@ -89,12 +93,13 @@ void playerCollision(Game *game)
 	Player *p;
 	p = &game->player;
 	//defined edges
-	void key(Game *game);
-	key(game);
 	float top = p->s.center.y  + p->s.height;
 	float bot = p->s.center.y  - p->s.height;
 	float left = p->s.center.x - p->s.width;
 	float right = p->s.center.x + p->s.width;
+	
+	void key(Game *game);
+	key(game);
 
 	//detect object collisions //added enemy collision
 	Player_Object(game, &game->player,game->object,game->num_objects);
@@ -144,16 +149,20 @@ void playerCollision(Game *game)
 		//knocked back when hit enemy
 			int min_distY = 100;
 			int min_distX = 100;
+			int base = 15; 
 			for (int j = 0; j < game->num_objects; j++) {
 				//ceiling
 				if (abs(top - (game->object[j].center.y - 
 				game->object[j].height))  >= 
-				abs(.5*(p->s.center.y - e->s.center.y))) {
-					if (abs(p->s.center.y-e->s.center.y) 
+				base) {
+				//abs(r*(p->s.center.y - e->s.center.y))) {
+					if (base
+				    	//if (abs(p->s.center.y-e->s.center.y) 
 					<= abs(min_distY)) {
 						min_distY = 
-						.5*( p->s.center.y - e->s.center.y);
-						cout << "enemy closer than wallY" << endl;
+						base*( p->s.center.y - e->s.center.y)
+						/abs(p->s.center.y - e->s.center.y);
+						//r*(p->s.center.y - e->s.center.y);
 					}
 				
 				} else {
@@ -165,11 +174,14 @@ void playerCollision(Game *game)
 				//floor
 				if (abs(bot - (game->object[j].center.y + 
 				game->object[j].height)) >=
-				abs(.5*(p->s.center.y - e->s.center.y))) {
-					if (abs(p->s.center.y-e->s.center.y) 
+				//abs(r*(p->s.center.y - e->s.center.y))) {
+				base) {
+			    		if (base//abs(p->s.center.y-e->s.center.y) 
 					<= abs(min_distY)) {
 						min_distY =
-						.5*(p->s.center.y - e->s.center.y);
+						base*( p->s.center.y - e->s.center.y)
+						/abs(p->s.center.y - e->s.center.y);
+						//r*(p->s.center.y - e->s.center.y);
 					}
 				} else {
 					min_distY =
@@ -180,12 +192,14 @@ void playerCollision(Game *game)
 				//sides
 				if (abs(right - (game->object[j].center.x - 
 				game->object[j].width))  >= 
-				abs(p->s.center.x - e->s.center.x)) {
-					if (abs(p->s.center.x-e->s.center.x) 
+				base) {
+				//abs(p->s.center.x - e->s.center.x)) {
+					if (base//abs(p->s.center.x-e->s.center.x) 
 					<= abs(min_distX)) {
 						min_distX = 
-						(p->s.center.x - e->s.center.x);
-						cout << "enemy closer than wallX" << endl;
+						base*(p->s.center.x - e->s.center.x)/
+						abs(p->s.center.x - e->s.center.x);
+						//(p->s.center.x - e->s.center.x);
 					}
 				} else {	
 					min_distX =
@@ -195,11 +209,14 @@ void playerCollision(Game *game)
 				}
 				if (abs(left - (game->object[j].center.x + 
 				game->object[j].width)) >=
-				abs((p->s.center.x - e->s.center.x))) {
-					if (abs(p->s.center.x-e->s.center.x) 
+				base) {
+				//abs((p->s.center.x - e->s.center.x))) {
+					if (base //abs(p->s.center.x-e->s.center.x) 
 					<= abs(min_distX)) {
 						min_distX =
-						(p->s.center.x - e->s.center.x);
+						base*(p->s.center.x - e->s.center.x)/
+						abs(p->s.center.x - e->s.center.x);
+						//(p->s.center.x - e->s.center.x);
 					}
 				} else {
 					min_distX =
@@ -319,36 +336,46 @@ void init_keys(Game *game)
 	game->key_num = -1;
 	game->keys[0].center.x = 1000;
 	game->keys[0].center.y = 200;
-	game->keys[0].width = 5;
-	game->keys[0].height = 3;
+	game->keys[0].width = 10;
+	game->keys[0].height = 10;
 
 	game->keys[1].center.x = 1000;
 	game->keys[1].center.y = 200;
-	game->keys[1].width = 5;
-	game->keys[1].height = 3;
+	game->keys[1].width = 10;
+	game->keys[1].height = 10;
 
 	game->keys[2].center.x = 1000;
 	game->keys[2].center.y = 200;
-	game->keys[2].width = 5;
-	game->keys[2].height = 3;
+	game->keys[2].width = 10;
+	game->keys[2].height = 10;
 
 	game->keys[3].center.x = 100;
 	game->keys[3].center.y = 800;
-	game->keys[3].width = 5;
-	game->keys[3].height = 3;
+	game->keys[3].width = 10;
+	game->keys[3].height = 10;
 
 	game->keys[4].center.x = 1000;
 	game->keys[4].center.y = 200;
-	game->keys[4].width = 5;
-	game->keys[4].height = 3;
+	game->keys[4].width = 10;
+	game->keys[4].height = 10;
 	
 }
 void Print_keys(Game *game) 
 {
+	keyImage = ppm6GetImage("key.ppm");
+	glGenTextures(1,&keyTexture);
+	glBindTexture(GL_TEXTURE_2D, keyTexture);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3,
+                keyImage->width, keyImage->height,
+                0, GL_RGB, GL_UNSIGNED_BYTE, keyImage->data);
+
 	game->key_num = -1;
 	//check if key should be printed on tile
 	if (game->map[0] == 0 && game->map[1] ==1) {
 		game->key_num = 0;
+		cout << "key" << endl;
 		if (game->inv[game->key_num] == true) {
 			game->key_num = -1;
 		}
@@ -378,21 +405,26 @@ void Print_keys(Game *game)
 		}
 	}	
 	if (game->key_num >= 0) {
-		Shape *s;
+	    	Shape *s;
 		float w, h;
 		s = &game->keys[game->key_num];
-		glColor3ub(10,10,10);
-		glPushMatrix();
-		glTranslatef(s->center.x, s->center.y, s->center.z);
 		w = s->width;
 		h = s->height;
+		cout << s->center.x << " " << s->center.y << endl;
+		cout << w << " " << h << endl;
+		cout << game->key_num << endl;
+		glPushMatrix();
+		glTranslatef(s->center.x, s->center.y, s->center.z);
+		
+		glBindTexture(GL_TEXTURE_2D, keyTexture);
 		glBegin(GL_QUADS);
-		glVertex2i(-w,-h);
-		glVertex2i(-w, h);
-		glVertex2i( w, h);
-		glVertex2i( w,-h);
-		glEnd();
+			glTexCoord2f(0.0f, 1.0f); glVertex2i(-w,-h);
+                        glTexCoord2f(0.0f, 0.0f); glVertex2i(-w, h);
+                        glTexCoord2f(1.0f, 0.0f); glVertex2i( w, h);
+                        glTexCoord2f(1.0f, 1.0f); glVertex2i( w,-h);
+                glEnd();
 		glPopMatrix();
+		glColor3ub(0,60,200);
 	}
 }
 void key(Game *game) 
