@@ -8,6 +8,7 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <GL/glx.h>
+#include <unistd.h>
 
 //header files
 #include "main.h"
@@ -561,8 +562,10 @@ void render(Game *game)
     else if (game->state == 4) {
 	text(game);
     }
-    else if (game->state == 5) 
-	winner(game);
+    else if (game->state == 5) {
+	usleep(3000000);
+	game->state = 0;
+    }
 }
 
 
