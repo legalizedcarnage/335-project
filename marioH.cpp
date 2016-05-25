@@ -1,13 +1,13 @@
 //Author:Mario Hernandez
 //Purpose: to render the main menu and functionality of the menu buttons
 //Written:	4/27/16
-//Modified:	5/17/16
+//Modified:	5/24/16
 //Progress, Currently have the basic main menu working by jumping into the game
 // and a quit button. Also working on a pause menu with basic button functions
 // and leaving room to include inventory functionality and option menu
 // functionality. In the process of working with textures but there seems to be
 // a bug when switching buttons on the main menu that the background texture
-// disappears.
+// disappears. 
 #include <iostream>
 #include "main.h"
 #include "marioH.h"
@@ -84,15 +84,32 @@ void displayMenu(Game * game)
 
 void hudDisplay(Game * game) 
 {
-	const char hT = game->player.health + '0';
     	glColor3ub(100,0,0);
 	declareobject(game,game->num_objects+1,game->player.health*15,10,250,860);
 	drawobject(game,game->num_objects+1);
 	Rect health;
-	health.bot = 870;
+	Rect Weapons;
+	Rect wName;
+	health.bot = 870; 
 	health.left = 210;
 	health.center = 0;
-	ggprint16(&health, 76, 0x00ffffff, "Health Bar: ");
+	Weapons.bot = 870;
+	Weapons.left =1010;
+	Weapons.center = 0;
+	wName.bot = 850;
+	wName.left = 1010;
+	wName.center = 0;
+	ggprint16(&health, 76, 0x00ffffff, "Health Bar");
+	ggprint16(&Weapons,76, 0x00ffffff, "Weapon");
+	if(game->gun =='1') 
+	ggprint16(&wName,76, 0x00ffffff, "knife");
+	//if(game->gun == '2')
+	//if(game->gun == '3')
+	//if(game->gun == '4')
+	//if(game->gun == '5')
+	//if(game->gun == '6')
+	//if(game->gun == '7')
+
 }
 
 int mainMenuCursor(XEvent *e,Game * game)
