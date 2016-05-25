@@ -347,9 +347,12 @@ int check_keys(XEvent *e, Game *game)
 		break;
 		case XK_space:
 		if (game->state == 4) {
-			if (game->text_count == 2)
+			if (game->text_count == 2) {
 				game->state = 1;
-	    		game->text_count++;
+				game->text_count = 0;
+				}
+			else 
+				game->text_count++;
     		}		
 		game->space = 's';
 		switch(game->direction) {
