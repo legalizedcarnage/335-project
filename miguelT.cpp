@@ -23,14 +23,12 @@ int usedx[100];
 int usedxcount=0;
 int directionx;
 int directiony;
-float VEL=2.0;
+float VEL=1.5;
 int ecounter=0;
 
 void initEnemies(Game *game, int x, int y) 
 {
-    //Currently initializing 5 enemies for testing
-    //will become dynamic when I apply difficulty per level
-
+	// Enemies are dynamic, start at 2 and goes up every 2 levels.
         if (x % 2 == 0) {
             if (usedxcount == 0) {
                 game->current_enemies += ecounter;
@@ -83,9 +81,7 @@ void enemiesMovement(Game *game, int x, int y, int i)
         directionx = p->velocity.x;
     if (ycount[x+1][y+1][0] == 0)
         directiony = p->velocity.y;
-
     //Checks for collision with walls
-    //still need collision with objects
     if (p->s.center.y - p->s.height <= 20 && p->velocity.y < 0) {
         p->s.center.y = p->s.height + 20;
         p->velocity.y *= -1;
@@ -164,12 +160,10 @@ void playerFound(Game *game, int x, int y, int i)
     Player *p;
     p = &game->player;
     //Checks distance between current enemy and player
-    //still need to improve how the enemy acts when its within threshold
     if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
         (pow(e->s.center.y - p->s.center.y, 2))) <= 150) {
         if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
             (pow(e->s.center.y - p->s.center.y, 2))) >= 50) {
-            //cout << "Player Found!" << endl;
             if (p->s.center.x < e->s.center.x && e->velocity.x > 0) {
                 e->velocity.x *= -1.0;
             }
@@ -183,8 +177,6 @@ void playerFound(Game *game, int x, int y, int i)
                 e->velocity.y *= -1.0;
             }
         }
-            //e->velocity.x = p->velocity.x;
-            //e->velocity.y = p->velocity.y;
         if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
             (pow(e->s.center.y - p->s.center.y, 2))) < 50) {
                 e->velocity.x *= -1.0;
@@ -194,11 +186,6 @@ void playerFound(Game *game, int x, int y, int i)
     }
     e->s.center.x += e->velocity.x;
     e->s.center.y += e->velocity.y;
-    if (e->health < 0) {
-        removeEnemies(game, x, y, i);
-    }
-    //cout << "x: " << e->velocity.x << endl;
-    //cout << "y: " << e->velocity.y << endl;
 }
 
 void renderEnemies(Game *game, int x, int y)
@@ -206,6 +193,7 @@ void renderEnemies(Game *game, int x, int y)
     for (int i = 0; i < game->current_enemies; i++) {
         enemiesMovement(game, x, y, i);
         playerFound(game, x, y,  i);
+        removeEnemies(game, x, y, i);
         float h, w;
         Shape *s;
         glColor3ub(250,50,50);
@@ -226,7 +214,9 @@ void renderEnemies(Game *game, int x, int y)
 
 void removeEnemies(Game *game, int x, int y, int i)
 {
-    int lcount = ecount[x+1][y+1];
-    game->enemies[x+1][y+1][i] = game->enemies[x+1][y+1][lcount];
-    ecount[x+1][y+1]--;
+    if (game->enemies[x+1][y+1][i].health < 1) {
+        int lcount = ecount[x+1][y+1];
+        game->enemies[x+1][y+1][i] = game->enemies[x+1][y+1][lcount];
+        ecount[x+1][y+1]--;
+    }
 }
