@@ -1,6 +1,6 @@
 //Name: 	Julia Acosta
 //Written:	04/27/16
-//Modified:	05/23/16
+//Modified:	05/25/16
 //Project 335: 	Prison Escape
 //Design/Layout:Creating the walls for each tile of the game
 //		and the layout of the prison cell/hallways etc.
@@ -45,7 +45,7 @@ void map(Game *game)
     Ppmimage *mapImage = NULL;
     GLuint mapTexture;
     
-    mapImage = ppm6GetImage("img7.ppm");
+    mapImage = ppm6GetImage("map.ppm");
     glGenTextures(1, &mapTexture);
     //map image
     glBindTexture(GL_TEXTURE_2D, mapTexture);
