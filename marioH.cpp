@@ -184,7 +184,7 @@ void initPlayer (Game * game)
 	game->map[1] = 0;
 	game->gun = 0;
 	if(!game->enemies[game->map[0]+1][game->map[1]+1][0].enemiesInit)
-		initEnemies(game, game->map[0], game->map[1], 2);
+		initEnemies(game, game->map[0], game->map[1]);
 		for (int i=0; i < 2; i++) {
 			game->enemies[game->map[0]+1][game->map[1]+1][i].health =10;
 		}
