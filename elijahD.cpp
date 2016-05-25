@@ -4,7 +4,8 @@
 //screen transitions and collision detection of player
 //and bullets with each other, the walls, and objects
 //started 5/19/16
-//interactable objects such as walls and gates that need to be matched with correct keys
+//interactable objects such as walls and gates that need 
+//to be matched with correct keys
 #include <iostream>
 #include <stdlib.h>
 #include <GL/glx.h>
@@ -12,7 +13,6 @@
 #include "main.h"
 #include "miguelT.h"
 #include "marioH.h"
-//#include "images.h"
 //key image
 Ppmimage *keyImage = NULL;
 GLuint keyTexture;
@@ -42,7 +42,7 @@ void shiftScreen(Game *game, char direction)
 	}
 	std::cout << game->map[0]  << ", " << game->map[1] << endl;
 	if(!game->enemies[game->map[0]+1][game->map[1]+1][0].enemiesInit)	
-		initEnemies(game, game->map[0], game->map[1], game->current_enemies);
+		initEnemies(game, game->map[0], game->map[1]);
 }
 void Player_Object(Game *game, Player *p, Shape *objects, int num)
 {
@@ -144,7 +144,6 @@ void playerCollision(Game *game)
 	void key(Game *game);
 	key(game);
 
-	player_Wall(game);
 	//detect object collisions //added enemy collision
 	Player_Object(game, &game->player,game->object,game->num_objects);
 	/*for (int i = 0; i<game->num_enemies; i++)
@@ -182,9 +181,11 @@ void playerCollision(Game *game)
 					if (base
 					<= abs(min_distY)) {
 						min_distY = 
-						base*( p->s.center.y - e->s.center.y)
+						base*( p->s.center.y 
+							- e->s.center.y)
 						/abs(p->s.center.y - e->s.center.y);
-						if (p->s.center.y - e->s.center.y == 0) {
+						if (p->s.center.y - e->s.center.y 
+							== 0) {
 							min_distY = 0;
 						}
 					}
@@ -202,9 +203,11 @@ void playerCollision(Game *game)
 			    		if (base 
 					<= abs(min_distY)) {
 						min_distY =
-						base*( p->s.center.y - e->s.center.y)
+						base*( p->s.center.y 
+							- e->s.center.y)
 						/abs(p->s.center.y - e->s.center.y);
-						if (p->s.center.y - e->s.center.y == 0) {
+						if (p->s.center.y - e->s.center.y 
+							== 0) {
 							min_distY = 0;
 						}
 					}
@@ -221,9 +224,11 @@ void playerCollision(Game *game)
 					if (base 
 					<= abs(min_distX)) {
 						min_distX = 
-						base*(p->s.center.x - e->s.center.x)/
+						base*(p->s.center.x 
+						- e->s.center.x)/
 						abs(p->s.center.x - e->s.center.x);
-						if (p->s.center.x - e->s.center.x == 0) {
+						if (p->s.center.x - e->s.center.x
+						 == 0) {
 							min_distX = 0;
 						}
 					}
@@ -239,9 +244,11 @@ void playerCollision(Game *game)
 					if (base  
 					<= abs(min_distX)) {
 						min_distX =
-						base*(p->s.center.x - e->s.center.x)/
+						base*(p->s.center.x 
+						- e->s.center.x)/
 						abs(p->s.center.x - e->s.center.x);
-						if (p->s.center.x - e->s.center.x == 0) {
+						if (p->s.center.x - e->s.center.x 
+						== 0) {
 							min_distX = 0;
 						}
 					}
@@ -262,6 +269,7 @@ void playerCollision(Game *game)
 	}	
 	//Player_Object(game, &game->player);
 	//Player_Object(game, &game->player,game->object,game->num_objects);
+	player_Wall(game);
 	if (game->player.health <= 0) {
 		Respawn(game);
 	}
@@ -441,15 +449,19 @@ void Print_keys(Game *game)
 		cout << w << " " << h << endl;
 		cout << game->key_num << endl;
 		glPushMatrix();
-		glTranslatef(s->center.x, s->center.y, s->center.z);
-		
+		//glTranslatef(s->center.x, s->center.y, s->center.z);
 		glBindTexture(GL_TEXTURE_2D, keyTexture);
 		glBegin(GL_QUADS);
-			glTexCoord2f(0.0f, 1.0f); glVertex2i(-w,-h);
-                        glTexCoord2f(0.0f, 0.0f); glVertex2i(-w, h);
-                        glTexCoord2f(1.0f, 0.0f); glVertex2i( w, h);
-                        glTexCoord2f(1.0f, 1.0f); glVertex2i( w,-h);
+			glTexCoord2f(0.0f, 1.0f); 
+			glVertex2i(s->center.x-w,s->center.y-h);
+                        glTexCoord2f(0.0f, 0.0f); 
+			glVertex2i(s->center.x-w,s->center.y+ h);
+                        glTexCoord2f(1.0f, 0.0f); 
+			glVertex2i(s->center.x+ w,s->center.y+ h);
+                        glTexCoord2f(1.0f, 1.0f); 
+			glVertex2i(s->center.x+ w,s->center.y-h);
                 glEnd();
+		glBindTexture(GL_TEXTURE_2D, 0);
 		glPopMatrix();
 	}
 }
@@ -469,14 +481,47 @@ void key(Game *game)
 		}
 	}
 }
+void doors(Game *game) 
+{
+	
+	game->interact[0].width = 10;
+	game->interact[0].height = 350;
+	game->interact[0].center.x = WINDOW_WIDTH-5;
+	game->interact[0].center.y = 600;
 
+
+	//print
+	Shape *s;
+	float w, h;
+	if (game->map[0] == 2 && game->map[1] == -1) {
+		game->num_interact = 1;
+		s = &game->interact[0];
+		glPushMatrix();
+		//glTranslatef(s->center.x, s->center.y, s->center.z);
+		w = s->width;
+		h = s->height;
+		glBegin(GL_QUADS);
+			glVertex2i(s->center.x-w,s->center.y-h);
+			glVertex2i(s->center.x-w, s->center.y+h);
+			glVertex2i(s->center.x+ w,s->center.y+ h);
+			glVertex2i(s->center.x+ w,s->center.x-h);
+		glEnd();
+		glPopMatrix();
+	}	
+}
 void interact(Game *game) 
 {
 	Shape *p = &game->player.s;
+	float top = p->center.y  + p->height;
+	float bot = p->center.y  - p->height;
+	float left = p->center.x - p->width;
+	float right = p->center.x + p->width;
 	if(game->inv[0] == true) {
 		//change this to be more accurate
-		if (p->center.x == game->interact[0].center.x
-		&& p->center.y == game->interact[0].center.y) {
+		if (top > game->interact[0].center.y -game->interact[0].height
+		&& bot < game->interact[0].center.y+ game->interact[0].height
+		&& right > game->interact[0].center.x-game->interact[0].width
+		&& left < game->interact[0].center.x+game->interact[0].width) {
 			game->interact[0] = game->interact[game->num_interact-1];
 			game->num_interact--;
 		}
@@ -513,9 +558,10 @@ void interact(Game *game)
 			game->num_interact--;
 		}
 	}
-	Player_Object(game, &game->player, game->interact, game->num_interact);	
+	//Player_Object(game, &game->player, game->interact, game->num_interact);	
 }
-void text(Game *game) {
+void text(Game *game) 
+{
 	Shape *s = &game->text_box;
 	float w, h;
 	glColor3ub(50,50,50);
@@ -530,9 +576,11 @@ void text(Game *game) {
 		glVertex2i( w,-h);
 	glEnd();
 	glPopMatrix();
-	//print text	
+	//print text
+		
 }
 //my requirement function- key "\"
-void elijah(Game *game) {
+void elijah(Game *game) 
+{
 	game->tutorial = true;
 }
