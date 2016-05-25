@@ -12,7 +12,6 @@
 #include <X11/keysym.h>
 #include <GL/glx.h>
 #include <ctime>
-//#include <cerrno>
 #include <unistd.h>
 #include "main.h"
 #include "ppm.h"
