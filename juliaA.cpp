@@ -12,6 +12,7 @@
 #include <X11/keysym.h>
 #include <GL/glx.h>
 #include <ctime>
+//#include <cerrno>
 #include <unistd.h>
 #include "main.h"
 #include "ppm.h"
@@ -87,10 +88,6 @@ void winner(Game *game)
 	glTexCoord2f(1.0f, 0.0f); glVertex2i(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glTexCoord2f(1.0f, 1.0f); glVertex2i(WINDOW_WIDTH, 0);
 	glEnd();
-
-	//usleep(3000000);
-
-	//game->state = 0;
 }
 void printtile(Game *game) 
 {
@@ -405,6 +402,27 @@ void printtile(Game *game)
     }
     //yard
     else if (game->map[0] == 4 && game->map[1] == 1) {
+	Ppmimage *grassImage = NULL;
+	GLuint grassTexture;
+
+	grassImage = ppm6GetImage("grass.ppm");
+	glGenTextures(1, &grassTexture);
+	//grass image
+	glBindTexture(GL_TEXTURE_2D, grassTexture);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3,
+		grassImage->width, grassImage->height,
+		0, GL_RGB, GL_UNSIGNED_BYTE, grassImage->data);
+
+	glBindTexture(GL_TEXTURE_2D, grassTexture);
+	glBegin(GL_QUADS);
+        	glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
+        	glTexCoord2f(0.0f, 0.0f); glVertex2i(0, WINDOW_HEIGHT);
+        	glTexCoord2f(1.0f, 0.0f); glVertex2i(WINDOW_WIDTH, WINDOW_HEIGHT);
+        	glTexCoord2f(1.0f, 1.0f); glVertex2i(WINDOW_WIDTH, 0);
+	glEnd();
+	
 	//walls 1-8 shape
 	declareobject(game, 1, 300, 12, 200, 892);
 	declareobject(game, 2, 12, 200, 8, 150);
@@ -507,8 +525,9 @@ void printtile(Game *game)
     }	    
     //congrats
     else if (game->map[0] == 6 && game->map[1] == 1) {
-	game->state = 5;
 	winner(game);
+	game->state = 5;
+	//winner(game);
 
     }
     else 
