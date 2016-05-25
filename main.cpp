@@ -558,6 +558,8 @@ void render(Game *game)
     else if (game->state == 4) {
 	text(game);
     }
+    else if (game->state == 5) 
+	winner(game);
 }
 
 

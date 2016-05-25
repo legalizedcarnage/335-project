@@ -11,6 +11,9 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <GL/glx.h>
+#include <ctime>
+//#include <cerrno>
+#include <unistd.h>
 #include "main.h"
 #include "ppm.h"
 using namespace std;
@@ -62,6 +65,33 @@ void map(Game *game)
 	glTexCoord2f(1.0f, 0.0f); glVertex2i(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glTexCoord2f(1.0f, 1.0f); glVertex2i(WINDOW_WIDTH, 0);
 	glEnd();
+}
+void winner(Game *game)
+{
+    Ppmimage *winnerImage = NULL;
+    GLuint winnerTexture;
+
+    winnerImage = ppm6GetImage("map.ppm");
+    glGenTextures(1, &winnerTexture);
+    //winner image
+    glBindTexture(GL_TEXTURE_2D, winnerTexture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+	     winnerImage->width, winnerImage->height,
+	     0, GL_RGB, GL_UNSIGNED_BYTE, winnerImage->data);
+
+    glBindTexture(GL_TEXTURE_2D, winnerTexture);
+    glBegin(GL_QUADS);
+    	glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
+	glTexCoord2f(0.0f, 0.0f); glVertex2i(0, WINDOW_HEIGHT);
+	glTexCoord2f(1.0f, 0.0f); glVertex2i(WINDOW_WIDTH, WINDOW_HEIGHT);
+	glTexCoord2f(1.0f, 1.0f); glVertex2i(WINDOW_WIDTH, 0);
+	glEnd();
+
+	usleep(10000);
+
+	game->state = 0;
 }
 void printtile(Game *game) 
 {
@@ -277,7 +307,7 @@ void printtile(Game *game)
 	declareobject(game, 2, 12, 350, 8, 300);
 	declareobject(game, 3, 600, 12, 600, 8);
 	declareobject(game, 4, 12, 350, 1192, 300);
-	declareobject(game, 5, 480, 12, 750, 650);
+	declareobject(game, 5, 480, 10, 750, 650);
 
 	game->num_objects = 6;
 
@@ -294,7 +324,7 @@ void printtile(Game *game)
 	declareobject(game, 2, 12, 350, 8, 300);
 	declareobject(game, 3, 600, 12, 600, 8);
 	declareobject(game, 4, 12, 350, 1192, 300);
-	declareobject(game, 5, 12, 350, 600, 600);
+	declareobject(game, 5, 10, 350, 600, 600);
 	declareobject(game, 6, 180, 12, 1050, 892);
 
 	game->num_objects = 7;
@@ -497,7 +527,13 @@ void printtile(Game *game)
                 glColor3ub(130,130,130);
                 drawobject(game, i);
 	}
-    }	
+    }	    
+    //congrats
+    else if (game->map[0] == 6 && game->map[1] == 1) {
+	game->state = 5;
+	winner(game);
+
+    }
     else 
 	game->num_objects = 0;
 }
