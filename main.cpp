@@ -547,7 +547,7 @@ void render(Game *game)
 	//renders enemies
 	//renderKnife(game);
 	renderWeapon(game);
-	renderEnemies(game, game->map[0], game->map[1], 2);
+	renderEnemies(game, game->map[0], game->map[1]);
 	hudDisplay(game);
 	if (game->tutorial == true) {
 	    game->state = 4;
