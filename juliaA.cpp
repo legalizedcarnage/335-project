@@ -1,6 +1,6 @@
 //Name: 	Julia Acosta
 //Written:	04/27/16
-//Modified:	05/25/16
+//Modified:	05/26/16
 //Project 335: 	Prison Escape
 //Design/Layout:Creating the walls for each tile of the game
 //		and the layout of the prison cell/hallways etc.
@@ -77,12 +77,12 @@ void winner(Game *game)
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0, 3,
-	     winnerImage->width, winnerImage->height,
-	     0, GL_RGB, GL_UNSIGNED_BYTE, winnerImage->data);
+	winnerImage->width, winnerImage->height,
+	0, GL_RGB, GL_UNSIGNED_BYTE, winnerImage->data);
 
     glBindTexture(GL_TEXTURE_2D, winnerTexture);
     glBegin(GL_QUADS);
-    	glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
 	glTexCoord2f(0.0f, 0.0f); glVertex2i(0, WINDOW_HEIGHT);
 	glTexCoord2f(1.0f, 0.0f); glVertex2i(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glTexCoord2f(1.0f, 1.0f); glVertex2i(WINDOW_WIDTH, 0);
@@ -416,10 +416,10 @@ void printtile(Game *game)
 
 	glBindTexture(GL_TEXTURE_2D, grassTexture);
 	glBegin(GL_QUADS);
-        	glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
-        	glTexCoord2f(0.0f, 0.0f); glVertex2i(0, WINDOW_HEIGHT);
-        	glTexCoord2f(1.0f, 0.0f); glVertex2i(WINDOW_WIDTH, WINDOW_HEIGHT);
-        	glTexCoord2f(1.0f, 1.0f); glVertex2i(WINDOW_WIDTH, 0);
+		glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
+		glTexCoord2f(0.0f, 0.0f); glVertex2i(0, WINDOW_HEIGHT);
+		glTexCoord2f(1.0f, 0.0f); glVertex2i(WINDOW_WIDTH, WINDOW_HEIGHT);
+		glTexCoord2f(1.0f, 1.0f); glVertex2i(WINDOW_WIDTH, 0);
 	glEnd();
 	
 	//walls 1-8 shape
