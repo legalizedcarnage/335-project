@@ -102,6 +102,8 @@ int main(void)
 			return 1;
 		if (game.state == 2)
 			pauseMenuCursor(&e,&game);//pause menu
+		if (game.state == 6)
+			settingsCursor(&e,&game); //settings
 	}
 	if (game.state == 1) 
 		physics(&game);
@@ -614,6 +616,8 @@ void render(Game *game)
 	usleep(3000000);
 	game->state = 0;
     }
+    else if (game->state == 6)
+    		settingsMenu(game);
 }
 
 
