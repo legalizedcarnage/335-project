@@ -120,7 +120,89 @@ void weaponMov(Game *game)
                 }
 	}
 }
-//render weapons && in main it layer on top of player
+void makeParticle(Game *game, int x, int y)
+{
+    if (game->n > Max_Particles)
+        return;
+    std::cout << "makeParticle() " << x << " " << y << std::endl;
+    //position of particle
+    Particle *p = &game->particle[game->n];
+    if (game->gun == '4') {
+    p->s.center.x = game->object[94].center.x;
+    p->s.center.y = game->object[94].center.y;
+    } if(game->gun == '5') {
+    p->s.center.x = game->object[95].center.x;
+    p->s.center.y = game->object[95].center.y;
+    p->t.center.x = game->object[95].center.x;
+    p->t.center.y = game->object[95].center.y;
+    p->r.center.x = game->object[95].center.x;
+    p->r.center.y = game->object[95].center.y;
+    } if(game->gun == '6') {
+    p->s.center.x = game->object[96].center.x;
+    p->s.center.y = game->object[96].center.y;
+    } if(game->gun == '7') {
+    p->s.center.x = game->object[97].center.x;
+    p->s.center.y = game->object[97].center.y;
+    }
+    //double z = sqrt(x*x + y*y);  
+
+    p->velocity.y = y;
+    p->velocity.x = x;
+    p->velocity2.y = y - 1;
+    p->velocity2.x = x - 1;
+    p->velocity3.y = y + 2;
+    p->velocity3.x = x + 1;
+    game->n++;
+
+}
+void renderParticles(Game *game)
+{
+    	int w = 2;
+	int h = 2;
+    //draw all particles here
+    	for (int i = 0; i < game->n; i++) {
+	    glPushMatrix();
+		glColor3ub(150,160,220);
+		Vec *c = &game->particle[i].s.center;
+                int w = 2;
+                int h = 2;
+		glBegin(GL_QUADS);
+		glVertex2i(c->x-w, c->y-h);
+		glVertex2i(c->x-w, c->y+h);
+		glVertex2i(c->x+w, c->y+h);
+		glVertex2i(c->x+w, c->y-h);
+		glEnd();
+		glPopMatrix();
+        }
+	for (int i = 0; i < game->n; i++) {
+	     glPushMatrix();
+		glColor3ub(150,160,220);
+		Vec *a = &game->particle[i].t.center;
+		w = 2;
+	       	h = 2;
+                glBegin(GL_QUADS);
+                glVertex2i(a->x-w, a->y-h);
+                glVertex2i(a->x-w, a->y+h);
+                glVertex2i(a->x+w, a->y+h);
+                glVertex2i(a->x+w, a->y-h);
+                glEnd();
+                glPopMatrix();
+        }
+	for (int i = 0; i < game->n; i++) {
+	    	glPushMatrix();
+		glColor3ub(150,0,120);
+		Vec *b = &game->particle[i].r.center;
+		w = 2;
+		h = 2;
+		glBegin(GL_QUADS);
+		glVertex2i(b->x-w, b->y-h);
+		glVertex2i(b->x-w, b->y+h);
+		glVertex2i(b->x+w, b->y+h);
+		glVertex2i(b->x+w, b->y-h);
+		glEnd();
+		glPopMatrix();
+        }
+}
 void renderWeapon(Game *game)
 {
 	if(game->gun == '1'){
