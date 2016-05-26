@@ -18,8 +18,9 @@ struct MainMenu {
 void displayMenu(Game * game);
 int mainMenuCursor(XEvent *e,Game * game);
 void pauseMenuCursor(XEvent *e,Game * game);
+void settingsCursor(XEvent *e,Game * game);
 void hudDisplay(Game *game);
 void pauseMenu(Game * game);
-void invMenu(Game * game);
+void settingsMenu(Game * game);
 void initPlayer(Game * game);
 #endif

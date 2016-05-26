@@ -237,6 +237,18 @@ void initPlayer (Game * game)
 	game->map[0] = 0;
 	game->map[1] = 0;
 	game->gun = 0;
+	game->player.health = Start_HP;
+	game->current_enemies = 2;
+	game->text_box.center.x = WINDOW_WIDTH/2;
+	game->text_box.center.y = 0;
+	game->text_box.width = WINDOW_WIDTH/2;
+	game->text_box.height = WINDOW_HEIGHT/3;
+	game->tutorial = false;
+	for (int i = 0; i < 5; i++) {
+		game->inv[i] = false;
+		game->open[i] = false;
+	}
+    game->text_count =0;
 	if (!game->enemies[game->map[0]+1][game->map[1]+1][0].enemiesInit)
 		initEnemies(game, game->map[0], game->map[1]);
 		for (int i=0; i < 2; i++) {
@@ -274,10 +286,13 @@ void pauseMenuCursor(XEvent *e,Game * game)
                                         break;
 					case 1:
 					//Check Inventory button case
-					invMenu(game);
+					//game->state = 6;
+					//cursorPos = 0;	
 					break;
 					case 2:
 					//Change Settings button case
+					game->state = 6;
+					cursorPos = 0;
 					break;
                                         case 3:
                                         game->state = 0; // quit button case
@@ -290,9 +305,106 @@ void pauseMenuCursor(XEvent *e,Game * game)
         }
 }
 
-void invMenu(Game * game)
+void settingsCursor(XEvent *e,Game * game)
 {
+        if (game->state == 6) {
+                if (e->type == KeyPress) {
+                        int key = XLookupKeysym(&e->xkey, 0);
+                        cout << key << endl;
+                        if (key == XK_Escape) {
+                                game->state = 0;
+                        }
+                        if (key == XK_Up) {
+                                cursorPos--;
+                                if (cursorPos < 0) {
+                                        cursorPos = 3;
+                                }
+                        }
+                        if (key == XK_Down) {
+                                cursorPos++;
+                                if (cursorPos > 3) {
+                                        cursorPos = 0;
+                                }
+                        }
+			if (key == XK_Right && cursorPos == 0) {
+				cursorPos = 3;
+			}
+			if (key == XK_Left && cursorPos == 3) {
+				cursorPos = 0;
+			}
+                        if (key == XK_space || key == 65293) {
+                                switch (cursorPos) {
+                                        case 0:
+                                        break;
+                                        case 1:
+                                        break;
+                                        case 2:
+                                        break;
+					case 3:
+					game->state = 2;
+					cursorPos = 0;
+                                        break;
+                                }
+                        }
+                }
+        }
+}
 
+
+void settingsMenu(Game * game)
+{
+	glClearColor(0.5,0.5,0.5,1.0);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glColor3ub(100,60,200);
+        declareobject(game,5,150,50,200,1100-5*60);
+        declareobject(game,6,150,50,200,950-5*60);
+        declareobject(game,7,150,50,600,1100-5*60);
+        declareobject(game,8,150,50,200,800-5*60);
+        drawobject(game,5);
+        drawobject(game,6);
+        drawobject(game,7);
+        drawobject(game,8);
+
+        Rect gButton;
+        Rect iButton;
+        Rect sButton;
+        Rect qButton;
+
+        gButton.bot = 790;
+        gButton.left = 130;
+        gButton.center = 0;
+        if (cursorPos ==0) {
+                ggprint16(&gButton, 76, 0x00ffffff, "Current Weapon");
+        }
+        else
+                ggprint16(&gButton, 76, 0x00000000, "Current Weapon");
+
+        iButton.bot = 640;
+        iButton.left = 100;
+        iButton.center = 0;
+        if (cursorPos == 1) {
+                ggprint16(&iButton, 76, 0x00ffffff, "Items");
+        }
+        else
+                ggprint16(&iButton, 76, 0x00000000, "Items");
+
+        sButton.bot = 790;
+        sButton.left = 460;
+        sButton.center = 0;
+        if (cursorPos == 3) {
+                ggprint16(&sButton, 76, 0x00ffffff, "Weapon: ");
+        }
+        else
+                ggprint16(&sButton, 76, 0x00000000, "Weapon: ");
+        qButton.bot = 490;
+        qButton.left = 110;
+        qButton.center = 0;
+        if (cursorPos == 2) {
+                ggprint16(&qButton, 76, 0x00ffffff, "Return to Pause Menu");
+        }
+        else
+        ggprint16(&qButton, 76, 0x00000000, "Return to Pause Menu");
+	
 }
 void pauseMenu(Game * game) 
 {
