@@ -488,10 +488,10 @@ void doors(Game *game)
 	game->interact[0].center.y = 800;
 	game->interact[1].width = 10;
 	game->interact[1].height = 350;
-	game->interact[1].center.x = WINDOW_WIDTH-10;
+	game->interact[1].center.x = 10;
 	game->interact[1].center.y = 800;
-	game->interact[2].width = 10;
-	game->interact[2].height = 350;
+	game->interact[2].width = 20;
+	game->interact[2].height = 550;
 	game->interact[2].center.x = WINDOW_WIDTH-10;
 	game->interact[2].center.y = 800;
 	game->interact[3].width = 10;
@@ -512,10 +512,21 @@ void doors(Game *game)
 	Shape *s;
 	float w, h;
 	if (game->map[0] == 2 && game->map[1] == -1 && game->open[0] == false) {
-		game->num_interact = 1;
 		s = &game->interact[0];
+		Player_Object(game, &game->player, game->interact, 1);	
+	} else if (game->map[0] == 1 && game->map[1] == -1 
+		&& game->open[1] == false) {
+		s = &game->interact[1];
+	} else if (game->map[0] == 5 && game->map[1] == 1 
+		&& game->open[2] == false && game->open[3] == false 
+		&& game->open[4] == false) {
+		s = &game->interact[2];
+	}
+	if ((game->map[0] == 2 && game->map[1] == -1 && game->open[0] == false) 
+	||  (game->map[0] == 1 && game->map[1] == -1 && game->open[1] == false) 
+	||  (game->map[0] == 5 && game->map[1] == 1 && game->open[2] == false)) {
+		glColor3ub(100,100,100);
 		glPushMatrix();
-		//glTranslatef(s->center.x, s->center.y, s->center.z);
 		w = s->width;
 		h = s->height;
 		glBegin(GL_QUADS);
@@ -525,9 +536,7 @@ void doors(Game *game)
 			glVertex2i(s->center.x+ w,s->center.y-h);
 		glEnd();
 		glPopMatrix();
-		Player_Object(game, &game->player, game->interact, 1);	
-	
-	}	
+	}
 }
 void interact(Game *game) 
 {
@@ -598,7 +607,7 @@ void text(Game *game)
 		glVertex2i(s->center.x+ w,s->center.y-h);
 	glEnd();
 	glPopMatrix();
-	//print text
+	//print text1
 		
 }
 //my requirement function- key "\"

@@ -9,7 +9,6 @@
 #include <X11/keysym.h>
 #include <GL/glx.h>
 #include <unistd.h>
-
 //header files
 #include "main.h"
 #include "elijahD.h"
@@ -34,6 +33,8 @@ Ppmimage *bgTransImage = NULL;
 GLuint bgTexture;
 GLuint bgTransTexture;
 int bg = 1;
+Ppmimage *playerImage = NULL;
+GLuint playerTexture;
 
 //X Windows variables
 Display *dpy;
@@ -216,17 +217,16 @@ void init_opengl(void)
     glTexImage2D(GL_TEXTURE_2D, 0, 3,
 		bgImage->width, bgImage->height,
 		0, GL_RGB, GL_UNSIGNED_BYTE, bgImage->data);
-    //key 
-    /*
-    keyImage = ppm6GetImage("key.ppm");
-    glGenTextures(1,&keyTexture);
-    glBindTexture(GL_TEXTURE_2D, keyTexture);
+    //player image
+    playerImage = ppm6GetImage("player.ppm");
+    glGenTextures(1, &playerTexture);
+    glBindTexture(GL_TEXTURE_2D, playerTexture);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, 3,
-		keyImage->width, keyImage->height,
-		0, GL_RGB, GL_UNSIGNED_BYTE, keyImage->data);
-*/
+		playerImage->width, playerImage->height,
+		0, GL_RGB, GL_UNSIGNED_BYTE, playerImage->data);
+
     //background transparent part
 /*    glBindTexture(GL_TEXTURE_2D, bgTransTexture);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
@@ -462,8 +462,8 @@ void render(Game *game)
 		glEnd();
         }
 	//Layout of the game
-	printtile(game);
 	doors(game);
+	printtile(game);
 	//draw current tile
 	Shape *s;
 	for (int i = 0; i < game->num_objects; i++ ) {
@@ -489,35 +489,35 @@ void render(Game *game)
 	//draw player	
 	glColor3ub(150,160,220);
 	s = &game->player.s;
-	glPushMatrix();
-	glTranslatef(s->center.x, s->center.y, s->center.z);
 	w = s->width;
 	h = s->height;
-	glBegin(GL_QUADS);
-	glVertex2i(-w,-h);
-	glVertex2i(-w, h);
-	glVertex2i( w, h);
-	glVertex2i( w,-h);
-	glEnd();
-	glPopMatrix();
-	/*
-	//draw enemies	
-	glColor3ub(250,50,50);
-	s = &game->enemies[0].s;
-	glPushMatrix();
-	glTranslatef(s->center.x, s->center.y, s->center.z);
+		glBindTexture(GL_TEXTURE_2D, playerTexture);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0.0f, 1.0f); 
+			glVertex2i(s->center.x-w,s->center.y-h);
+			glTexCoord2f(0.0f, 0.0f); 
+			glVertex2i(s->center.x-w,s->center.y+h);
+			glTexCoord2f(1.0f, 0.0f); 
+			glVertex2i(s->center.x+w,s->center.y+h);
+			glTexCoord2f(1.0f, 1.0f); 
+			glVertex2i(s->center.x+w,s->center.y-h);
+		glEnd();
+		glBindTexture(GL_TEXTURE_2D, 0);
+	//print player 
+	//glPushMatrix();
+	//glTranslatef(s->center.x, s->center.y, s->center.z);
 	w = s->width;
 	h = s->height;
-	glBegin(GL_QUADS);
-	glVertex2i(-w,-h);
-	glVertex2i(-w, h);
-	glVertex2i( w, h);
-	glVertex2i( w,-h);
-	glEnd();
-	glPopMatrix();
-	*/
-	//renders enemies
-	//renderKnife(game);
+	//glBegin(GL_QUADS);
+	//glVertex2i(-w,-h);
+	//glVertex2i(-w, h);
+	//glVertex2i( w, h);
+	//glVertex2i( w,-h);
+	//glEnd();
+	//glPopMatrix();
+	
+	glColor3ub(0,0,0);
+	
 	renderWeapon(game);
 	renderEnemies(game, game->map[0], game->map[1]);
 	hudDisplay(game);
