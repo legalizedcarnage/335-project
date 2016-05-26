@@ -85,27 +85,36 @@ void displayMenu(Game * game)
 
 void hudDisplay(Game * game) 
 {
-    	glColor3ub(100,0,0);
+	glColor3ub(100,0,0);
 
 	declareobject(game,game->num_objects+1,game->player.health*15,10,250,860);
 	int x =game->map[0], y = game->map[1];
-	for (int i=0; i < 2; i++) {
-	  declareobject(game,game->num_objects+2,
-		  game->enemies[x+1][y+1][i].health*2,5,
-		  game->enemies[x+1][y+1][i].s.center.x,
-		  game->enemies[x+1][y+1][i].s.center.y+50);
-	  drawobject(game,game->num_objects+2);
+	for (int i=0; i < game->current_enemies; i++) {
+		declareobject(game,game->num_objects+2,
+			game->enemies[x+1][y+1][i].health*2,5,
+			game->enemies[x+1][y+1][i].s.center.x,
+			game->enemies[x+1][y+1][i].s.center.y+50);
+		drawobject(game,game->num_objects+2);
 	}
 
 	drawobject(game,game->num_objects+1);
 	Rect pHealth;
 	Rect Weapons;
 	Rect wName;
-	
+	Rect pKey;
+	Rect mKey;
+	Rect Key1;
+	Rect Key2;
+	Rect Key3;
+	Rect Key4;
+	Rect Key5;
+	Rect Key6;
+	Rect Key7;
+
 	pHealth.bot = 870; 
 	pHealth.left = 210;
 	pHealth.center = 0;
-	                //initEnemies(game, game->map[0], game->map[1], 2);
+	
 	Weapons.bot = 870;
 	Weapons.left =1010;
 	Weapons.center = 0;
@@ -114,8 +123,53 @@ void hudDisplay(Game * game)
 	wName.left = 1010;
 	wName.center = 0;
 	
+	pKey.bot = 830;
+	pKey.left = 50;
+	pKey.center = 0;
+
+	mKey.bot = 810;
+	mKey.left = 50;
+	mKey.center = 0;
+
+	Key1.bot = 790;
+	Key1.left = 50;
+	Key1.center = 0;
+
+	Key2.bot = 770;
+	Key2.left = 50;
+	Key2.center = 0;
+
+	Key3.bot = 750;
+	Key3.left = 50;
+	Key3.center = 0;
+
+	Key4.bot = 730;
+	Key4.left = 50;
+	Key4.center = 0;
+
+	Key5.bot = 710;
+	Key5.left = 50;
+	Key5.center = 0;
+
+	Key6.bot = 690;
+	Key6.left = 50;
+	Key6.center = 0;
+
+	Key7.bot = 670;
+	Key7.left = 50;
+	Key7.center = 0;
+
 	ggprint16(&pHealth, 76, 0x00ffffff, "Health Bar");
-	ggprint16(&Weapons,76, 0x00ffffff, "Weapon");
+	ggprint08(&pKey,76,0x00ffffff,"p key: Pause Menu");
+	ggprint08(&mKey,76,0x00ffffff,"m key: Map Screen");	
+	ggprint16(&Weapons,76, 0x00ffffff, "Equiped Weapon");
+	ggprint08(&Key1,76, 0x00ffffff, "1 Key: Equip Knife");
+	ggprint08(&Key2,76, 0x00ffffff, "2 Key: Equip CrowBar");
+	ggprint08(&Key3,76, 0x00ffffff, "3 Key: Equip Shield");
+	ggprint08(&Key4,76, 0x00ffffff, "4 Key: Equip Pistol");
+	ggprint08(&Key5,76, 0x00ffffff, "5 Key: Equip Shotgun");
+	ggprint08(&Key6,76, 0x00ffffff, "6 Key: Equip Rifle");
+	ggprint08(&Key7,76, 0x00ffffff, "7 Key: Equip Stun Gun");
 	
 	if (game->gun =='1') 
 		ggprint16(&wName,76, 0x00ffffff, "Knife");
@@ -155,7 +209,7 @@ int mainMenuCursor(XEvent *e,Game * game)
 				}
 			}
 			if (key == XK_space || key == 65293) {
-				switch(cursorPos) {
+				switch (cursorPos) {
 					case 0:
 					game->state = 1; //play button case
 					initPlayer(game);//initialize players
@@ -183,7 +237,7 @@ void initPlayer (Game * game)
 	game->map[0] = 0;
 	game->map[1] = 0;
 	game->gun = 0;
-	if(!game->enemies[game->map[0]+1][game->map[1]+1][0].enemiesInit)
+	if (!game->enemies[game->map[0]+1][game->map[1]+1][0].enemiesInit)
 		initEnemies(game, game->map[0], game->map[1]);
 		for (int i=0; i < 2; i++) {
 			game->enemies[game->map[0]+1][game->map[1]+1][i].health =10;
@@ -199,7 +253,7 @@ void pauseMenuCursor(XEvent *e,Game * game)
                         int key = XLookupKeysym(&e->xkey, 0);
                         cout << key << endl;
                         if (key == XK_Escape) {
-			    game->state = 0;
+				game->state = 0;
                         }
                         if (key == XK_Up) {
                                 cursorPos--;
@@ -214,7 +268,7 @@ void pauseMenuCursor(XEvent *e,Game * game)
                                 }
                         }
                         if (key == XK_space || key == 65293) {
-				switch(cursorPos) {
+				switch (cursorPos) {
                                         case 0:
                                         game->state = 1; //play button case
                                         break;
@@ -266,7 +320,7 @@ void pauseMenu(Game * game)
                 ggprint16(&gButton, 76, 0x00ffffff, "Return to Game");
         }
         else
-        	ggprint16(&gButton, 76, 0x00000000, "Return to Game");
+		ggprint16(&gButton, 76, 0x00000000, "Return to Game");
 
 	iButton.bot = 640;
 	iButton.left = 500;
