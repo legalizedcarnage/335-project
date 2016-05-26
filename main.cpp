@@ -84,6 +84,7 @@ int main(void)
     }
     game.text_count =0;
     init_keys(&game);
+    initEcount(&game);
     
     //init enemies
     //initEnemies(&game);
