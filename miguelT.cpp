@@ -24,14 +24,18 @@ int usedxcount=0;
 int directionx;
 int directiony;
 float VEL=1.5;
-int ecounter=0;
+int ecounter=1;
 
 void initEnemies(Game *game, int x, int y) 
 {
+    game->current_enemies = ecount[x+1][y+1];
+    cout << "Enemies that will be init:" << game->current_enemies << "using ecount: " << ecount[x+1][y+1]<< endl;
     // Enemies are dynamic, start at 2 and goes up by 1 every 2 levels.
-    if (x % 2 == 0 && x != 0) {
+    /*if (x % 2 == 0 && x != 0) {
         if (usedxcount == 0) {
-            game->current_enemies += ecounter;
+            game->num_enemies += ecounter;
+            ecount[x+1][y+1] = game->num_enemies;
+            game->current_enemies = ecount[x+1][y+1];
             usedx[usedxcount] = x;
             usedxcount++;
         } else {
@@ -43,18 +47,24 @@ void initEnemies(Game *game, int x, int y)
             }
             if (!within) {
                 ecounter++;  
-                game->current_enemies += ecounter;
+                game->num_enemies += ecounter;
+                ecount[x+1][y+1] = game->num_enemies;
+                game->current_enemies = ecount[x+1][y+1];
                 usedx[usedxcount] = x;
                 usedxcount++;
             }
         }
+    } else {
+        ecount[x+1][y+1] = game->num_enemies;
+        game->current_enemies = ecount[x+1][y+1];
     }
+    
     //if we have already passed this x and our enemy count went up
     //then we need to make sure that if we return to that x position
     //that we use the saved amount of enemies
     for (int e = 0; e < usedxcount; e++) {
         if (usedx[e] == x) {
-            for(int i = 0; i < usedx[e]; i++) {    
+            for (int i = 0; i < game->current_; i++) {    
                 game->enemies[x+1][y+1][i].s.width = 20;
                 game->enemies[x+1][y+1][i].s.height = 30;
                 game->enemies[x+1][y+1][i].health = 5;
@@ -72,12 +82,13 @@ void initEnemies(Game *game, int x, int y)
                 ycount[x+1][y+1][0] = 0;
                 xcount[x+1][y+1][0] = 0;
                 game->enemies[x+1][y+1][i].enemiesInit = true;
-                ecount[x+1][y+1] = game->current_enemies;
+                game->num_enemies = game->current_enemies;
                 return;
             }
         }
     }
-    for(int i = 0; i < game->current_enemies; i++) {    
+    */
+    for (int i = 0; i < game->current_enemies; i++) {    
         game->enemies[x+1][y+1][i].s.width = 20;
         game->enemies[x+1][y+1][i].s.height = 30;
         game->enemies[x+1][y+1][i].health = 5;
@@ -95,7 +106,7 @@ void initEnemies(Game *game, int x, int y)
         ycount[x+1][y+1][0] = 0;
         xcount[x+1][y+1][0] = 0;
         game->enemies[x+1][y+1][i].enemiesInit = true;
-        ecount[x+1][y+1] = game->current_enemies;
+        game->num_enemies = game->current_enemies;
     }
 }
 
@@ -217,7 +228,8 @@ void playerFound(Game *game, int x, int y, int i)
 
 void renderEnemies(Game *game, int x, int y)
 {
-    for (int i = 0; i < ecount[x+1][y+1]; i++) {
+    game->current_enemies = ecount[x+1][y+1];
+    for (int i = 0; i < game->current_enemies; i++) {
         enemiesMovement(game, x, y, i);
         playerFound(game, x, y,  i);
         removeEnemies(game, x, y, i);
@@ -245,7 +257,21 @@ void removeEnemies(Game *game, int x, int y, int i)
         int lcount = ecount[x+1][y+1];
         game->enemies[x+1][y+1][i] = game->enemies[x+1][y+1][lcount-1];
         cout << ecount[x+1][y+1] << endl;
-        game->current_enemies = ecount[x+1][y+1]--;
+        game->current_enemies = --ecount[x+1][y+1];
         cout << ecount[x+1][y+1] << endl;
+    }
+}
+
+void initEcount(Game *game)
+{
+    for (int i = 0; i < 100-1; i++) {
+        for (int j = 0; j < 100-1; j++) {
+            if (i < 2)
+                ecount[i+1][j] = 2;
+            if (i >= 2 && i < 4)
+                ecount[i+1][j] = 3;
+            if (i >= 4 && i < 6)
+                ecount[i+1][j] = 4;
+        }
     }
 }
