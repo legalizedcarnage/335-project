@@ -40,83 +40,83 @@ void mele(Game *game)
     static int count = 0;
     if(game->space == 's'){
 	for(int i =91; i<94; i++){
-	    	if(game->direction == 'l'){
-		game->object[i].center.x = game->object[i].center.x - 1;
-	    	}if(game->direction == 'r'){
-		game->object[i].center.x = game->object[i].center.x + 2;
+		if(game->direction == 'l'){
+			game->object[i].center.x = game->object[i].center.x - 1;
+		}if(game->direction == 'r'){
+			game->object[i].center.x = game->object[i].center.x + 2;
 		}if(game->direction == 'u'){
-		    game->object[i].center.y = game->object[i].center.y + 2;
+			game->object[i].center.y = game->object[i].center.y + 2;
 		}if(game->direction == 'd'){
-		    game->object[i].center.y = game->object[i].center.y - 1;
+			game->object[i].center.y = game->object[i].center.y - 1;
 		}
 	}
 	count ++;
 	if(count == 100){
-	    game->mele = false;
-	    game->space = 0;
-	    count = 0;
+		game->mele = false;
+		game->space = 0;
+		count = 0;
     	}
     }
 }
 
 void weaponMov(Game *game)
 {
-        Player *p;
-        p = &game->player;
+	Player *p;
+	p = &game->player;
 	for(int i = 91; i <98; i ++) {
-        if(game->direction == 'l'){
-        game->object[i].center.x = p->s.center.x - 20;
-        game->object[i].center.y = p->s.center.y;
+		if(game->direction == 'l'){
+			game->object[i].center.x = p->s.center.x - 20;
+			game->object[i].center.y = p->s.center.y;
 		if(game->space == 's'){
-	    	game->mele = true;
+			game->mele = true;
 			if(game->mele == true){
 			mele(game);
 			}	
-		}
-        }if(game->direction == 'r'){
-        game->object[i].center.x = p->s.center.x + 20;
-        game->object[i].center.y = p->s.center.y;
+		}	
+		}if(game->direction == 'r'){
+			game->object[i].center.x = p->s.center.x + 20;
+			game->object[i].center.y = p->s.center.y;
 		if(game->space == 's'){
-            	game->mele = true;
-			if(game->mele == true){
+			game->mele = true;
+		if(game->mele == true){
                 	mele(game);
                 }
         }
-        }if(game->direction == 'u'){
-        game->object[i].center.x = p->s.center.x;
-        game->object[i].center.y = p->s.center.y + 25;
+			
+		}if(game->direction == 'u'){
+			game->object[i].center.x = p->s.center.x;
+			game->object[i].center.y = p->s.center.y + 25;
 		if(game->space == 's'){
-            	game->mele = true;
-        		if(game->mele == true){
+			game->mele = true;
+        	if(game->mele == true){
                 	mele(game);
                 	}
 		}
-	}if(game->direction == 'd'){
-        game->object[i].center.x = p->s.center.x;
-        game->object[i].center.y = p->s.center.y - 25;
+		}if(game->direction == 'd'){
+			game->object[i].center.x = p->s.center.x;
+			game->object[i].center.y = p->s.center.y - 25;
 		if(game->space == 's'){
-		game->mele = true;
-			if(game->mele == true){
-			 mele(game);
+			ame->mele = true;
+		if(game->mele == true){
+			mele(game);
                 		}
         		}
         	}
-	}
-	if(game->direction == 'l' || game->direction == 'r'){
-	game->object[93].width = 5;
-	game->object[93].height = 30;
-	for(int i = 95; i<98; i ++){
-	game->object[i].width = 20;
-        game->object[i].height = 5;
+	
+		}if(game->direction == 'l' || game->direction == 'r'){
+			game->object[93].width = 5;
+			game->object[93].height = 30;
+		for(int i = 95; i<98; i ++){
+			game->object[i].width = 20;
+        		game->object[i].height = 5;
   		}
 	}
-	
-	if(game->direction == 'u' || game->direction == 'd'){
-        game->object[93].width = 30;
-        game->object[93].height = 5;
-	for(int i = 95; i<98; i ++){
-        game->object[i].width = 5;
-        game->object[i].height = 20;
+		if(game->direction == 'u' || game->direction == 'd'){
+        		game->object[93].width = 30;
+        		game->object[93].height = 5;
+		for(int i = 95; i<98; i ++){
+        		game->object[i].width = 5;
+        		game->object[i].height = 20;
                 }
 	}
 }
