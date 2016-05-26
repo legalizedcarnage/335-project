@@ -87,8 +87,8 @@ int main(void)
     //knife(&game);
     weapon(&game);
     //start animation
-    while(!done) {
-	while(XPending(dpy)) {
+    while (!done) {
+	while (XPending(dpy)) {
 		XEvent e;
 		XNextEvent(dpy, &e);
 		check_mouse(&e, &game);
@@ -225,7 +225,7 @@ void init_opengl(void)
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
     //must build a new set of data...
-    	int w = bgTransImage->width;
+    //int w = bgTransImage->width;
 	int h = bgTransImage->height;
 	unsigned char *ftData = buildAlphaData(bgTransImage);	
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0,
@@ -241,16 +241,16 @@ void makeParticle(Game *game, int x, int y)
     std::cout << "makeParticle() " << x << " " << y << std::endl;
     //position of particle
     Particle *p = &game->particle[game->n];
-    if(game->gun == '4') {
+    if (game->gun == '4') {
     p->s.center.x = game->object[94].center.x;
     p->s.center.y = game->object[94].center.y;
-    }if(game->gun == '5') {
+    } if(game->gun == '5') {
     p->s.center.x = game->object[95].center.x;
     p->s.center.y = game->object[95].center.y;
-    }if(game->gun == '6') {
+    } if(game->gun == '6') {
     p->s.center.x = game->object[96].center.x;
     p->s.center.y = game->object[96].center.y;
-    }if(game->gun == '7') {
+    } if(game->gun == '7') {
     p->s.center.x = game->object[97].center.x;
     p->s.center.y = game->object[97].center.y;
     }
@@ -302,10 +302,10 @@ int check_keys(XEvent *e, Game *game)
 		return 1;
 	}
 
-	switch(key) {
-	    	case XK_b:
-		    bg ^=1;
-		    break;
+	switch (key) {
+		case XK_b:
+			bg ^=1;
+			break;
 		case XK_Left:
 		//may need to adjust
 		
@@ -351,29 +351,29 @@ int check_keys(XEvent *e, Game *game)
 			if (game->text_count == 2) {
 				game->state = 1;
 				game->text_count = 0;
-				}
+			}
 			else 
 				game->text_count++;
-    		}		
+		}		
 		game->space = 's';
-		switch(game->direction) {
+		switch (game->direction) {
 			case 'l':
-			if(game->gun > 3){
+			if (game->gun > 3) {
 			makeParticle(game, -8, 0);
 			}
 			break;
 			case 'r':
-			if(game->gun > 3){
+			if (game->gun > 3) {
 			makeParticle(game, 8, 0);
 			}
 			break;
 			case 'u':
-			if(game->gun > 3){
+			if (game->gun > 3) {
 			makeParticle(game, 0, 8);
 			}
 			break;
 			case 'd':
-			if(game->gun > 3){
+			if (game->gun > 3) {
 			makeParticle(game, 0, -8);
 			}
 			break;
@@ -383,21 +383,21 @@ int check_keys(XEvent *e, Game *game)
 		case XK_p:
 		std::cout << "p button pressed" << std::endl;
 		if (game->state==1) {
-		    	game->state=2;
+			game->state=2;
 			break;
 		}
 		else if (game->state==2) {
-		    	game->state=1;
+			game->state=1;
 			break;
 		}
 		break;
 		case XK_m:
 		if (game->state == 1) {
-		    game->state = 3;
-		    break;
+			game->state = 3;
+			break;
 		} else if (game->state == 3) {
-		    game->state = 1;
-		    break;
+			game->state = 1;
+			break;
 		}
 		break;
 		case 92:
@@ -407,7 +407,7 @@ int check_keys(XEvent *e, Game *game)
     }
     if ( e->type == KeyRelease) {
 	int key = XLookupKeysym(&e->xkey, 0);
-	switch(key) {
+	switch (key) {
 		case XK_Left:
 		if (game->player.velocity.x < 0)	
 			game->player.velocity.x = 0;
@@ -551,8 +551,8 @@ void render(Game *game)
 	renderEnemies(game, game->map[0], game->map[1]);
 	hudDisplay(game);
 	if (game->tutorial == true) {
-	    game->state = 4;
-	    game->tutorial = false;
+		game->state = 4;
+		game->tutorial = false;
 	}
     }
     else if (game->state==2)
