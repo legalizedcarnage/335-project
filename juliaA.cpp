@@ -472,7 +472,7 @@ void printtile(Game *game)
         game->num_objects = 7;
 
         //walls
-        for (int i=0; i<game->num_objects; i++) {
+	for (int i=0; i<game->num_objects; i++) {
                 glColor3ub(130,130,130);
                 drawobject(game, i);
 	}
@@ -490,7 +490,7 @@ void printtile(Game *game)
         game->num_objects = 7;
 
         //walls
-        for (int i=0; i<game->num_objects; i++) {
+	for (int i=0; i<game->num_objects; i++) {
                 glColor3ub(130,130,130);
                 drawobject(game, i);
 	}
@@ -517,7 +517,7 @@ void printtile(Game *game)
         game->num_objects = 7;
 
         //walls
-        for (int i=0; i<game->num_objects; i++) {
+	for (int i=0; i<game->num_objects; i++) {
                 glColor3ub(130,130,130);
                 drawobject(game, i);
 	}
