@@ -70,7 +70,7 @@ void winner(Game *game)
     Ppmimage *winnerImage = NULL;
     GLuint winnerTexture;
 
-    winnerImage = ppm6GetImage("map.ppm");
+    winnerImage = ppm6GetImage("winner.ppm");
     glGenTextures(1, &winnerTexture);
     //winner image
     glBindTexture(GL_TEXTURE_2D, winnerTexture);
