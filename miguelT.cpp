@@ -14,7 +14,7 @@
 #include "miguelT.h"
 
 using namespace std;
-// Using these counts to keep track of an emenies moves
+// Using these counts to keep track of an enemies moves
 // This is so it doesnt get stuck doing the same thing.
 int xcount[100][100][1];
 int ycount[100][100][1];
@@ -28,29 +28,56 @@ int ecounter=0;
 
 void initEnemies(Game *game, int x, int y) 
 {
-	// Enemies are dynamic, start at 2 and goes up every 2 levels.
-        if (x % 2 == 0) {
-            if (usedxcount == 0) {
+    // Enemies are dynamic, start at 2 and goes up by 1 every 2 levels.
+    if (x % 2 == 0 && x != 0) {
+        if (usedxcount == 0) {
+            game->current_enemies += ecounter;
+            usedx[usedxcount] = x;
+            usedxcount++;
+        } else {
+            bool within = false;
+            for (int i = 0; i < usedxcount; i++) {
+                if (usedx[i] == x) {
+                    within = true;
+                }
+            }
+            if (!within) {
+                ecounter++;  
                 game->current_enemies += ecounter;
                 usedx[usedxcount] = x;
                 usedxcount++;
-	    } else {
-                bool within = false;
-                for (int i = 0; i < usedxcount; i++) {
-                    if (usedx[i] == x) {
-                        within = true;
-                    }
-                }
-                if (!within) {
-                    ecounter++;  
-                    game->current_enemies += ecounter;
-                    usedx[usedxcount] = x;
-                    usedxcount++;
-                }
             }
         }
+    }
+    //if we have already passed this x and our enemy count went up
+    //then we need to make sure that if we return to that x position
+    //that we use the saved amount of enemies
+    for (int e = 0; e < usedxcount; e++) {
+        if (usedx[e] == x) {
+            for(int i = 0; i < usedx[e]; i++) {    
+                game->enemies[x+1][y+1][i].s.width = 20;
+                game->enemies[x+1][y+1][i].s.height = 30;
+                game->enemies[x+1][y+1][i].health = 5;
+                int temp = rand() % 100;
+                if (temp <= 50) {
+                    game->enemies[x+1][y+1][i].velocity.y = 0;
+                    game->enemies[x+1][y+1][i].velocity.x = VEL;
+                }
+                if (temp > 50) {
+                    game->enemies[x+1][y+1][i].velocity.y = VEL;
+                    game->enemies[x+1][y+1][i].velocity.x = 0;
+                }
+                game->enemies[x+1][y+1][i].s.center.x = 320 + 5*65;
+                game->enemies[x+1][y+1][i].s.center.y = 500 - 5*60;
+                ycount[x+1][y+1][0] = 0;
+                xcount[x+1][y+1][0] = 0;
+                game->enemies[x+1][y+1][i].enemiesInit = true;
+                ecount[x+1][y+1] = game->current_enemies;
+                return;
+            }
+        }
+    }
     for(int i = 0; i < game->current_enemies; i++) {    
-
         game->enemies[x+1][y+1][i].s.width = 20;
         game->enemies[x+1][y+1][i].s.height = 30;
         game->enemies[x+1][y+1][i].health = 5;
@@ -68,7 +95,7 @@ void initEnemies(Game *game, int x, int y)
         ycount[x+1][y+1][0] = 0;
         xcount[x+1][y+1][0] = 0;
         game->enemies[x+1][y+1][i].enemiesInit = true;
-	    ecount[x+1][y+1] = game->current_enemies;
+        ecount[x+1][y+1] = game->current_enemies;
     }
 }
 
@@ -161,9 +188,9 @@ void playerFound(Game *game, int x, int y, int i)
     p = &game->player;
     //Checks distance between current enemy and player
     if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
-        (pow(e->s.center.y - p->s.center.y, 2))) <= 150) {
+                (pow(e->s.center.y - p->s.center.y, 2))) <= 150) {
         if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
-            (pow(e->s.center.y - p->s.center.y, 2))) >= 50) {
+                    (pow(e->s.center.y - p->s.center.y, 2))) >= 50) {
             if (p->s.center.x < e->s.center.x && e->velocity.x > 0) {
                 e->velocity.x *= -1.0;
             }
@@ -178,10 +205,10 @@ void playerFound(Game *game, int x, int y, int i)
             }
         }
         if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
-            (pow(e->s.center.y - p->s.center.y, 2))) < 50) {
-                e->velocity.x *= -1.0;
-                e->velocity.y *= -1.0;
-                e->health -= 1;
+                    (pow(e->s.center.y - p->s.center.y, 2))) < 50) {
+            e->velocity.x *= -1.0;
+            e->velocity.y *= -1.0;
+            e->health -= 1;
         }
     }
     e->s.center.x += e->velocity.x;
