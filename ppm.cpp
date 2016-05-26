@@ -81,13 +81,13 @@ Ppmimage *ppm1GetImage(const char *filename)
 		exit(EXIT_FAILURE);
 	}
 	//comments?
-	while(1) {
+	while (1) {
 		c = fgetc(fpi);
 		if (c != '#')
 			break;
 		//read until newline
 		ntries=0;
-		while(1) {
+		while (1) {
 			//to avoid infinite loop...
 			if (++ntries > 10000) {
 				printf("ERROR: too many blank lines in **%s**\n", filename);
@@ -214,13 +214,13 @@ Ppmimage *ppm3GetImage(const char *filename)
 		exit(EXIT_FAILURE);
 	}
 	//comments?
-	while(1) {
+	while (1) {
 		c = fgetc(fpi);
 		if (c != '#')
 			break;
 		//read until newline
 		ntries=0;
-		while(1) {
+		while (1) {
 			//to avoid infinite loop...
 			if (++ntries > 10000) {
 				printf("ERROR: too many blank lines in **%s**\n", filename);
@@ -370,13 +370,13 @@ Ppmimage *ppm6GetImage(const char *filename)
 		exit(EXIT_FAILURE);
 	}
 	//comments?
-	while(1) {
+	while (1) {
 		c = fgetc(fpi);
 		if (c != '#')
 			break;
 		//read until newline
 		ntries=0;
-		while(1) {
+		while (1) {
 			//to avoid infinite loop...
 			if (++ntries > 10000) {
 				printf("ERROR: too many blank lines in **%s**\n", filename);
@@ -393,7 +393,7 @@ Ppmimage *ppm6GetImage(const char *filename)
 	//
 	//get past any newline or carrage-return
 	ntries=0;
-	while(1) {
+	while (1) {
 		//to avoid infinite loop...
 		if (++ntries > 10000) {
 			printf("ERROR: too many blank lines in **%s**\n", filename);
