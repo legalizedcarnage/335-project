@@ -252,6 +252,10 @@ void makeParticle(Game *game, int x, int y)
     } if(game->gun == '5') {
     p->s.center.x = game->object[95].center.x;
     p->s.center.y = game->object[95].center.y;
+    p->t.center.x = game->object[95].center.x;
+    p->t.center.y = game->object[95].center.y;
+    p->r.center.x = game->object[95].center.x;
+    p->r.center.y = game->object[95].center.y;
     } if(game->gun == '6') {
     p->s.center.x = game->object[96].center.x;
     p->s.center.y = game->object[96].center.y;
@@ -263,6 +267,10 @@ void makeParticle(Game *game, int x, int y)
     
     p->velocity.y = y;
     p->velocity.x = x;
+    p->velocity2.y = y - 1;
+    p->velocity2.x = x - 1;
+    p->velocity3.y = y + 2;
+    p->velocity3.x = x + 1;
     game->n++;
 
 }
@@ -450,6 +458,11 @@ void movement(Game *game)
 	p = &game->particle[i];
 	p->s.center.x += p->velocity.x;
 	p->s.center.y += p->velocity.y;
+	p->t.center.x += p->velocity2.x;
+        p->t.center.y += p->velocity2.y;
+        p->r.center.x += p->velocity3.x;
+        p->r.center.y += p->velocity3.y;
+
 
     }
 }
@@ -518,6 +531,35 @@ void render(Game *game)
 		glEnd();
 		glPopMatrix();
 	}
+	 for (int i = 0; i < game->n; i++) {
+                glPushMatrix();
+                glColor3ub(150,160,220);
+                Vec *a = &game->particle[i].t.center;
+                w = 2;
+                h = 2;
+                glBegin(GL_QUADS);
+                glVertex2i(a->x-w, a->y-h);
+                glVertex2i(a->x-w, a->y+h);
+                glVertex2i(a->x+w, a->y+h);
+                glVertex2i(a->x+w, a->y-h);
+                glEnd();
+                glPopMatrix();
+        }
+          for (int i = 0; i < game->n; i++) {
+                glPushMatrix();
+                glColor3ub(150,0,120);
+                Vec *b = &game->particle[i].r.center;
+                w = 2;
+                h = 2;
+                glBegin(GL_QUADS);
+                glVertex2i(b->x-w, b->y-h);
+                glVertex2i(b->x-w, b->y+h);
+                glVertex2i(b->x+w, b->y+h);
+                glVertex2i(b->x+w, b->y-h);
+                glEnd();
+                glPopMatrix();
+        }
+
 	//draw keys
 
 	Print_keys(game);
