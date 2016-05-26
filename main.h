@@ -51,6 +51,7 @@ struct Game {
 	int current_enemies;
 	Shape keys[5];
 	bool inv[5];
+	bool open[5];
 	int key_num;
 	int num_interact;
 	Shape interact[5];
