@@ -482,7 +482,7 @@ void render(Game *game)
 		glPopMatrix();
 	}
 	//draw all particles here
-	renderParticle(game);
+	renderParticles(game);
 	//draw keys
 
 	Print_keys(game);
