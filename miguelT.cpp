@@ -217,7 +217,7 @@ void playerFound(Game *game, int x, int y, int i)
 
 void renderEnemies(Game *game, int x, int y)
 {
-    for (int i = 0; i < game->current_enemies; i++) {
+    for (int i = 0; i < ecount[x+1][y+1]; i++) {
         enemiesMovement(game, x, y, i);
         playerFound(game, x, y,  i);
         removeEnemies(game, x, y, i);
@@ -243,7 +243,9 @@ void removeEnemies(Game *game, int x, int y, int i)
 {
     if (game->enemies[x+1][y+1][i].health < 1) {
         int lcount = ecount[x+1][y+1];
-        game->enemies[x+1][y+1][i] = game->enemies[x+1][y+1][lcount];
-        ecount[x+1][y+1]--;
+        game->enemies[x+1][y+1][i] = game->enemies[x+1][y+1][lcount-1];
+        cout << ecount[x+1][y+1] << endl;
+        game->current_enemies = ecount[x+1][y+1]--;
+        cout << ecount[x+1][y+1] << endl;
     }
 }
