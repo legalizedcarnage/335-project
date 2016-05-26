@@ -78,6 +78,10 @@ int main(void)
     game.text_box.width = WINDOW_WIDTH/2;
     game.text_box.height = WINDOW_HEIGHT/3;
     game.tutorial = false; 
+    for (int i = 0; i < 5; i++) {
+        game.inv[i] = false;
+        game.open[i] = false;
+    }
     game.text_count =0;
     init_keys(&game);
     
@@ -480,6 +484,7 @@ void render(Game *game)
         }
 	//Layout of the game
 	printtile(game);
+	doors(game);
 	//draw current tile
 	Shape *s;
 	for (int i = 0; i < game->num_objects; i++ ) {
