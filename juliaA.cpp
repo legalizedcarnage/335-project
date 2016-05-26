@@ -104,7 +104,7 @@ void printtile(Game *game)
 	declareobject(game, 5, 600, 12, 600, 8);
 	declareobject(game, 6, 12, 350, 1192, 600);
 	
-	game->num_objects = 11; //7 or 11;
+	game->num_objects = 7; 
 
 	//bed 1
 	glColor3ub(69,69,69);
