@@ -41,7 +41,7 @@ void shiftScreen(Game *game, char direction)
 		game->map[0]++;
 	}
 	std::cout << game->map[0]  << ", " << game->map[1] << endl;
-	if(!game->enemies[game->map[0]+1][game->map[1]+1][0].enemiesInit)	
+	if (!game->enemies[game->map[0]+1][game->map[1]+1][0].enemiesInit)	
 		initEnemies(game, game->map[0], game->map[1]);
 }
 void Player_Object(Game *game, Player *p, Shape *objects, int num)
@@ -99,7 +99,8 @@ void Player_Object(Game *game, Player *p, Shape *objects, int num)
 		}	
 	}
 }
-void player_Wall (Game *game) {
+void player_Wall (Game *game) 
+{
 	//detect screen collisions
 	Player *p;
 	p = &game->player;
@@ -153,7 +154,7 @@ void playerCollision(Game *game)
 			,game->num_objects);
 	*/
 	//player-enemy collision
-	for ( int i = 0; i < 2/*game->num_enemies*/; i++) {
+	for ( int i = 0; i < game->current_enemies; i++) {
 		Player *e;
 		e = &game->enemies[game->map[0]+1][game->map[1]+1][i];	
 		float enemy_b = 
@@ -200,7 +201,7 @@ void playerCollision(Game *game)
 				if (abs(bot - (game->object[j].center.y + 
 				game->object[j].height)) >=
 				base) {
-			    		if (base 
+					if (base 
 					<= abs(min_distY)) {
 						min_distY =
 						base*( p->s.center.y 
@@ -228,7 +229,7 @@ void playerCollision(Game *game)
 						- e->s.center.x)/
 						abs(p->s.center.x - e->s.center.x);
 						if (p->s.center.x - e->s.center.x
-						 == 0) {
+						== 0) {
 							min_distX = 0;
 						}
 					}
@@ -516,7 +517,7 @@ void interact(Game *game)
 	float bot = p->center.y  - p->height;
 	float left = p->center.x - p->width;
 	float right = p->center.x + p->width;
-	if(game->inv[0] == true) {
+	if (game->inv[0] == true) {
 		//change this to be more accurate
 		if (top > game->interact[0].center.y -game->interact[0].height
 		&& bot < game->interact[0].center.y+ game->interact[0].height
@@ -526,7 +527,7 @@ void interact(Game *game)
 			game->num_interact--;
 		}
 	}
-	if(game->inv[1] == true) {
+	if (game->inv[1] == true) {
 		//change this to be more accurate
 		if (p->center.x == game->interact[1].center.x
 		&& p->center.y == game->interact[1].center.y) {
@@ -534,7 +535,7 @@ void interact(Game *game)
 			game->num_interact--;
 		}
 	}
-	if(game->inv[2] == true) {
+	if (game->inv[2] == true) {
 		//change this to be more accurate
 		if (p->center.x == game->interact[2].center.x
 		&& p->center.y == game->interact[2].center.y) {
@@ -542,7 +543,7 @@ void interact(Game *game)
 			game->num_interact--;
 		}
 	}
-	if(game->inv[3] == true) {
+	if (game->inv[3] == true) {
 		//change this to be more accurate
 		if (p->center.x == game->interact[3].center.x
 		&& p->center.y == game->interact[3].center.y) {
@@ -550,7 +551,7 @@ void interact(Game *game)
 			game->num_interact--;
 		}
 	}
-	if(game->inv[4] == true) {
+	if (game->inv[4] == true) {
 		//change this to be more accurate
 		if (p->center.x == game->interact[4].center.x
 		&& p->center.y == game->interact[4].center.y) {
