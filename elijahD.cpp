@@ -65,7 +65,6 @@ void Player_Object(Game *game, Player *p, Shape *objects, int num)
 			if ( top > s->center.y - s->height) 
 				p->s.center.y -= top -  (s->center.y -s->height);
 			p->velocity.y = 0;
-			cout << i << " stuff " << endl;
 		}
 		if (bot >= s->center.y - s->height
 		&& bot <= s->center.y + s->height
@@ -75,7 +74,6 @@ void Player_Object(Game *game, Player *p, Shape *objects, int num)
 			if ( bot < s->center.y + s->height) 
 				p->s.center.y -= bot -  (s->center.y + s->height);
 			p->velocity.y = 0;
-			cout << i << " stuff " << endl;
 		}
 		if (left >= s->center.x - s->width
 		&& left <= s->center.x + s->width
@@ -85,7 +83,6 @@ void Player_Object(Game *game, Player *p, Shape *objects, int num)
 			if ( left < s->center.x + s->width) 
 				p->s.center.x -= left -  (s->center.x + s->width);
 			p->velocity.x = 0;
-			cout << i << " stuff " << endl;
 		} 
 		if (right >= s->center.x - s->width
 		&& right <= s->center.x + s->width
@@ -95,7 +92,6 @@ void Player_Object(Game *game, Player *p, Shape *objects, int num)
 			if ( right > s->center.x - s->width) 
 				p->s.center.x -= right -  (s->center.x -s->width);
 			p->velocity.x = 0;
-			cout << i << " stuff " << endl;
 		}	
 	}
 }
@@ -485,16 +481,37 @@ void key(Game *game)
 void doors(Game *game) 
 {
 	
+	//door1
 	game->interact[0].width = 10;
 	game->interact[0].height = 350;
-	game->interact[0].center.x = WINDOW_WIDTH-5;
-	game->interact[0].center.y = 600;
+	game->interact[0].center.x = WINDOW_WIDTH-10;
+	game->interact[0].center.y = 800;
+	game->interact[1].width = 10;
+	game->interact[1].height = 350;
+	game->interact[1].center.x = WINDOW_WIDTH-10;
+	game->interact[1].center.y = 800;
+	game->interact[2].width = 10;
+	game->interact[2].height = 350;
+	game->interact[2].center.x = WINDOW_WIDTH-10;
+	game->interact[2].center.y = 800;
+	game->interact[3].width = 10;
+	game->interact[3].height = 350;
+	game->interact[3].center.x = WINDOW_WIDTH-10;
+	game->interact[3].center.y = 800;
+	game->interact[4].width = 10;
+	game->interact[4].height = 350;
+	game->interact[4].center.x = WINDOW_WIDTH-10;
+	game->interact[4].center.y = 800;
+	game->interact[5].width = 10;
+	game->interact[5].height = 350;
+	game->interact[5].center.x = WINDOW_WIDTH-10;
+	game->interact[5].center.y = 800;
 
 
 	//print
 	Shape *s;
 	float w, h;
-	if (game->map[0] == 2 && game->map[1] == -1) {
+	if (game->map[0] == 2 && game->map[1] == -1 && game->open[0] == false) {
 		game->num_interact = 1;
 		s = &game->interact[0];
 		glPushMatrix();
@@ -505,9 +522,11 @@ void doors(Game *game)
 			glVertex2i(s->center.x-w,s->center.y-h);
 			glVertex2i(s->center.x-w, s->center.y+h);
 			glVertex2i(s->center.x+ w,s->center.y+ h);
-			glVertex2i(s->center.x+ w,s->center.x-h);
+			glVertex2i(s->center.x+ w,s->center.y-h);
 		glEnd();
 		glPopMatrix();
+		Player_Object(game, &game->player, game->interact, 1);	
+	
 	}	
 }
 void interact(Game *game) 
@@ -515,51 +534,54 @@ void interact(Game *game)
 	Shape *p = &game->player.s;
 	float top = p->center.y  + p->height;
 	float bot = p->center.y  - p->height;
-	float left = p->center.x - p->width;
+	//float left = p->center.x - p->width;
 	float right = p->center.x + p->width;
-	if (game->inv[0] == true) {
+	int i = 0;
+	if (game->inv[i] == true) {
 		//change this to be more accurate
-		if (top > game->interact[0].center.y -game->interact[0].height
-		&& bot < game->interact[0].center.y+ game->interact[0].height
-		&& right > game->interact[0].center.x-game->interact[0].width
-		&& left < game->interact[0].center.x+game->interact[0].width) {
-			game->interact[0] = game->interact[game->num_interact-1];
-			game->num_interact--;
+		if (top >= game->interact[i].center.y -game->interact[i].height
+		&& bot <= game->interact[i].center.y+ game->interact[i].height
+		&& right == game->interact[i].center.x-game->interact[i].width) {
+			game->open[i] = true;
 		}
 	}
+	i = 1;
 	if (game->inv[1] == true) {
 		//change this to be more accurate
-		if (p->center.x == game->interact[1].center.x
-		&& p->center.y == game->interact[1].center.y) {
-			game->interact[1] = game->interact[game->num_interact-1];
-			game->num_interact--;
+		if (top >= game->interact[i].center.y -game->interact[i].height
+		&& bot <= game->interact[i].center.y+ game->interact[i].height
+		&& right == game->interact[i].center.x-game->interact[i].width) {
+			game->open[i] = true;
 		}
 	}
+	i = 2;
 	if (game->inv[2] == true) {
 		//change this to be more accurate
-		if (p->center.x == game->interact[2].center.x
-		&& p->center.y == game->interact[2].center.y) {
-			game->interact[2] = game->interact[game->num_interact-1];
-			game->num_interact--;
+		if (top >= game->interact[i].center.y -game->interact[i].height
+		&& bot <= game->interact[i].center.y+ game->interact[i].height
+		&& right == game->interact[i].center.x-game->interact[i].width) {
+			game->open[i] = true;
 		}
 	}
+	i = 3;
 	if (game->inv[3] == true) {
 		//change this to be more accurate
-		if (p->center.x == game->interact[3].center.x
-		&& p->center.y == game->interact[3].center.y) {
-			game->interact[3] = game->interact[game->num_interact-1];
-			game->num_interact--;
+		if (top >= game->interact[i].center.y -game->interact[i].height
+		&& bot <= game->interact[i].center.y+ game->interact[i].height
+		&& right == game->interact[i].center.x-game->interact[i].width) {
+			game->open[i] = true;
 		}
 	}
+	i = 4;
 	if (game->inv[4] == true) {
 		//change this to be more accurate
-		if (p->center.x == game->interact[4].center.x
-		&& p->center.y == game->interact[4].center.y) {
-			game->interact[4] = game->interact[game->num_interact-1];
-			game->num_interact--;
+		if (top >= game->interact[i].center.y -game->interact[i].height
+		&& bot <= game->interact[i].center.y+ game->interact[i].height
+		&& right == game->interact[i].center.x-game->interact[i].width) {
+			game->open[i] = true;
 		}
 	}
-	//Player_Object(game, &game->player, game->interact, game->num_interact);	
+	
 }
 void text(Game *game) 
 {
@@ -567,14 +589,13 @@ void text(Game *game)
 	float w, h;
 	glColor3ub(50,50,50);
 	glPushMatrix();
-	glTranslatef(s->center.x, s->center.y, s->center.z);
 	w = s->width;
 	h = s->height;
 	glBegin(GL_QUADS);
-		glVertex2i(-w,-h);
-		glVertex2i(-w, h);
-		glVertex2i( w, h);
-		glVertex2i( w,-h);
+		glVertex2i(s->center.x-w,s->center.y-h);
+		glVertex2i(s->center.x-w, s->center.y+h);
+		glVertex2i(s->center.x+ w,s->center.y+ h);
+		glVertex2i(s->center.x+ w,s->center.y-h);
 	glEnd();
 	glPopMatrix();
 	//print text
