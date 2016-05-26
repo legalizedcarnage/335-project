@@ -96,7 +96,7 @@ void weaponMov(Game *game)
 			game->object[i].center.x = p->s.center.x;
 			game->object[i].center.y = p->s.center.y - 25;
 		if(game->space == 's'){
-			ame->mele = true;
+			game->mele = true;
 		if(game->mele == true){
 			mele(game);
                 		}
