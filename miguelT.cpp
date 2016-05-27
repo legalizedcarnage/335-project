@@ -117,6 +117,8 @@ void enemiesMovement(Game *game, int x, int y, int i)
         directionx = p->velocity.x;
     if (ycount[x+1][y+1][0] == 0)
         directiony = p->velocity.y;
+        
+	objectCollision(game, &game->enemies[x+1][y+1][i]);    
     //Checks for collision with walls
     if (p->s.center.y - p->s.height <= 20 && p->velocity.y < 0) {
         p->s.center.y = p->s.height + 20;
@@ -202,33 +204,52 @@ void playerFound(Game *game, int x, int y, int i)
                     (pow(e->s.center.y - p->s.center.y, 2))) >= 50) {                
             if (p->s.center.x < e->s.center.x && e->velocity.x == 0) {
                 e->velocity.x *= -VEL;
+		objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }	    
             if (p->s.center.x > e->s.center.x && e->velocity.x == 0) {
                 e->velocity.x *= VEL;
+
+        
+	objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }
             if (p->s.center.x < e->s.center.x && e->velocity.x > 0) {
                 e->velocity.x *= -1.0;
+
+        
+	objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }
             if (p->s.center.x > e->s.center.x && e->velocity.x < 0) {
                 e->velocity.x *= -1.0;
+        
+	objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }
             if (p->s.center.y > e->s.center.y && e->velocity.y < 0) {
                 e->velocity.y *= -1.0;
+        
+	objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }
             if (p->s.center.y < e->s.center.y && e->velocity.y > 0) {
                 e->velocity.y *= -1.0;
+        
+	objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }
             if (p->s.center.y > e->s.center.y && e->velocity.y == 0) {
                 e->velocity.y *= VEL;
+        
+	objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }
             if (p->s.center.y < e->s.center.y && e->velocity.y == 0) {
                 e->velocity.y *= -VEL;
+        
+	objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }
         }
         if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
                     (pow(e->s.center.y - p->s.center.y, 2))) < 50) {
             e->velocity.x *= -1.0;
             e->velocity.y *= -1.0;
+        
+	objectCollision(game, &game->enemies[x+1][y+1][i]);    
         }
     }
     e->s.center.x += e->velocity.x;
@@ -240,8 +261,8 @@ void renderEnemies(Game *game, int x, int y)
     game->current_enemies = ecount[x+1][y+1];
     for (int i = 0; i < game->current_enemies; i++) {
         enemiesMovement(game, x, y, i);
-        objectCollision(game, &game->enemies[x+1][y+1][i]);    
-        playerFound(game, x, y,  i);
+	objectCollision(game, &game->enemies[x+1][y+1][i]);    
+	playerFound(game, x, y,  i);
         removeEnemies(game, x, y, i);
         float h, w;
         Shape *s;
@@ -293,6 +314,12 @@ void initEcount(Game *game)
 
 void objectCollision(Game *game, Player *p)
 {
+    int y = game->map[1];
+    int x = game->map[0];
+    if (xcount[x+1][y+1][0] == 0)
+        directionx = p->velocity.x;
+    if (ycount[x+1][y+1][0] == 0)
+        directiony = p->velocity.y;       
     float enemyt = p->s.center.y + p->s.height;
     float enemyb = p->s.center.y - p->s.height;
     float enemyl = p->s.center.x - p->s.width;
@@ -307,6 +334,18 @@ void objectCollision(Game *game, Player *p)
 		&& enemyr > o->center.x - o->width
 		&& p->velocity.y >= 0 ) {
 	    p->velocity.y *= -1.0;
+
+        ycount[x+1][y+1][0] += 1;
+        if (ycount[x+1][y+1][0] >= 2) {
+            int randx = rand() % 10;
+            //cout << "randy: " << randy << endl;
+            if (randx <= 5)
+                p->velocity.x = VEL;
+            if (randx > 5)
+                p->velocity.x = -(VEL);
+            ycount[x+1][y+1][0] = 0;
+        }
+
 	}
 	if (enemyb >= o->center.y - o->height
 		&& enemyb <= o->center.y + o->height
@@ -314,6 +353,17 @@ void objectCollision(Game *game, Player *p)
 		&& enemyr > o->center.x - o->width
 		&& p->velocity.y <= 0 ) {
 	    p->velocity.y *= -1.0;
+
+        ycount[x+1][y+1][0] += 1;
+        if (ycount[x+1][y+1][0] >= 2) {
+            int randx = rand() % 10;
+            //cout << "randy: " << randy << endl;
+            if (randx <= 5)
+                p->velocity.x = VEL;
+            if (randx > 5)
+                p->velocity.x = -(VEL);
+            ycount[x+1][y+1][0] = 0;
+        }
 	}
 	if (enemyl >= o->center.x - o->width
 		&& enemyl <= o->center.x + o->width
@@ -321,6 +371,17 @@ void objectCollision(Game *game, Player *p)
 		&& enemyt > o->center.y - o->height
 		&& p->velocity.x <= 0 ) {
 	    p->velocity.x *= -1.0;
+
+        xcount[x+1][y+1][0] += 1;
+        if (xcount[x+1][y+1][0] >= 2) {
+            int randy = rand() % 10;
+            //cout << "randy: " << randy << endl;
+            if (randy <= 5)
+                p->velocity.y = VEL;
+            if (randy > 5)
+                p->velocity.y = -(VEL);
+            xcount[x+1][y+1][0] = 0;
+        }
 	}
 	if (enemyr >= o->center.x - o->width
 		&& enemyr <= o->center.x + o->width
@@ -328,6 +389,17 @@ void objectCollision(Game *game, Player *p)
 		&& enemyt > o->center.y - o->height
 		&& p->velocity.x >= 0 ) {
 	    p->velocity.x *= -1.0;
+
+        xcount[x+1][y+1][0] += 1;
+        if (xcount[x+1][y+1][0] >= 2) {
+            int randx = rand() % 10;
+            //cout << "randy: " << randy << endl;
+            if (randx <= 5)
+                p->velocity.x = VEL;
+            if (randx > 5)
+                p->velocity.x = -(VEL);
+            xcount[x+1][y+1][0] = 0;
+        }
 	}
     }
 }
