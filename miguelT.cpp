@@ -29,7 +29,6 @@ int ecounter=1;
 void initEnemies(Game *game, int x, int y) 
 {
     game->current_enemies = ecount[x+1][y+1];
-    cout << "Enemies that will be init:" << game->current_enemies << "using ecount: " << ecount[x+1][y+1]<< endl;
     // Enemies are dynamic, start at 2 and goes up by 1 every 2 levels.
     /*if (x % 2 == 0 && x != 0) {
         if (usedxcount == 0) {
@@ -114,7 +113,6 @@ void enemiesMovement(Game *game, int x, int y, int i)
 {
     Player *p;
     p = &game->enemies[x+1][y+1][i];
-
     if (xcount[x+1][y+1][0] == 0)
         directionx = p->velocity.x;
     if (ycount[x+1][y+1][0] == 0)
@@ -199,27 +197,38 @@ void playerFound(Game *game, int x, int y, int i)
     p = &game->player;
     //Checks distance between current enemy and player
     if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
-                (pow(e->s.center.y - p->s.center.y, 2))) <= 150) {
+                (pow(e->s.center.y - p->s.center.y, 2))) <= 175) {
         if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
-                    (pow(e->s.center.y - p->s.center.y, 2))) >= 50) {
+                    (pow(e->s.center.y - p->s.center.y, 2))) >= 50) {                
+            if (p->s.center.x < e->s.center.x && e->velocity.x == 0) {
+                e->velocity.x *= -VEL;
+            }	    
+            if (p->s.center.x > e->s.center.x && e->velocity.x == 0) {
+                e->velocity.x *= VEL;
+            }
             if (p->s.center.x < e->s.center.x && e->velocity.x > 0) {
                 e->velocity.x *= -1.0;
             }
             if (p->s.center.x > e->s.center.x && e->velocity.x < 0) {
                 e->velocity.x *= -1.0;
             }
+            if (p->s.center.y > e->s.center.y && e->velocity.y < 0) {
+                e->velocity.y *= -1.0;
+            }
             if (p->s.center.y < e->s.center.y && e->velocity.y > 0) {
                 e->velocity.y *= -1.0;
             }
-            if (p->s.center.y > e->s.center.y && e->velocity.y < 0) {
-                e->velocity.y *= -1.0;
+            if (p->s.center.y > e->s.center.y && e->velocity.y == 0) {
+                e->velocity.y *= VEL;
+            }
+            if (p->s.center.y < e->s.center.y && e->velocity.y == 0) {
+                e->velocity.y *= -VEL;
             }
         }
         if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
                     (pow(e->s.center.y - p->s.center.y, 2))) < 50) {
             e->velocity.x *= -1.0;
             e->velocity.y *= -1.0;
-            e->health -= 1;
         }
     }
     e->s.center.x += e->velocity.x;
@@ -231,6 +240,7 @@ void renderEnemies(Game *game, int x, int y)
     game->current_enemies = ecount[x+1][y+1];
     for (int i = 0; i < game->current_enemies; i++) {
         enemiesMovement(game, x, y, i);
+        objectCollision(game, &game->enemies[x+1][y+1][i]);    
         playerFound(game, x, y,  i);
         removeEnemies(game, x, y, i);
         float h, w;
@@ -268,10 +278,56 @@ void initEcount(Game *game)
         for (int j = 0; j < 100-1; j++) {
             if (i < 2)
                 ecount[i+1][j] = 2;
-            if (i >= 2 && i < 4)
+            if (i >= 2 && i < 4) {
                 ecount[i+1][j] = 3;
-            if (i >= 4 && i < 6)
+            }
+            if (i >= 4 && i < 6) {
                 ecount[i+1][j] = 4;
+            }
+            if (i >=6) {
+                ecount[i+1][j] = 5;
+            }
         }
+    }
+}
+
+void objectCollision(Game *game, Player *p)
+{
+    float enemyt = p->s.center.y + p->s.height;
+    float enemyb = p->s.center.y - p->s.height;
+    float enemyl = p->s.center.x - p->s.width;
+    float enemyr = p->s.center.x + p->s.width;
+    //cout << game->num_objects << endl;
+    Shape *o;
+    for (int i = 1; i < game->num_objects; i++) {
+        o = &game->object[i];
+  	if (enemyt >= o->center.y - o->height
+		&& enemyt <= o->center.y + o->height
+		&& enemyl < o->center.x + o->width
+		&& enemyr > o->center.x - o->width
+		&& p->velocity.y >= 0 ) {
+	    p->velocity.y *= -1.0;
+	}
+	if (enemyb >= o->center.y - o->height
+		&& enemyb <= o->center.y + o->height
+		&& enemyl < o->center.x + o->width
+		&& enemyr > o->center.x - o->width
+		&& p->velocity.y <= 0 ) {
+	    p->velocity.y *= -1.0;
+	}
+	if (enemyl >= o->center.x - o->width
+		&& enemyl <= o->center.x + o->width
+		&& enemyb < o->center.y + o->height
+		&& enemyt > o->center.y - o->height
+		&& p->velocity.x <= 0 ) {
+	    p->velocity.x *= -1.0;
+	}
+	if (enemyr >= o->center.x - o->width
+		&& enemyr <= o->center.x + o->width
+		&& enemyb < o->center.y + o->height
+		&& enemyt > o->center.y - o->height
+		&& p->velocity.x >= 0 ) {
+	    p->velocity.x *= -1.0;
+	}
     }
 }
