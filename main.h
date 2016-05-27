@@ -1,7 +1,7 @@
 //struct header file
 #ifndef MAIN_H
 #define MAIN_H
-
+#include "ppm.h"
 #define WINDOW_WIDTH  1200
 #define WINDOW_HEIGHT 900
 const unsigned int Max_Enemies = 10;
@@ -63,6 +63,5 @@ struct Game {
 	bool tutorial;
 	int text_count;
 };
-
-
+unsigned char *buildAlphaData(Ppmimage *img);
 #endif

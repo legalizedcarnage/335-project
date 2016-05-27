@@ -16,8 +16,9 @@
 //key image
 Ppmimage *keyImage = NULL;
 GLuint keyTexture;
-
+GLuint alphaKeyTexture;
 using namespace std;
+
 //used when player collides with wall to shift to new tile
 void Respawn(Game *game)
 {	
@@ -262,8 +263,6 @@ void playerCollision(Game *game)
 			e->velocity.y *= -1;	
 		}
 	}	
-	//Player_Object(game, &game->player);
-	//Player_Object(game, &game->player,game->object,game->num_objects);
 	player_Wall(game);
 	if (game->player.health <= 0) {
 		Respawn(game);
@@ -396,7 +395,11 @@ void Print_keys(Game *game)
 	glTexImage2D(GL_TEXTURE_2D, 0, 3,
                 keyImage->width, keyImage->height,
                 0, GL_RGB, GL_UNSIGNED_BYTE, keyImage->data);
-
+	glGenTextures(1, &alphaKeyTexture);
+	unsigned char *alphaKeyData = buildAlphaData(keyImage);
+	glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,keyImage->width,
+		keyImage->height,0, GL_RGBA,GL_UNSIGNED_BYTE,alphaKeyData);
+	free(alphaKeyData);	
 	game->key_num = -1;
 	//check if key should be printed on tile
 	if (game->map[0] == 0 && game->map[1] ==1) {
@@ -444,7 +447,8 @@ void Print_keys(Game *game)
 		cout << w << " " << h << endl;
 		cout << game->key_num << endl;
 		glPushMatrix();
-		//glTranslatef(s->center.x, s->center.y, s->center.z);
+		glEnable(GL_ALPHA_TEST);
+		glAlphaFunc(GL_GREATER, 0.0f);
 		glBindTexture(GL_TEXTURE_2D, keyTexture);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0f, 1.0f); 
@@ -457,6 +461,7 @@ void Print_keys(Game *game)
 			glVertex2i(s->center.x+ w,s->center.y-h);
                 glEnd();
 		glBindTexture(GL_TEXTURE_2D, 0);
+		glDisable(GL_ALPHA_TEST);
 		glPopMatrix();
 	}
 }
