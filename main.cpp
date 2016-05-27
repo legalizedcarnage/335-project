@@ -35,6 +35,7 @@ GLuint bgTransTexture;
 int bg = 1;
 Ppmimage *playerImage = NULL;
 GLuint playerTexture;
+GLuint alphaTexture;
 
 //X Windows variables
 Display *dpy;
@@ -226,7 +227,12 @@ void init_opengl(void)
     glTexImage2D(GL_TEXTURE_2D, 0, 3,
 		playerImage->width, playerImage->height,
 		0, GL_RGB, GL_UNSIGNED_BYTE, playerImage->data);
-
+    //player alpha
+    glGenTextures(1, &alphaTexture);
+    unsigned char *alphaData = buildAlphaData(playerImage);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,playerImage->width,
+	    playerImage->height,0, GL_RGBA,GL_UNSIGNED_BYTE,alphaData);
+    free(alphaData);
     //background transparent part
 /*    glBindTexture(GL_TEXTURE_2D, bgTransTexture);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
@@ -487,27 +493,59 @@ void render(Game *game)
 
 	Print_keys(game);
 	//draw player	
-	glColor3ub(150,160,220);
+	renderWeapon(game);
+	glColor4f(1.0f,1.0f,1.0f,0.8f);
 	s = &game->player.s;
 	w = s->width;
 	h = s->height;
-		glBindTexture(GL_TEXTURE_2D, playerTexture);
-		glBegin(GL_QUADS);
-			glTexCoord2f(0.0f, 1.0f); 
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER,0.0f);
+	glBindTexture(GL_TEXTURE_2D, playerTexture);
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 1.0f); 
+		if (game->direction == 'd')
 			glVertex2i(s->center.x-w,s->center.y-h);
-			glTexCoord2f(0.0f, 0.0f); 
-			glVertex2i(s->center.x-w,s->center.y+h);
-			glTexCoord2f(1.0f, 0.0f); 
+		else if (game->direction == 'u')
 			glVertex2i(s->center.x+w,s->center.y+h);
-			glTexCoord2f(1.0f, 1.0f); 
+		else if (game->direction == 'l')
+			glVertex2i(s->center.x-w,s->center.y+h);
+		else 
 			glVertex2i(s->center.x+w,s->center.y-h);
-		glEnd();
-		glBindTexture(GL_TEXTURE_2D, 0);
+		glTexCoord2f(0.0f, 0.0f); 
+		if (game->direction == 'd')
+			glVertex2i(s->center.x-w,s->center.y+h);
+		else if (game->direction == 'u')
+			glVertex2i(s->center.x+w,s->center.y-h);
+		else if (game->direction == 'l')
+			glVertex2i(s->center.x+w,s->center.y+h);
+		else 
+			glVertex2i(s->center.x-w,s->center.y-h);
+		glTexCoord2f(1.0f, 0.0f); 
+		if (game->direction == 'd')
+			glVertex2i(s->center.x+w,s->center.y+h);
+		else if (game->direction == 'u')
+			glVertex2i(s->center.x-w,s->center.y-h);
+		else if (game->direction == 'l')
+			glVertex2i(s->center.x+w,s->center.y-h);
+		else 
+			glVertex2i(s->center.x-w,s->center.y+h);
+		glTexCoord2f(1.0f, 1.0f); 
+		if (game->direction == 'd')
+			glVertex2i(s->center.x+w,s->center.y-h);
+		else if (game->direction == 'u')
+			glVertex2i(s->center.x-w,s->center.y+h);
+		else if (game->direction == 'l')
+			glVertex2i(s->center.x-w,s->center.y-h);
+		else 
+			glVertex2i(s->center.x+w,s->center.y+h);
+	glEnd();
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glDisable(GL_ALPHA_TEST);
 	//print player 
 	//glPushMatrix();
 	//glTranslatef(s->center.x, s->center.y, s->center.z);
-	w = s->width;
-	h = s->height;
+	//w = s->width;
+	//h = s->height;
 	//glBegin(GL_QUADS);
 	//glVertex2i(-w,-h);
 	//glVertex2i(-w, h);
@@ -518,7 +556,6 @@ void render(Game *game)
 	
 	glColor3ub(0,0,0);
 	
-	renderWeapon(game);
 	renderEnemies(game, game->map[0], game->map[1]);
 	hudDisplay(game);
 	if (game->tutorial == true) {

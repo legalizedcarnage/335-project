@@ -46,8 +46,6 @@ void shiftScreen(Game *game, char direction)
 }
 void Player_Object(Game *game, Player *p, Shape *objects, int num)
 {
-	//p = &game->player;
-	//defined edges
 	float top = p->s.center.y  + p->s.height;
 	float bot = p->s.center.y  - p->s.height;
 	float left = p->s.center.x - p->s.width;
