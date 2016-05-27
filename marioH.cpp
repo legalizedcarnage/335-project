@@ -1,3 +1,4 @@
+
 //Author:Mario Hernandez
 //Purpose: to render the main menu and functionality of the menu buttons
 //Written:	4/27/16
@@ -29,6 +30,10 @@ Ppmimage *mainbgImage = NULL;
 GLuint mainbgTexture;
 GLuint mainbgTransTexture;
 int mainBg = 1;
+bool buttonDisplay = 1;
+bool eHealthDisplay = 1;
+bool pHudDisplay = 1;
+
 
 void displayMenu(Game * game)
 {
@@ -51,7 +56,6 @@ void displayMenu(Game * game)
 				WINDOW_HEIGHT);
 			glTexCoord2f(1.0f, 1.0f); glVertex2i(WINDOW_WIDTH, 0);
 		glEnd();
-	//
 
 	//glClearColor(0.5,0.5,0.5,1.0);
 	//glClear(GL_COLOR_BUFFER_BIT);
@@ -86,18 +90,23 @@ void displayMenu(Game * game)
 void hudDisplay(Game * game) 
 {
 	glColor3ub(100,0,0);
+bool buttonDisplay = 1;
+bool eHealthDisplay = 1;
+bool pHudDisplay = 0;
 
 	declareobject(game,game->num_objects+1,game->player.health*15,10,250,860);
 	int x =game->map[0], y = game->map[1];
-	for (int i=0; i < game->current_enemies; i++) {
-		declareobject(game,game->num_objects+2,
-			game->enemies[x+1][y+1][i].health*2,5,
-			game->enemies[x+1][y+1][i].s.center.x,
-			game->enemies[x+1][y+1][i].s.center.y+50);
-		drawobject(game,game->num_objects+2);
+	if (eHealthDisplay == 1) {
+		for (int i=0; i < game->current_enemies; i++) {
+			declareobject(game,game->num_objects+2,
+				game->enemies[x+1][y+1][i].health*2,5,
+				game->enemies[x+1][y+1][i].s.center.x,
+				game->enemies[x+1][y+1][i].s.center.y+50);
+			drawobject(game,game->num_objects+2);
+		}
 	}
-
-	drawobject(game,game->num_objects+1);
+	//if (pHudDisplay == 1) 
+		drawobject(game,game->num_objects+1);
 	Rect pHealth;
 	Rect Weapons;
 	Rect wName;
@@ -158,19 +167,20 @@ void hudDisplay(Game * game)
 	Key7.bot = 670;
 	Key7.left = 50;
 	Key7.center = 0;
-
-	ggprint16(&pHealth, 76, 0x00ffffff, "Health Bar");
-	ggprint08(&pKey,76,0x00ffffff,"p key: Pause Menu");
-	ggprint08(&mKey,76,0x00ffffff,"m key: Map Screen");	
-	ggprint16(&Weapons,76, 0x00ffffff, "Equiped Weapon");
-	ggprint08(&Key1,76, 0x00ffffff, "1 Key: Equip Knife");
-	ggprint08(&Key2,76, 0x00ffffff, "2 Key: Equip CrowBar");
-	ggprint08(&Key3,76, 0x00ffffff, "3 Key: Equip Shield");
-	ggprint08(&Key4,76, 0x00ffffff, "4 Key: Equip Pistol");
-	ggprint08(&Key5,76, 0x00ffffff, "5 Key: Equip Shotgun");
-	ggprint08(&Key6,76, 0x00ffffff, "6 Key: Equip Rifle");
-	ggprint08(&Key7,76, 0x00ffffff, "7 Key: Equip Stun Gun");
-	
+	if (pHudDisplay == 1)
+		ggprint16(&pHealth, 76, 0x00ffffff, "Health Bar");
+	if (buttonDisplay ==1) {
+		ggprint08(&pKey,76,0x00ffffff,"p key: Pause Menu");
+		ggprint08(&mKey,76,0x00ffffff,"m key: Map Screen");	
+		ggprint16(&Weapons,76, 0x00ffffff, "Equiped Weapon");
+		ggprint08(&Key1,76, 0x00ffffff, "1 Key: Equip Knife");
+		ggprint08(&Key2,76, 0x00ffffff, "2 Key: Equip CrowBar");
+		ggprint08(&Key3,76, 0x00ffffff, "3 Key: Equip Shield");
+		ggprint08(&Key4,76, 0x00ffffff, "4 Key: Equip Pistol");
+		ggprint08(&Key5,76, 0x00ffffff, "5 Key: Equip Shotgun");
+		ggprint08(&Key6,76, 0x00ffffff, "6 Key: Equip Rifle");
+		ggprint08(&Key7,76, 0x00ffffff, "7 Key: Equip Stun Gun");
+	}
 	if (game->gun =='1') 
 		ggprint16(&wName,76, 0x00ffffff, "Knife");
 	if (game->gun == '2')
@@ -326,20 +336,26 @@ void settingsCursor(XEvent *e,Game * game)
                                         cursorPos = 0;
                                 }
                         }
-			if (key == XK_Right && cursorPos == 0) {
-				cursorPos = 3;
-			}
-			if (key == XK_Left && cursorPos == 3) {
-				cursorPos = 0;
-			}
                         if (key == XK_space || key == 65293) {
                                 switch (cursorPos) {
                                         case 0:
+					if (pHudDisplay == 1)
+                                                pHudDisplay = 0;
+					else if (pHudDisplay == 0)
+                                                pHudDisplay = 1;	
                                         break;
                                         case 1:
+					if (eHealthDisplay ==1)
+						eHealthDisplay = 0;
+					else if (eHealthDisplay == 0)
+						eHealthDisplay = 1;
                                         break;
                                         case 2:
-                                        break;
+					if (buttonDisplay ==1)
+						buttonDisplay = 0;
+					else if (buttonDisplay == 0)
+						buttonDisplay = 1;
+					break;
 					case 3:
 					game->state = 2;
 					cursorPos = 0;
@@ -353,6 +369,7 @@ void settingsCursor(XEvent *e,Game * game)
 
 void settingsMenu(Game * game)
 {
+	cout << pHudDisplay << endl;
 	glClearColor(0.5,0.5,0.5,1.0);
         glClear(GL_COLOR_BUFFER_BIT);
         glColor3ub(100,60,200);
@@ -360,46 +377,92 @@ void settingsMenu(Game * game)
         declareobject(game,6,150,50,200,950-5*60);
         declareobject(game,7,150,50,600,1100-5*60);
         declareobject(game,8,150,50,200,800-5*60);
+	declareobject(game,9,150,50,600,950-5*60);
+	declareobject(game,10,150,50,200,650-5*60);
+	declareobject(game,11,150,50,600,800-5*60);
         drawobject(game,5);
         drawobject(game,6);
         drawobject(game,7);
         drawobject(game,8);
+	drawobject(game,9);
+	drawobject(game,10);
+	drawobject(game,11);
 
         Rect gButton;
         Rect iButton;
         Rect sButton;
         Rect qButton;
+	Rect blButton;
+	Rect ehButton;
 
         gButton.bot = 790;
         gButton.left = 130;
         gButton.center = 0;
+
+	sButton.bot = 790;
+	sButton.left = 460;
+	sButton.center = 0;
         if (cursorPos ==0) {
-                ggprint16(&gButton, 76, 0x00ffffff, "Current Weapon");
+                ggprint16(&gButton, 76, 0x00ffffff, "Player Hud Display");
         }
         else
-                ggprint16(&gButton, 76, 0x00000000, "Current Weapon");
+                ggprint16(&gButton, 76, 0x00000000, "Player Hud Display");
 
         iButton.bot = 640;
-        iButton.left = 100;
+        iButton.left = 140;
         iButton.center = 0;
         if (cursorPos == 1) {
-                ggprint16(&iButton, 76, 0x00ffffff, "Items");
+                ggprint16(&iButton, 76, 0x00ffffff, "Enemy Health");
         }
-        else
-                ggprint16(&iButton, 76, 0x00000000, "Items");
+	else
+                ggprint16(&iButton, 76, 0x00000000, "Enemy Health");
+	blButton.bot = 500;
+	blButton.left = 140;
+	blButton.center = 0;
+	if (cursorPos == 2) {
+		ggprint16(&blButton, 76, 0x00ffffff, "Button Legend");
+	}
+	else
+		ggprint16(&blButton, 76, 0x00000000, "Button Legend");
 
-        sButton.bot = 790;
-        sButton.left = 460;
-        sButton.center = 0;
-        if (cursorPos == 3) {
-                ggprint16(&sButton, 76, 0x00ffffff, "Weapon: ");
+        if (pHudDisplay == 1) {
+                ggprint16(&sButton, 76, 0x00ffffff, "On");
+		pHudDisplay = 1;
         }
-        else
-                ggprint16(&sButton, 76, 0x00000000, "Weapon: ");
-        qButton.bot = 490;
+	else if (pHudDisplay == 0) {
+		ggprint16(&sButton, 76, 0x00ffffff, "Off");
+		pHudDisplay = 0;
+	}
+	
+	ehButton.bot = 640;
+	ehButton.left = 460;
+	ehButton.center = 0;
+	blButton.bot = 500;
+	blButton.left = 460;
+	blButton.center = 0;
+	
+	if (eHealthDisplay == 1) {
+                ggprint16(&ehButton, 76, 0x00ffffff, "On");
+		eHealthDisplay = 1;
+        }
+        else if (eHealthDisplay== 0) {
+                ggprint16(&ehButton, 76, 0x00ffffff, "Off");
+		eHealthDisplay = 0;
+        }
+
+	if (buttonDisplay == 1) {
+                ggprint16(&blButton, 76, 0x00ffffff, "On");
+		buttonDisplay = 1;
+        }
+        else if (buttonDisplay == 0) {
+                ggprint16(&blButton, 76, 0x00ffffff, "Off");
+		buttonDisplay = 0;
+        }
+
+        qButton.bot = 340;
         qButton.left = 110;
         qButton.center = 0;
-        if (cursorPos == 2) {
+        if (cursorPos == 3) {
                 ggprint16(&qButton, 76, 0x00ffffff, "Return to Pause Menu");
         }
         else
