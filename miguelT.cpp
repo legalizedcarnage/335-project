@@ -31,60 +31,60 @@ void initEnemies(Game *game, int x, int y)
     game->current_enemies = ecount[x+1][y+1];
     // Enemies are dynamic, start at 2 and goes up by 1 every 2 levels.
     /*if (x % 2 == 0 && x != 0) {
-        if (usedxcount == 0) {
-            game->num_enemies += ecounter;
-            ecount[x+1][y+1] = game->num_enemies;
-            game->current_enemies = ecount[x+1][y+1];
-            usedx[usedxcount] = x;
-            usedxcount++;
-        } else {
-            bool within = false;
-            for (int i = 0; i < usedxcount; i++) {
-                if (usedx[i] == x) {
-                    within = true;
-                }
-            }
-            if (!within) {
-                ecounter++;  
-                game->num_enemies += ecounter;
-                ecount[x+1][y+1] = game->num_enemies;
-                game->current_enemies = ecount[x+1][y+1];
-                usedx[usedxcount] = x;
-                usedxcount++;
-            }
-        }
-    } else {
-        ecount[x+1][y+1] = game->num_enemies;
-        game->current_enemies = ecount[x+1][y+1];
-    }
-    
+      if (usedxcount == 0) {
+      game->num_enemies += ecounter;
+      ecount[x+1][y+1] = game->num_enemies;
+      game->current_enemies = ecount[x+1][y+1];
+      usedx[usedxcount] = x;
+      usedxcount++;
+      } else {
+      bool within = false;
+      for (int i = 0; i < usedxcount; i++) {
+      if (usedx[i] == x) {
+      within = true;
+      }
+      }
+      if (!within) {
+      ecounter++;  
+      game->num_enemies += ecounter;
+      ecount[x+1][y+1] = game->num_enemies;
+      game->current_enemies = ecount[x+1][y+1];
+      usedx[usedxcount] = x;
+      usedxcount++;
+      }
+      }
+      } else {
+      ecount[x+1][y+1] = game->num_enemies;
+      game->current_enemies = ecount[x+1][y+1];
+      }
+
     //if we have already passed this x and our enemy count went up
     //then we need to make sure that if we return to that x position
     //that we use the saved amount of enemies
     for (int e = 0; e < usedxcount; e++) {
-        if (usedx[e] == x) {
-            for (int i = 0; i < game->current_; i++) {    
-                game->enemies[x+1][y+1][i].s.width = 20;
-                game->enemies[x+1][y+1][i].s.height = 30;
-                game->enemies[x+1][y+1][i].health = 5;
-                int temp = rand() % 100;
-                if (temp <= 50) {
-                    game->enemies[x+1][y+1][i].velocity.y = 0;
-                    game->enemies[x+1][y+1][i].velocity.x = VEL;
-                }
-                if (temp > 50) {
-                    game->enemies[x+1][y+1][i].velocity.y = VEL;
-                    game->enemies[x+1][y+1][i].velocity.x = 0;
-                }
-                game->enemies[x+1][y+1][i].s.center.x = 320 + 5*65;
-                game->enemies[x+1][y+1][i].s.center.y = 500 - 5*60;
-                ycount[x+1][y+1][0] = 0;
-                xcount[x+1][y+1][0] = 0;
-                game->enemies[x+1][y+1][i].enemiesInit = true;
-                game->num_enemies = game->current_enemies;
-                return;
-            }
-        }
+    if (usedx[e] == x) {
+    for (int i = 0; i < game->current_; i++) {    
+    game->enemies[x+1][y+1][i].s.width = 20;
+    game->enemies[x+1][y+1][i].s.height = 30;
+    game->enemies[x+1][y+1][i].health = 5;
+    int temp = rand() % 100;
+    if (temp <= 50) {
+    game->enemies[x+1][y+1][i].velocity.y = 0;
+    game->enemies[x+1][y+1][i].velocity.x = VEL;
+    }
+    if (temp > 50) {
+    game->enemies[x+1][y+1][i].velocity.y = VEL;
+    game->enemies[x+1][y+1][i].velocity.x = 0;
+    }
+    game->enemies[x+1][y+1][i].s.center.x = 320 + 5*65;
+    game->enemies[x+1][y+1][i].s.center.y = 500 - 5*60;
+    ycount[x+1][y+1][0] = 0;
+    xcount[x+1][y+1][0] = 0;
+    game->enemies[x+1][y+1][i].enemiesInit = true;
+    game->num_enemies = game->current_enemies;
+    return;
+    }
+    }
     }
     */
     for (int i = 0; i < game->current_enemies; i++) {    
@@ -117,8 +117,7 @@ void enemiesMovement(Game *game, int x, int y, int i)
         directionx = p->velocity.x;
     if (ycount[x+1][y+1][0] == 0)
         directiony = p->velocity.y;
-        
-	objectCollision(game, &game->enemies[x+1][y+1][i]);    
+    objectCollision(game, &game->enemies[x+1][y+1][i]);    
     //Checks for collision with walls
     if (p->s.center.y - p->s.height <= 20 && p->velocity.y < 0) {
         p->s.center.y = p->s.height + 20;
@@ -204,52 +203,44 @@ void playerFound(Game *game, int x, int y, int i)
                     (pow(e->s.center.y - p->s.center.y, 2))) >= 50) {                
             if (p->s.center.x < e->s.center.x && e->velocity.x == 0) {
                 e->velocity.x *= -VEL;
-		objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }	    
             if (p->s.center.x > e->s.center.x && e->velocity.x == 0) {
                 e->velocity.x *= VEL;
-
-        
-	objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }
             if (p->s.center.x < e->s.center.x && e->velocity.x > 0) {
                 e->velocity.x *= -1.0;
-
-        
-	objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }
             if (p->s.center.x > e->s.center.x && e->velocity.x < 0) {
                 e->velocity.x *= -1.0;
-        
-	objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }
             if (p->s.center.y > e->s.center.y && e->velocity.y < 0) {
                 e->velocity.y *= -1.0;
-        
-	objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }
             if (p->s.center.y < e->s.center.y && e->velocity.y > 0) {
                 e->velocity.y *= -1.0;
-        
-	objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }
             if (p->s.center.y > e->s.center.y && e->velocity.y == 0) {
                 e->velocity.y *= VEL;
-        
-	objectCollision(game, &game->enemies[x+1][y+1][i]);    
+
+                objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }
             if (p->s.center.y < e->s.center.y && e->velocity.y == 0) {
                 e->velocity.y *= -VEL;
-        
-	objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }
         }
         if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
                     (pow(e->s.center.y - p->s.center.y, 2))) < 50) {
             e->velocity.x *= -1.0;
             e->velocity.y *= -1.0;
-        
-	objectCollision(game, &game->enemies[x+1][y+1][i]);    
+
+            objectCollision(game, &game->enemies[x+1][y+1][i]);    
         }
     }
     e->s.center.x += e->velocity.x;
@@ -261,8 +252,8 @@ void renderEnemies(Game *game, int x, int y)
     game->current_enemies = ecount[x+1][y+1];
     for (int i = 0; i < game->current_enemies; i++) {
         enemiesMovement(game, x, y, i);
-	objectCollision(game, &game->enemies[x+1][y+1][i]);    
-	playerFound(game, x, y,  i);
+        objectCollision(game, &game->enemies[x+1][y+1][i]);    
+        playerFound(game, x, y,  i);
         removeEnemies(game, x, y, i);
         float h, w;
         Shape *s;
@@ -328,78 +319,74 @@ void objectCollision(Game *game, Player *p)
     Shape *o;
     for (int i = 1; i < game->num_objects; i++) {
         o = &game->object[i];
-  	if (enemyt >= o->center.y - o->height
-		&& enemyt <= o->center.y + o->height
-		&& enemyl < o->center.x + o->width
-		&& enemyr > o->center.x - o->width
-		&& p->velocity.y >= 0 ) {
-	    p->velocity.y *= -1.0;
+        if (enemyt >= o->center.y - o->height
+                && enemyt <= o->center.y + o->height
+                && enemyl < o->center.x + o->width
+                && enemyr > o->center.x - o->width
+                && p->velocity.y >= 0 ) {
+            p->velocity.y *= -1.0;
+            ycount[x+1][y+1][0] += 1;
+            if (ycount[x+1][y+1][0] >= 2) {
+                int randx = rand() % 10;
+                //cout << "randy: " << randy << endl;
+                if (randx <= 5)
+                    p->velocity.x = VEL;
+                if (randx > 5)
+                    p->velocity.x = -(VEL);
+                ycount[x+1][y+1][0] = 0;
+            }
 
-        ycount[x+1][y+1][0] += 1;
-        if (ycount[x+1][y+1][0] >= 2) {
-            int randx = rand() % 10;
-            //cout << "randy: " << randy << endl;
-            if (randx <= 5)
-                p->velocity.x = VEL;
-            if (randx > 5)
-                p->velocity.x = -(VEL);
-            ycount[x+1][y+1][0] = 0;
         }
-
-	}
-	if (enemyb >= o->center.y - o->height
-		&& enemyb <= o->center.y + o->height
-		&& enemyl < o->center.x + o->width
-		&& enemyr > o->center.x - o->width
-		&& p->velocity.y <= 0 ) {
-	    p->velocity.y *= -1.0;
-
-        ycount[x+1][y+1][0] += 1;
-        if (ycount[x+1][y+1][0] >= 2) {
-            int randx = rand() % 10;
-            //cout << "randy: " << randy << endl;
-            if (randx <= 5)
-                p->velocity.x = VEL;
-            if (randx > 5)
-                p->velocity.x = -(VEL);
-            ycount[x+1][y+1][0] = 0;
+        if (enemyb >= o->center.y - o->height
+                && enemyb <= o->center.y + o->height
+                && enemyl < o->center.x + o->width
+                && enemyr > o->center.x - o->width
+                && p->velocity.y <= 0 ) {
+            p->velocity.y *= -1.0;
+            ycount[x+1][y+1][0] += 1;
+            if (ycount[x+1][y+1][0] >= 2) {
+                int randx = rand() % 10;
+                //cout << "randy: " << randy << endl;
+                if (randx <= 5)
+                    p->velocity.x = VEL;
+                if (randx > 5)
+                    p->velocity.x = -(VEL);
+                ycount[x+1][y+1][0] = 0;
+            }
         }
-	}
-	if (enemyl >= o->center.x - o->width
-		&& enemyl <= o->center.x + o->width
-		&& enemyb < o->center.y + o->height
-		&& enemyt > o->center.y - o->height
-		&& p->velocity.x <= 0 ) {
-	    p->velocity.x *= -1.0;
-
-        xcount[x+1][y+1][0] += 1;
-        if (xcount[x+1][y+1][0] >= 2) {
-            int randy = rand() % 10;
-            //cout << "randy: " << randy << endl;
-            if (randy <= 5)
-                p->velocity.y = VEL;
-            if (randy > 5)
-                p->velocity.y = -(VEL);
-            xcount[x+1][y+1][0] = 0;
+        if (enemyl >= o->center.x - o->width
+                && enemyl <= o->center.x + o->width
+                && enemyb < o->center.y + o->height
+                && enemyt > o->center.y - o->height
+                && p->velocity.x <= 0 ) {
+            p->velocity.x *= -1.0;
+            xcount[x+1][y+1][0] += 1;
+            if (xcount[x+1][y+1][0] >= 2) {
+                int randy = rand() % 10;
+                //cout << "randy: " << randy << endl;
+                if (randy <= 5)
+                    p->velocity.y = VEL;
+                if (randy > 5)
+                    p->velocity.y = -(VEL);
+                xcount[x+1][y+1][0] = 0;
+            }
         }
-	}
-	if (enemyr >= o->center.x - o->width
-		&& enemyr <= o->center.x + o->width
-		&& enemyb < o->center.y + o->height
-		&& enemyt > o->center.y - o->height
-		&& p->velocity.x >= 0 ) {
-	    p->velocity.x *= -1.0;
-
-        xcount[x+1][y+1][0] += 1;
-        if (xcount[x+1][y+1][0] >= 2) {
-            int randx = rand() % 10;
-            //cout << "randy: " << randy << endl;
-            if (randx <= 5)
-                p->velocity.x = VEL;
-            if (randx > 5)
-                p->velocity.x = -(VEL);
-            xcount[x+1][y+1][0] = 0;
+        if (enemyr >= o->center.x - o->width
+                && enemyr <= o->center.x + o->width
+                && enemyb < o->center.y + o->height
+                && enemyt > o->center.y - o->height
+                && p->velocity.x >= 0 ) {
+            p->velocity.x *= -1.0;
+            xcount[x+1][y+1][0] += 1;
+            if (xcount[x+1][y+1][0] >= 2) {
+                int randx = rand() % 10;
+                //cout << "randy: " << randy << endl;
+                if (randx <= 5)
+                    p->velocity.x = VEL;
+                if (randx > 5)
+                    p->velocity.x = -(VEL);
+                xcount[x+1][y+1][0] = 0;
+            }
         }
-	}
     }
 }
