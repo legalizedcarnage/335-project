@@ -2,9 +2,9 @@
 //Purpose: I will be creating the enemies and 
 //         allowing them to move and hunt the player.
 //Progress: Enemies are now tile dependent, they have health
-//          and can die..
-//Update May 25: Gave enemies health and they also can die now
-//               Addding object collision tonight and weapons later.
+//          and can die. Textures are in progress and guns to be added.
+//Update May 28: Enemies have collision and textures are in
+//               the works, guns to be added.
 
 #include <iostream>
 #include "main.h"
@@ -86,7 +86,7 @@ void initEnemies(Game *game, int x, int y)
     }
     }
     }
-    */
+     */
     for (int i = 0; i < game->current_enemies; i++) {    
         game->enemies[x+1][y+1][i].s.width = 20;
         game->enemies[x+1][y+1][i].s.height = 30;
@@ -257,19 +257,66 @@ void renderEnemies(Game *game, int x, int y)
         removeEnemies(game, x, y, i);
         float h, w;
         Shape *s;
-        glColor3ub(250,50,50);
+        //glColor3ub(250,50,50);
         s = &game->enemies[x+1][y+1][i].s;
-        glPushMatrix();
-        glTranslatef(s->center.x, s->center.y, s->center.z);
+        Player *e;
+        e = &game->enemies[x+1][y+1][i];
         w = s->width;
         h = s->height;
+        /*glPushMatrix();
+          glTranslatef(s->center.x, s->center.y, s->center.z);
+          glBegin(GL_QUADS);
+          glVertex2i(-w,-h);
+          glVertex2i(-w, h);
+          glVertex2i( w, h);
+          glVertex2i( w,-h);
+          glEnd();
+          glPopMatrix();*/
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GREATER,0.0f);
+        glBindTexture(GL_TEXTURE_2D, enemyTexture);
         glBegin(GL_QUADS);
-        glVertex2i(-w,-h);
-        glVertex2i(-w, h);
-        glVertex2i( w, h);
-        glVertex2i( w,-h);
+        glTexCoord2f(0.0f, 1.0f);
+        if (e->velocity.y < 0)
+            glVertex2i(s->center.x-w,s->center.y-h);
+        else if (e->velocity.y > 0)
+            glVertex2i(s->center.x+w,s->center.y+h);
+        else if (e->velocity.x < 0)
+            glVertex2i(s->center.x-w,s->center.y+h);
+        else
+            glVertex2i(s->center.x+w,s->center.y-h);
+        glTexCoord2f(0.0f, 0.0f);
+        if (e->velocity.y < 0)
+            glVertex2i(s->center.x-w,s->center.y+h);
+        else if (e->velocity.y > 0)
+            glVertex2i(s->center.x+w,s->center.y-h);
+        else if (e->velocity.x < 0)
+            glVertex2i(s->center.x+w,s->center.y+h);
+        else
+            glVertex2i(s->center.x-w,s->center.y-h);
+        glTexCoord2f(1.0f, 0.0f);
+        if (e->velocity.y < 0)
+            glVertex2i(s->center.x+w,s->center.y+h);
+        else if (e->velocity.y > 0)
+            glVertex2i(s->center.x-w,s->center.y-h);
+        else if (e->velocity.x < 0)
+            glVertex2i(s->center.x+w,s->center.y-h);
+        else
+            glVertex2i(s->center.x-w,s->center.y+h);
+        glTexCoord2f(1.0f, 1.0f);
+        if (e->velocity.y < 0)
+            glVertex2i(s->center.x+w,s->center.y-h);
+        else if (e->velocity.y > 0)
+            glVertex2i(s->center.x-w,s->center.y+h);
+        else if (e->velocity.x < 0)
+            glVertex2i(s->center.x-w,s->center.y-h);
+        else
+            glVertex2i(s->center.x+w,s->center.y+h);
         glEnd();
-        glPopMatrix();
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glDisable(GL_ALPHA_TEST);
+
+
     }
 }
 
