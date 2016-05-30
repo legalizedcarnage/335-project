@@ -408,7 +408,11 @@ int check_keys(XEvent *e, Game *game)
 		break;
 		case 92:
 		elijah(game);
-		break;		
+		break;
+        case XK_h:
+            hard();
+            std::cout << "Hardmode\n";
+        break;		
 	}
     }
     if ( e->type == KeyRelease) {

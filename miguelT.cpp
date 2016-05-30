@@ -2,9 +2,9 @@
 //Purpose: I will be creating the enemies and 
 //         allowing them to move and hunt the player.
 //Progress: Enemies are now tile dependent, they have health
-//          and can die. Textures are in progress and guns to be added.
-//Update May 28: Enemies have collision and textures are in
-//               the works, guns to be added.
+//          and can die. Textures are done and guns to be added.
+//Update May 30: Enemies have collision and textures working, not sure
+//               guns will be added due to difficulty of game already.
 
 #include <iostream>
 #include "main.h"
@@ -25,7 +25,7 @@ int directionx;
 int directiony;
 float VEL=1.5;
 int ecounter=1;
-
+int hardmode=0;
 void initEnemies(Game *game, int x, int y) 
 {
     game->current_enemies = ecount[x+1][y+1];
@@ -87,10 +87,15 @@ void initEnemies(Game *game, int x, int y)
     }
     }
      */
+    // Check for feature flag on or off
     for (int i = 0; i < game->current_enemies; i++) {    
         game->enemies[x+1][y+1][i].s.width = 20;
         game->enemies[x+1][y+1][i].s.height = 30;
-        game->enemies[x+1][y+1][i].health = 5;
+        if (hardmode) {
+            game->enemies[x+1][y+1][i].health = 20;
+        } else {
+            game->enemies[x+1][y+1][i].health = 10;
+        }
         int temp = rand() % 100;
         if (temp <= 50) {
             game->enemies[x+1][y+1][i].velocity.y = 0;
@@ -196,51 +201,96 @@ void playerFound(Game *game, int x, int y, int i)
     e = &game->enemies[x+1][y+1][i];
     Player *p;
     p = &game->player;
-    //Checks distance between current enemy and player
-    if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
-                (pow(e->s.center.y - p->s.center.y, 2))) <= 175) {
+    //Checks distance between current enemy and player 
+    if (hardmode) {
         if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
-                    (pow(e->s.center.y - p->s.center.y, 2))) >= 50) {                
-            if (p->s.center.x < e->s.center.x && e->velocity.x == 0) {
-                e->velocity.x *= -VEL;
-                objectCollision(game, &game->enemies[x+1][y+1][i]);    
-            }	    
-            if (p->s.center.x > e->s.center.x && e->velocity.x == 0) {
-                e->velocity.x *= VEL;
-                objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                    (pow(e->s.center.y - p->s.center.y, 2))) <= 250) {
+            if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
+                        (pow(e->s.center.y - p->s.center.y, 2))) >= 50) { 
+                if (p->s.center.x < e->s.center.x && e->velocity.x == 0) {
+                    e->velocity.x *= -VEL;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }	    
+                if (p->s.center.x > e->s.center.x && e->velocity.x == 0) {
+                    e->velocity.x *= VEL;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }
+                if (p->s.center.x < e->s.center.x && e->velocity.x > 0) {
+                    e->velocity.x *= -1.0;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }
+                if (p->s.center.x > e->s.center.x && e->velocity.x < 0) {
+                    e->velocity.x *= -1.0;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }
+                if (p->s.center.y > e->s.center.y && e->velocity.y < 0) {
+                    e->velocity.y *= -1.0;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }
+                if (p->s.center.y < e->s.center.y && e->velocity.y > 0) {
+                    e->velocity.y *= -1.0;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }
+                if (p->s.center.y > e->s.center.y && e->velocity.y == 0) {
+                    e->velocity.y *= VEL;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }
+                if (p->s.center.y < e->s.center.y && e->velocity.y == 0) {
+                    e->velocity.y *= -VEL;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }
             }
-            if (p->s.center.x < e->s.center.x && e->velocity.x > 0) {
+            if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
+                        (pow(e->s.center.y - p->s.center.y, 2))) < 50) {
                 e->velocity.x *= -1.0;
-                objectCollision(game, &game->enemies[x+1][y+1][i]);    
-            }
-            if (p->s.center.x > e->s.center.x && e->velocity.x < 0) {
-                e->velocity.x *= -1.0;
-                objectCollision(game, &game->enemies[x+1][y+1][i]);    
-            }
-            if (p->s.center.y > e->s.center.y && e->velocity.y < 0) {
                 e->velocity.y *= -1.0;
-                objectCollision(game, &game->enemies[x+1][y+1][i]);    
-            }
-            if (p->s.center.y < e->s.center.y && e->velocity.y > 0) {
-                e->velocity.y *= -1.0;
-                objectCollision(game, &game->enemies[x+1][y+1][i]);    
-            }
-            if (p->s.center.y > e->s.center.y && e->velocity.y == 0) {
-                e->velocity.y *= VEL;
-
-                objectCollision(game, &game->enemies[x+1][y+1][i]);    
-            }
-            if (p->s.center.y < e->s.center.y && e->velocity.y == 0) {
-                e->velocity.y *= -VEL;
                 objectCollision(game, &game->enemies[x+1][y+1][i]);    
             }
         }
+    } else {
         if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
-                    (pow(e->s.center.y - p->s.center.y, 2))) < 50) {
-            e->velocity.x *= -1.0;
-            e->velocity.y *= -1.0;
-
-            objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                    (pow(e->s.center.y - p->s.center.y, 2))) <= 175) {
+            if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
+                        (pow(e->s.center.y - p->s.center.y, 2))) >= 50) { 
+                if (p->s.center.x < e->s.center.x && e->velocity.x == 0) {
+                    e->velocity.x *= -VEL;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }	    
+                if (p->s.center.x > e->s.center.x && e->velocity.x == 0) {
+                    e->velocity.x *= VEL;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }
+                if (p->s.center.x < e->s.center.x && e->velocity.x > 0) {
+                    e->velocity.x *= -1.0;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }
+                if (p->s.center.x > e->s.center.x && e->velocity.x < 0) {
+                    e->velocity.x *= -1.0;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }
+                if (p->s.center.y > e->s.center.y && e->velocity.y < 0) {
+                    e->velocity.y *= -1.0;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }
+                if (p->s.center.y < e->s.center.y && e->velocity.y > 0) {
+                    e->velocity.y *= -1.0;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }
+                if (p->s.center.y > e->s.center.y && e->velocity.y == 0) {
+                    e->velocity.y *= VEL;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }
+                if (p->s.center.y < e->s.center.y && e->velocity.y == 0) {
+                    e->velocity.y *= -VEL;
+                    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+                }
+            }
+            if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
+                        (pow(e->s.center.y - p->s.center.y, 2))) < 50) {
+                e->velocity.x *= -1.0;
+                e->velocity.y *= -1.0;
+                objectCollision(game, &game->enemies[x+1][y+1][i]);    
+            }
         }
     }
     e->s.center.x += e->velocity.x;
@@ -249,12 +299,14 @@ void playerFound(Game *game, int x, int y, int i)
 
 void renderEnemies(Game *game, int x, int y)
 {
+    resetEnemies(game);
     game->current_enemies = ecount[x+1][y+1];
     for (int i = 0; i < game->current_enemies; i++) {
         enemiesMovement(game, x, y, i);
         objectCollision(game, &game->enemies[x+1][y+1][i]);    
         playerFound(game, x, y,  i);
         removeEnemies(game, x, y, i);
+        glColor4f(1.0f,1.0f,1.0f,0.8f);
         float h, w;
         Shape *s;
         //glColor3ub(250,50,50);
@@ -435,5 +487,29 @@ void objectCollision(Game *game, Player *p)
                 xcount[x+1][y+1][0] = 0;
             }
         }
+    }
+}
+
+void resetEnemies(Game *game)
+{
+    if (game->player.health <= 1) {
+        for (int i = 0; i < 100; i++) {
+            for (int j = 0; j < 100; j++) {
+                for (int k = 0; k < 10; k++) {
+                    game->enemies[i][j][k].enemiesInit = false;
+                }
+            }
+        }
+    }
+}
+
+//special feature
+void hard ()
+{
+    hardmode ^= 1;
+    if (hardmode) {
+        VEL = 2.0;
+    } else {
+        VEL = 1.5;
     }
 }
