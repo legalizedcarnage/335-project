@@ -503,7 +503,10 @@ void resetEnemies(Game *game)
     }
 }
 
-//special feature
+//special feature using the h key
+// This increases the velocity of enemies,
+// it also increases the range that they can see,
+// still testing to see if its beatable
 void hard ()
 {
     hardmode ^= 1;
