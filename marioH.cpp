@@ -37,7 +37,7 @@ bool pHudDisplay = 1;
 
 void displayMenu(Game * game)
 {
-	mainbgImage = ppm6GetImage("img7.ppm");
+	mainbgImage = ppm6GetImage("menu1.ppm");
 	glGenTextures(1, &mainbgTexture);
     
 	//background
