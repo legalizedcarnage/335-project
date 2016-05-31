@@ -445,24 +445,6 @@ void physics(Game *game)
 	//enemiesMovement(game);
 	movement(game);
 }
-void movement(Game *game)
-{
-    Particle *p;
-
-    if (game->n <= 0)
-	return;
-    for (int i = 0; i < game->n; i++) {
-	p = &game->particle[i];
-	p->s.center.x += p->velocity.x;
-	p->s.center.y += p->velocity.y;
-	p->t.center.x += p->velocity2.x;
-        p->t.center.y += p->velocity2.y;
-        p->r.center.x += p->velocity3.x;
-        p->r.center.y += p->velocity3.y;
-
-
-    }
-}
 void charMovement( Game *game) 
 {
     Player *p;
