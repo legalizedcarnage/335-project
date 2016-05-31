@@ -258,16 +258,16 @@ void renderTexture(Game *game, int i)
 	glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER,0.0f);
 	if (game->gun == '1'){
-        glBindTexture(GL_TEXTURE_2D, gun1Texture);
+        //glBindTexture(GL_TEXTURE_2D, gun1Texture);
 	}
 	//glBindTexture(GL_TEXTURE_2D, playerTexture);
 	//glBindTexture(GL_TEXTURE_2D, playerTexture);
 	if (game->gun == '4') {
-	glBindTexture(GL_TEXTURE_2D, gunTexture);
+	//glBindTexture(GL_TEXTURE_2D, gunTexture);
 	} if (game->gun == '5') {
-	glBindTexture(GL_TEXTURE_2D, gun5Texture);
+	//glBindTexture(GL_TEXTURE_2D, gun5Texture);
 	} if (game->gun == '6') {
-	glBindTexture(GL_TEXTURE_2D, gun6Texture);
+	//glBindTexture(GL_TEXTURE_2D, gun6Texture);
 	}
 	//glBindTexture(GL_TEXTURE_2D, playerTexture);
 	glBegin(GL_QUADS);
