@@ -12,4 +12,5 @@ void player_Wall(Game *game);
 void interact(Game *game);
 void doors(Game *game);
 void text(Game *game);
+void gameover(Game *game);
 #endif 

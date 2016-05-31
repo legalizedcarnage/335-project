@@ -9,6 +9,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <GL/glx.h>
+#include <unistd.h>
 #include "ppm.h"
 #include "main.h"
 #include "miguelT.h"
@@ -21,8 +22,6 @@ Ppmimage *keyImage = NULL;
 GLuint keyTexture;
 GLuint alphaKeyTexture;
 using namespace std;
-
-//used when player collides with wall to shift to new tile
 void Respawn(Game *game)
 {	
 	resetEnemies(game);
@@ -31,6 +30,23 @@ void Respawn(Game *game)
 	game->player.health = Start_HP;	
 	initPlayer(game);
 }
+void gameover(Game *game) 
+{
+	static int count = 0;
+	Rect dead;
+	dead.bot = rand()%WINDOW_HEIGHT;
+	dead.left = rand()%WINDOW_WIDTH;
+	dead.center = 0;
+	ggprint16(&dead,10,0x00ffffff,"game over");
+
+	count++;
+	if (count == 100) {
+		game->state = 1;
+		Respawn(game);
+		count = 0;
+	}	
+}
+//used when player collides with wall to shift to new tile
 void shiftScreen(Game *game, char direction)
 {
 	if (direction == 'u') {
@@ -49,7 +65,7 @@ void shiftScreen(Game *game, char direction)
 	if (!game->enemies[game->map[0]+1][game->map[1]+1][0].enemiesInit)	
 		initEnemies(game, game->map[0], game->map[1]);
 }
-void Player_Object(Game *game, Player *p, Shape *objects, int num)
+void Player_Object(Game *game, Player *p, Shape *objects,int start, int num)
 {
 	float top = p->s.center.y  + p->s.height;
 	float bot = p->s.center.y  - p->s.height;
@@ -57,7 +73,7 @@ void Player_Object(Game *game, Player *p, Shape *objects, int num)
 	float right = p->s.center.x + p->s.width;
 	
 	Shape *s;
-	for (int i = 0; i < num; i++) {
+	for (int i = start; i < num; i++) {
 		s = &objects[i];
 
 		if (top >= s->center.y - s->height
@@ -145,13 +161,7 @@ void playerCollision(Game *game)
 	key(game);
 
 	//detect object collisions //added enemy collision
-	Player_Object(game, &game->player,game->object,game->num_objects);
-	/*for (int i = 0; i<game->num_enemies; i++)
-		Player_Object(game
-			, &game->enemies[game->map[0]][game->map[1]][i]
-			,game->object
-			,game->num_objects);
-	*/
+	Player_Object(game, &game->player,game->object,0,game->num_objects);
 	//player-enemy collision
 	for ( int i = 0; i < game->current_enemies; i++) {
 		Player *e;
@@ -164,12 +174,24 @@ void playerCollision(Game *game)
 			e->s.center.x - e->s.width;
 		float enemy_r = 
 			e->s.center.x + e->s.width;
+		if (top+15 >= enemy_b &&
+		bot-15 <= enemy_t &&
+		left-15 <= enemy_r &&
+		right+15 >= enemy_l) {
+			if ((game->gun == '1' || game->gun == '2' 
+			|| game->gun == '3') && game->mele == true)
+				e->health -= 2;
+		}
 		if (top >= enemy_b &&
 		bot <= enemy_t &&
 		left <= enemy_r &&
 		right >= enemy_l) {
-			cout << p->health-- << endl;
-		//knocked back when hit enemy
+			if ((game->gun == '1' || game->gun == '2' 
+			|| game->gun == '3') && game->mele == true)
+				e->health -= 5;
+			else 
+				p->health--;
+			//knocked back when hit enemy
 			int min_distY = 100;
 			int min_distX = 100;
 			int base = 15; 
@@ -182,7 +204,7 @@ void playerCollision(Game *game)
 					<= abs(min_distY)) {
 						min_distY = 
 						base*( p->s.center.y 
-							- e->s.center.y)
+						- e->s.center.y)
 						/abs(p->s.center.y - e->s.center.y);
 						if (p->s.center.y - e->s.center.y 
 							== 0) {
@@ -269,7 +291,9 @@ void playerCollision(Game *game)
 	}	
 	player_Wall(game);
 	if (game->player.health <= 0) {
-		Respawn(game);
+		//Respawn(game);
+		game->state = 10;
+
 	}
 }
 void particleCollision(Game *game) 
@@ -397,8 +421,8 @@ void Print_keys(Game *game)
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3,
-                keyImage->width, keyImage->height,
-                0, GL_RGB, GL_UNSIGNED_BYTE, keyImage->data);
+		keyImage->width, keyImage->height,
+		0, GL_RGB, GL_UNSIGNED_BYTE, keyImage->data);
 	glGenTextures(1, &alphaKeyTexture);
 	unsigned char *alphaKeyData = buildAlphaData(keyImage);
 	glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,keyImage->width,
@@ -457,13 +481,13 @@ void Print_keys(Game *game)
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0f, 1.0f); 
 			glVertex2i(s->center.x-w,s->center.y-h);
-                        glTexCoord2f(0.0f, 0.0f); 
+				glTexCoord2f(0.0f, 0.0f); 
 			glVertex2i(s->center.x-w,s->center.y+ h);
-                        glTexCoord2f(1.0f, 0.0f); 
+				glTexCoord2f(1.0f, 0.0f); 
 			glVertex2i(s->center.x+ w,s->center.y+ h);
-                        glTexCoord2f(1.0f, 1.0f); 
+				glTexCoord2f(1.0f, 1.0f); 
 			glVertex2i(s->center.x+ w,s->center.y-h);
-                glEnd();
+		glEnd();
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glDisable(GL_ALPHA_TEST);
 		glPopMatrix();
@@ -515,13 +539,15 @@ void doors(Game *game)
 	float w, h;
 	if (game->map[0] == 2 && game->map[1] == -1 && game->open[0] == false) {
 		s = &game->interact[0];
-		Player_Object(game, &game->player, game->interact, 1);	
+		Player_Object(game, &game->player, game->interact,0, 1);	
 	} else if (game->map[0] == 1 && game->map[1] == -1 
 		&& game->open[1] == false) {
+		Player_Object(game, &game->player, game->interact, 1,2);	
 		s = &game->interact[1];
 	} else if (game->map[0] == 5 && game->map[1] == 1 
 		&& game->open[2] == false && game->open[3] == false 
 		&& game->open[4] == false) {
+		Player_Object(game, &game->player, game->interact, 2,3);	
 		s = &game->interact[2];
 	}
 	if ((game->map[0] == 2 && game->map[1] == -1 && game->open[0] == false) 
@@ -628,7 +654,7 @@ void text(Game *game)
 	ggprint08(&space,10,0x00ffffff,
 	"press space to continue");
 	switch(game->text_count) {
-	    	case 0: 
+		case 0: 
 			ggprint16(&tutorial,76,0x00ffffff, 
 			"The goal of the game is to escape the prison.");
 			ggprint16(&tutorial,76,0x00ffffff, 

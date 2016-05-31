@@ -549,18 +549,6 @@ void render(Game *game)
 	glEnd();
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glDisable(GL_ALPHA_TEST);
-	//print player 
-	//glPushMatrix();
-	//glTranslatef(s->center.x, s->center.y, s->center.z);
-	//w = s->width;
-	//h = s->height;
-	//glBegin(GL_QUADS);
-	//glVertex2i(-w,-h);
-	//glVertex2i(-w, h);
-	//glVertex2i( w, h);
-	//glVertex2i( w,-h);
-	//glEnd();
-	//glPopMatrix();
 	
 	glColor3ub(0,0,0);
 	
@@ -584,6 +572,8 @@ void render(Game *game)
     }
     else if (game->state == 6)
     		settingsMenu(game);
+    else if (game->state ==10)
+		gameover(game);
 }
 
 
