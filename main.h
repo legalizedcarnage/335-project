@@ -44,6 +44,7 @@ struct Game {
 	char gun;
 	char space;
 	bool mele;
+	bool shot;
         int map[2];
 	Player enemies[100][100][10] ;
 	Player player;
@@ -58,8 +59,10 @@ struct Game {
 	int current_enemies;
 	Shape keys[5];
 	bool inv[5];
+	bool guninv[7];
 	bool open[5];
 	int key_num;
+	int gun_num;
 	int num_interact;
 	Shape interact[5];
 	Shape text_box;
