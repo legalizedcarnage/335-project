@@ -119,7 +119,7 @@ void hudDisplay(Game * game)
 	Rect mKey;
 	Rect Key1;
 	Rect Key2;
-	Rect Key3;
+//	Rect Key3;
 
 	pHealth.bot = 870; 
 	pHealth.left = 210;
@@ -149,20 +149,20 @@ void hudDisplay(Game * game)
 	Key2.left = 460;
 	Key2.center = 0;
 
-	Key3.bot = 750;
-	Key3.left = 460;
-	Key3.center = 0;
+	//Key3.bot = 750;
+	//Key3.left = 460;
+	//Key3.center = 0;
 
 	if (pHudDisplay == 1) {
 		ggprint16(&pHealth, 76, 0x00ffffff, "Health Bar");
 	}
 
 	if (buttonDisplay == 1 && game->map[0]==0 && game->map[1] == 0) {
-		ggprint12(&pKey,76,0x00ffffff,"'P' :   Pause Menu");
-		ggprint12(&mKey,76,0x00ffffff,"'M' :   Map Screen");	    
+		ggprint12(&pKey,76,0x00ffffff,"'P' :   Pause Menu/marioH function");
+		ggprint12(&mKey,76,0x00ffffff,"'M' :   Map Screen/juliaA function");	    
 		ggprint12(&Key1,76, 0x00ffffff, "'\\'  :   Tutorial button");
-		ggprint12(&Key2,76, 0x00ffffff, "'H' :   Hardcore mode");
-		ggprint12(&Key3,76, 0x00ffffff, "'3' :   Equip Shield");
+		ggprint12(&Key2,76, 0x00ffffff, "'H' :   Hardcore mode/Miguel T function");
+		//ggprint12(&Key3,76, 0x00ffffff, "'3' :   Equip Shield");
 	}
 
 	if (pHudDisplay == 1) {
