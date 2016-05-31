@@ -413,7 +413,8 @@ void printtile(Game *game)
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
 			glTexCoord2f(0.0f, 0.0f); glVertex2i(0, WINDOW_HEIGHT);
-			glTexCoord2f(1.0f, 0.0f); glVertex2i(WINDOW_WIDTH, WINDOW_HEIGHT);
+			glTexCoord2f(1.0f, 0.0f); glVertex2i(WINDOW_WIDTH, 
+				WINDOW_HEIGHT);
 			glTexCoord2f(1.0f, 1.0f); glVertex2i(WINDOW_WIDTH, 0);
 		glEnd();
 	
