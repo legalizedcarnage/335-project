@@ -481,7 +481,6 @@ void key(Game *game)
 		&& game->player.s.center.y - game->player.s.height 
 		< game->keys[game->key_num].center.y) {
 			game->inv[game->key_num] = true;
-			cout << game->key_num+1 << endl;	
 		}
 	}
 }
@@ -509,10 +508,6 @@ void doors(Game *game)
 	game->interact[4].height = 350;
 	game->interact[4].center.x = WINDOW_WIDTH-10;
 	game->interact[4].center.y = 800;
-	game->interact[5].width = 10;
-	game->interact[5].height = 350;
-	game->interact[5].center.x = WINDOW_WIDTH-10;
-	game->interact[5].center.y = 800;
 
 
 	//print
@@ -554,7 +549,6 @@ void interact(Game *game)
 	float right = p->center.x + p->width;
 	int i = 0;
 	if (game->inv[i] == true) {
-		//change this to be more accurate
 		if (top >= game->interact[i].center.y -game->interact[i].height
 		&& bot <= game->interact[i].center.y+ game->interact[i].height
 		&& right == game->interact[i].center.x-game->interact[i].width) {
@@ -563,7 +557,6 @@ void interact(Game *game)
 	}
 	i = 1;
 	if (game->inv[1] == true) {
-		//change this to be more accurate
 		if (top >= game->interact[i].center.y -game->interact[i].height
 		&& bot <= game->interact[i].center.y+ game->interact[i].height
 		&& right == game->interact[i].center.x-game->interact[i].width) {
@@ -572,7 +565,6 @@ void interact(Game *game)
 	}
 	i = 2;
 	if (game->inv[2] == true) {
-		//change this to be more accurate
 		if (top >= game->interact[i].center.y -game->interact[i].height
 		&& bot <= game->interact[i].center.y+ game->interact[i].height
 		&& right == game->interact[i].center.x-game->interact[i].width) {
@@ -581,7 +573,6 @@ void interact(Game *game)
 	}
 	i = 3;
 	if (game->inv[3] == true) {
-		//change this to be more accurate
 		if (top >= game->interact[i].center.y -game->interact[i].height
 		&& bot <= game->interact[i].center.y+ game->interact[i].height
 		&& right == game->interact[i].center.x-game->interact[i].width) {
@@ -590,7 +581,6 @@ void interact(Game *game)
 	}
 	i = 4;
 	if (game->inv[4] == true) {
-		//change this to be more accurate
 		if (top >= game->interact[i].center.y -game->interact[i].height
 		&& bot <= game->interact[i].center.y+ game->interact[i].height
 		&& right == game->interact[i].center.x-game->interact[i].width) {
@@ -602,12 +592,23 @@ void interact(Game *game)
 //my requirement function- key "\"
 void text(Game *game) 
 {
+	glScissor(600,0,600,300);
+	glEnable(GL_SCISSOR_TEST);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glDisable(GL_SCISSOR_TEST);
 	Shape *s = &game->text_box;
 	float w, h;
-	glColor3ub(50,50,50);
+	glColor3ub(15,15,15);
 	glPushMatrix();
 	w = s->width;
 	h = s->height;
+	glBegin(GL_QUADS);
+		glVertex2i(s->center.x-(w+25),s->center.y-(h+25));
+		glVertex2i(s->center.x-w-25, s->center.y+h+25);
+		glVertex2i(s->center.x+25+ w,s->center.y+ h+25);
+		glVertex2i(s->center.x+ w+25,s->center.y-h-25);
+	glEnd();
+	glColor3ub(50,50,50);
 	glBegin(GL_QUADS);
 		glVertex2i(s->center.x-w,s->center.y-h);
 		glVertex2i(s->center.x-w, s->center.y+h);
@@ -617,16 +618,29 @@ void text(Game *game)
 	glPopMatrix();
 	//print text1
 	Rect tutorial;
-	tutorial.bot = 100;
+	Rect space;
+	tutorial.bot = 200;
 	tutorial.left = 200;
 	tutorial.center = 0;
+	space.bot = 50;
+	space.left = 600;
+	space.center = 0;
+	ggprint08(&space,10,0x00ffffff,
+	"press space to continue");
 	switch(game->text_count) {
-		case 0: 
-			ggprint08(&tutorial,76,0x00ffffff, 
+	    	case 0: 
+			ggprint16(&tutorial,76,0x00ffffff, 
 			"The goal of the game is to escape the prison.");
+			ggprint16(&tutorial,76,0x00ffffff, 
+			"There are 5 keys scattered throught the jail");
 			break;
 		case 1:
-
+			ggprint16(&tutorial,76,0x00ffffff, 
+			"You must avoid the cops, collect the keys, and escape!!");
 			break;
+		case 2:
+			ggprint16(&tutorial,76,0x00ffffff, 
+			"Arrow keys to move, space to shoot");
+			break;	
 	}
 }

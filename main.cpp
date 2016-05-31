@@ -78,10 +78,10 @@ int main(void)
     game.map[1] = 0;
     game.player.health = Start_HP;
     game.current_enemies = 2;
-    game.text_box.center.x = WINDOW_WIDTH/2;
+    game.text_box.center.x = 600;
     game.text_box.center.y = 0;
-    game.text_box.width = WINDOW_WIDTH/2;
-    game.text_box.height = WINDOW_HEIGHT/3;
+    game.text_box.width = 575;
+    game.text_box.height = 275;
     game.tutorial = false; 
     for (int i = 0; i < 5; i++) {
         game.inv[i] = false;
