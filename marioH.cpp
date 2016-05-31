@@ -15,6 +15,7 @@
 #include "marioH.h"
 #include "juliaA.h"
 #include "miguelT.h"
+#include "elijahD.h"
 #include <GL/glx.h>
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
@@ -29,6 +30,11 @@ int cursorPos = 0;
 Ppmimage *mainbgImage = NULL;
 GLuint mainbgTexture;
 GLuint mainbgTransTexture;
+
+Ppmimage *keyImage2 = NULL;
+GLuint keyTexture2;
+GLuint alphaKeyTexture2;
+
 int mainBg = 1;
 bool buttonDisplay = 1;
 bool eHealthDisplay = 1;
@@ -50,11 +56,14 @@ void displayMenu(Game * game)
 
 	glBindTexture(GL_TEXTURE_2D, mainbgTexture);
 		glBegin(GL_QUADS);
-			glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
-			glTexCoord2f(0.0f, 0.0f); glVertex2i(0, WINDOW_HEIGHT);
-			glTexCoord2f(1.0f, 0.0f); glVertex2i(WINDOW_WIDTH, 
-				WINDOW_HEIGHT);
-			glTexCoord2f(1.0f, 1.0f); glVertex2i(WINDOW_WIDTH, 0);
+			glTexCoord2f(0.0f, 1.0f); 
+			glVertex2i(0, 0); //bottom left
+			glTexCoord2f(0.0f, 0.0f); 
+			glVertex2i(0, WINDOW_HEIGHT); //top left
+			glTexCoord2f(1.0f, 0.0f); 
+			glVertex2i(WINDOW_WIDTH, WINDOW_HEIGHT); //top height
+			glTexCoord2f(1.0f, 1.0f); 
+			glVertex2i(WINDOW_WIDTH, 0); //bottom right
 		glEnd();
 
 	glColor3ub(100,60,0);
@@ -309,12 +318,12 @@ void settingsCursor(XEvent *e,Game * game)
                         if (key == XK_Up) {
                                 cursorPos--;
                                 if (cursorPos < 0) {
-                                        cursorPos = 3;
+                                        cursorPos = 2;
                                 }
                         }
                         if (key == XK_Down) {
                                 cursorPos++;
-                                if (cursorPos > 3) {
+                                if (cursorPos > 2) {
                                         cursorPos = 0;
                                 }
                         }
@@ -452,15 +461,9 @@ void pauseMenu(Game * game)
         glColor3ub(100,60,200);
         
 	declareobject(game,1,150,50,250,1100-5*60);
-	declareobject(game,2,150,50,250,950-5*60);
-	declareobject(game,3,150,50,250,800-5*60);
-	declareobject(game,4,150,50,250,650-5*60);
-
-	declareobject(game,5,150,50,650,1100-5*60);
-        declareobject(game,6,150,50,650,950-5*60);
-
-	drawobject(game,5);
-	drawobject(game,6);
+	declareobject(game,2,150,200,650,950-5*60);
+	declareobject(game,3,150,50,250,950-5*60);
+	declareobject(game,4,150,50,250,800-5*60);
 
 	drawobject(game,1);
 	drawobject(game,2);
@@ -477,46 +480,72 @@ void pauseMenu(Game * game)
         gButton.bot = 790;
         gButton.left = 180;
         gButton.center = 0;
-        if (cursorPos ==0) {
+        
+	if (cursorPos ==0) {
                 ggprint16(&gButton, 76, 0x00ffffff, "Return to Game");
         }
         else
 		ggprint16(&gButton, 76, 0x00000000, "Return to Game");
-
-	iButton.bot = 640;
-	iButton.left = 180;
+	iButton.bot = 800;
+	iButton.left = 610;
 	iButton.center = 0;
 
-	wButton.bot = 820;
+	wButton.bot = 720;
 	wButton.left = 535;
 	wButton.center = 0;
-	itemButton.bot = 670;
+	
+	itemButton.bot = 570;
 	itemButton.left = 600;
 	itemButton.center = 0;
-
-	if (cursorPos == 1) {
-		ggprint16(&iButton, 76, 0x00ffffff, "Check Inventory");
-		ggprint16(&wButton, 76, 0x00ffffff, "Current Weapon Equipped");
-		ggprint16(&itemButton, 76, 0x00ffffff, "Items found");
-	}
-	else
-		ggprint16(&iButton, 76, 0x00000000, "Check Inventory");
 	
-	sButton.bot = 490;
+	ggprint16(&iButton, 76, 0x00ffffff, "Inventory");
+	ggprint16(&wButton, 76, 0x00ffffff, "Current Weapon Equipped");
+	ggprint16(&itemButton, 76, 0x00ffffff, "Items found");
+	
+	sButton.bot = 640;
 	sButton.left = 185;
 	sButton.center = 0;
-	if (cursorPos == 2) {
+	if (cursorPos == 1) {
 		ggprint16(&sButton, 76, 0x00ffffff, "Change Settings");
 	}
 	else
 		ggprint16(&sButton, 76, 0x00000000, "Change Settings");
-        qButton.bot = 350;
+        qButton.bot = 490;
         qButton.left = 160;
         qButton.center = 0;
-        if (cursorPos == 3) {
+        if (cursorPos == 2) {
                 ggprint16(&qButton, 76, 0x00ffffff, "Return to Main Menu");
         }
         else
-        ggprint16(&qButton, 76, 0x00000000, "Return to Main Menu");	
+        ggprint16(&qButton, 76, 0x00000000, "Return to Main Menu");
+	// print keys 
+	keyImage2 = ppm6GetImage("key.ppm");
+        
+	glBindTexture(GL_TEXTURE_2D, keyTexture2);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+        glTexImage2D(GL_TEXTURE_2D, 0, 3,
+                keyImage2->width, keyImage2->height,
+                0, GL_RGB, GL_UNSIGNED_BYTE, keyImage2->data);
+        glGenTextures(1, &alphaKeyTexture2);
+        unsigned char *alphaKeyData = buildAlphaData(keyImage2);
+        glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,keyImage2->width,
+                keyImage2->height,0, GL_RGBA,GL_UNSIGNED_BYTE,alphaKeyData);
+
+	if(game->inv[0] == 1) {
+		glColor3ub(90,140,90);
+
+                glBindTexture(GL_TEXTURE_2D, keyTexture2);
+                glBegin(GL_QUADS);
+                        glTexCoord2f(0.0f, 1.0f);
+                        glVertex2i(500,500);
+                        glTexCoord2f(0.0f, 0.0f);
+                        glVertex2i(500,600);
+                        glTexCoord2f(1.0f, 0.0f);
+                        glVertex2i(600,600);
+                        glTexCoord2f(1.0f, 1.0f);
+                        glVertex2i(600,500);
+                glEnd();
+	}
 }
 
