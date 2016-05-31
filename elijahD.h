@@ -12,5 +12,4 @@ void player_Wall(Game *game);
 void interact(Game *game);
 void doors(Game *game);
 void text(Game *game);
-void elijah(Game *game);
 #endif 

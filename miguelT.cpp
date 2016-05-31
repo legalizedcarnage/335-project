@@ -299,10 +299,10 @@ void playerFound(Game *game, int x, int y, int i)
 
 void renderEnemies(Game *game, int x, int y)
 {
-    resetEnemies(game);
+    //resetEnemies(game);
     game->current_enemies = ecount[x+1][y+1];
     for (int i = 0; i < game->current_enemies; i++) {
-        resetEnemies(game);
+       // resetEnemies(game);
         enemiesMovement(game, x, y, i);
         objectCollision(game, &game->enemies[x+1][y+1][i]);    
         playerFound(game, x, y,  i);
@@ -493,7 +493,6 @@ void objectCollision(Game *game, Player *p)
 
 void resetEnemies(Game *game)
 {
-    if (game->player.health <= 1) {
         initEcount(game);
         for (int i = 0; i < 100; i++) {
             for (int j = 0; j < 100; j++) {
@@ -502,7 +501,6 @@ void resetEnemies(Game *game)
                 }
             }
         }
-    }
 }
 
 //special feature

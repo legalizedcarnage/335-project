@@ -407,7 +407,7 @@ int check_keys(XEvent *e, Game *game)
 		}
 		break;
 		case 92:
-		elijah(game);
+		game->tutorial = true;
 		break;
         case XK_h:
             hard();

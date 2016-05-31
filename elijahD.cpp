@@ -13,6 +13,9 @@
 #include "main.h"
 #include "miguelT.h"
 #include "marioH.h"
+extern "C" {
+#include "fonts.h"
+}
 //key image
 Ppmimage *keyImage = NULL;
 GLuint keyTexture;
@@ -22,6 +25,7 @@ using namespace std;
 //used when player collides with wall to shift to new tile
 void Respawn(Game *game)
 {	
+	resetEnemies(game);
 	game->map[0] = 0;
 	game->map[1] = 0;
 	game->player.health = Start_HP;	
@@ -595,6 +599,7 @@ void interact(Game *game)
 	}
 	
 }
+//my requirement function- key "\"
 void text(Game *game) 
 {
 	Shape *s = &game->text_box;
@@ -611,10 +616,17 @@ void text(Game *game)
 	glEnd();
 	glPopMatrix();
 	//print text1
-		
-}
-//my requirement function- key "\"
-void elijah(Game *game) 
-{
-	game->tutorial = true;
+	Rect tutorial;
+	tutorial.bot = 100;
+	tutorial.left = 200;
+	tutorial.center = 0;
+	switch(game->text_count) {
+		case 0: 
+			ggprint08(&tutorial,76,0x00ffffff, 
+			"The goal of the game is to escape the prison.");
+			break;
+		case 1:
+
+			break;
+	}
 }
