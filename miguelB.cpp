@@ -25,25 +25,25 @@ using namespace std;
 
 void weapon(Game *game)
 {
-	for (int i = 0; i < 5; i++){
+	for (int i = 0; i < 7; i++){
 		game->guninv[i] = false;
 	}
 	game->gun_num = -1;
-	declareobject(game, 91, 10, 10, 465, 205);
+	declareobject(game, 91, 15, 15, 465, 205);
 	declareobject(game, 92, 10, 10, 465, 205);
 	declareobject(game, 93, 5, 30, 465, 205);
-	declareobject(game, 94, 10, 10, 465, 205);
-	declareobject(game, 95, 20, 5, 465, 205);
-	declareobject(game, 96, 20, 5, 465, 205);
+	declareobject(game, 94, 15, 15, 465, 205);
+	declareobject(game, 95, 25, 10, 465, 205);
+	declareobject(game, 96, 25, 10, 465, 205);
 	declareobject(game, 97, 20, 5, 465, 205);
 }
-void inv(Game *game)
+/*void inv(Game *game)
 {
 	        if (game->gun_num >= 0) {
                 if (game->player.s.center.x + game->player.s.width
-                > game->keys[game->key_num].center.x
+                > game->object[game->gun_num].center.x
                 && game->player.s.center.x - game->player.s.width
-                < game->keys[game->key_num].center.x
+                < game->object[game->gun_num].center.x
                 && game->player.s.center.y + game->player.s.height
                 > game->keys[game->key_num].center.y
                 && game->player.s.center.y - game->player.s.height
@@ -52,7 +52,7 @@ void inv(Game *game)
                         cout << game->gun_num+1 << endl;
                 }
         }
-}	
+}*/	
 void mele(Game *game)
 {
     static int count = 0;
@@ -83,7 +83,7 @@ void weaponMov(Game *game)
 	p = &game->player;
 	for (int i = 91; i <98; i ++) {
 		if (game->direction == 'l'){
-			game->object[i].center.x = p->s.center.x - 20;
+			game->object[i].center.x = p->s.center.x - 25;
 			game->object[i].center.y = p->s.center.y;
 		if (game->space == 's'){
 			game->mele = true;
@@ -92,7 +92,7 @@ void weaponMov(Game *game)
 			}	
 		}	
 		}if (game->direction == 'r'){
-			game->object[i].center.x = p->s.center.x + 20;
+			game->object[i].center.x = p->s.center.x + 25;
 			game->object[i].center.y = p->s.center.y;
 		if (game->space == 's'){
 			game->mele = true;
@@ -103,7 +103,7 @@ void weaponMov(Game *game)
 			
 		}if (game->direction == 'u'){
 			game->object[i].center.x = p->s.center.x;
-			game->object[i].center.y = p->s.center.y + 25;
+			game->object[i].center.y = p->s.center.y + 30;
 		if (game->space == 's'){
 			game->mele = true;
 		if (game->mele == true){
@@ -112,7 +112,7 @@ void weaponMov(Game *game)
 		}
 		}if (game->direction == 'd'){
 			game->object[i].center.x = p->s.center.x;
-			game->object[i].center.y = p->s.center.y - 25;
+			game->object[i].center.y = p->s.center.y - 30;
 		if (game->space == 's'){
 			game->mele = true;
 		if (game->mele == true){
@@ -247,31 +247,29 @@ void renderParticles(Game *game)
 		glPopMatrix();
         }
 }
-void renderTexture(Game *game, int i) 
-{	
+void renderTexture(Game *game, int i)
+{
 	Shape *s;
 	float w,h;
 	glColor4f(1.0f,1.0f,1.0f,0.8f);
         s = &game->object[i];
         w = s->width;
         h = s->height;
-        glEnable(GL_ALPHA_TEST);
+	glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER,0.0f);
-	if (game->gun == 1) {
-        //glBindTexture(GL_TEXTURE_2D, gunTexture);
-	} if (game->gun == 2) {
-	//glBindTexture(GL_TEXTURE_2D, playerTexture);
-	} if (game->gun == 3) {
-	//glBindTexture(GL_TEXTURE_2D, playerTexture);
-	} if (game->gun == 4) {
-	//glBindTexture(GL_TEXTURE_2D, playerTexture);
-	} if (game->gun == 5) {
-	//glBindTexture(GL_TEXTURE_2D, playerTexture);
-	} if (game->gun == 6) {
-	//glBindTexture(GL_TEXTURE_2D, playerTexture);
-	} if (game->gun == 7) {
-	//glBindTexture(GL_TEXTURE_2D, playerTexture);
+	if (game->gun == '1'){
+        glBindTexture(GL_TEXTURE_2D, gun1Texture);
 	}
+	//glBindTexture(GL_TEXTURE_2D, playerTexture);
+	//glBindTexture(GL_TEXTURE_2D, playerTexture);
+	if (game->gun == '4') {
+	glBindTexture(GL_TEXTURE_2D, gunTexture);
+	} if (game->gun == '5') {
+	glBindTexture(GL_TEXTURE_2D, gun5Texture);
+	} if (game->gun == '6') {
+	glBindTexture(GL_TEXTURE_2D, gun6Texture);
+	}
+	//glBindTexture(GL_TEXTURE_2D, playerTexture);
 	glBegin(GL_QUADS);
 		glTexCoord2f(0.0f, 1.0f);
                 if (game->direction == 'd')
@@ -318,22 +316,16 @@ void renderWeapon(Game *game)
 	if (game->gun == '1'){
 	renderTexture(game,91);
 	}if (game->gun == '2'){
-	glColor3ub(244,226,13);
 	renderTexture(game,92);
 	}if (game->gun == '3'){
-	glColor3ub(244,226,13);
 	renderTexture(game,93);
 	}if (game->gun == '4'){
-	glColor3ub(244,226,13);
 	renderTexture(game,94);
 	}if (game->gun == '5'){
-	glColor3ub(244,226,13);
 	renderTexture(game,95);
 	}if (game->gun == '6'){
-	glColor3ub(244,226,13);
 	renderTexture(game,96);
 	}if (game->gun == '7'){
-	glColor3ub(244,222,39);
 	renderTexture(game,97);
 	}
 }
