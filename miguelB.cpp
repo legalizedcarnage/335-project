@@ -39,7 +39,7 @@ void weapon(Game *game)
 }
 void inv(Game *game)
 {
-	        if (game->key_num >= 0) {
+	        if (game->gun_num >= 0) {
                 if (game->player.s.center.x + game->player.s.width
                 > game->keys[game->key_num].center.x
                 && game->player.s.center.x - game->player.s.width
@@ -48,8 +48,8 @@ void inv(Game *game)
                 > game->keys[game->key_num].center.y
                 && game->player.s.center.y - game->player.s.height
                 < game->keys[game->key_num].center.y) {
-                        game->inv[game->key_num] = true;
-                        cout << game->key_num+1 << endl;
+                        game->inv[game->gun_num] = true;
+                        cout << game->gun_num+1 << endl;
                 }
         }
 }	
@@ -258,7 +258,7 @@ void renderTexture(Game *game, int i)
         glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER,0.0f);
 	if (game->gun == 1) {
-        glBindTexture(GL_TEXTURE_2D, gunTexture);
+        //glBindTexture(GL_TEXTURE_2D, gunTexture);
 	} if (game->gun == 2) {
 	//glBindTexture(GL_TEXTURE_2D, playerTexture);
 	} if (game->gun == 3) {
