@@ -327,7 +327,11 @@ void renderEnemies(Game *game, int x, int y)
           glPopMatrix();*/
         glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER,0.0f);
-        glBindTexture(GL_TEXTURE_2D, enemyTexture);
+        if (hardmode) {
+            glBindTexture(GL_TEXTURE_2D, enemyTexture2);
+        } else {
+            glBindTexture(GL_TEXTURE_2D, enemyTexture);
+        }
         glBegin(GL_QUADS);
         glTexCoord2f(0.0f, 1.0f);
         if (e->velocity.y < 0)

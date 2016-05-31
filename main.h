@@ -10,6 +10,7 @@ const int Max_Objects = 100;
 const int Max_Particles = 100;
 const int Start_HP = 10;
 extern GLuint enemyTexture;
+extern GLuint enemyTexture2;
 
 struct Vec {
 	float x, y, z;

@@ -35,6 +35,10 @@ GLuint bgTransTexture;
 int bg = 1;
 Ppmimage *playerImage = NULL;
 Ppmimage *enemyImage = NULL;
+Ppmimage *enemyImage2 = NULL;
+
+GLuint enemyTexture2;
+GLuint enemyalphaTexture2;
 GLuint enemyTexture;
 GLuint enemyalphaTexture;
 GLuint playerTexture;
@@ -239,6 +243,7 @@ void init_opengl(void)
 	    playerImage->height,0, GL_RGBA,GL_UNSIGNED_BYTE,alphaData);
     free(alphaData);
 
+
     //enemy image
     enemyImage = ppm6GetImage("enemy.ppm");
     glGenTextures(1, &enemyTexture);
@@ -255,6 +260,21 @@ void init_opengl(void)
 	    enemyImage->height,0, GL_RGBA,GL_UNSIGNED_BYTE,enemyalphaData);
     free(enemyalphaData);
 
+    //enemy image
+    enemyImage2 = ppm6GetImage("enemy2.ppm");
+    glGenTextures(1, &enemyTexture2);
+    glBindTexture(GL_TEXTURE_2D, enemyTexture2);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+		enemyImage2->width, enemyImage2->height,
+		0, GL_RGB, GL_UNSIGNED_BYTE, enemyImage2->data);
+    //enemy alpha
+    glGenTextures(1, &enemyalphaTexture2);
+    unsigned char *enemyalphaData2 = buildAlphaData(enemyImage2);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,enemyImage2->width,
+	    enemyImage2->height,0, GL_RGBA,GL_UNSIGNED_BYTE,enemyalphaData2);
+    free(enemyalphaData2);
     //background transparent part
 /*    glBindTexture(GL_TEXTURE_2D, bgTransTexture);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
