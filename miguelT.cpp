@@ -105,8 +105,8 @@ void initEnemies(Game *game, int x, int y)
             game->enemies[x+1][y+1][i].velocity.y = VEL;
             game->enemies[x+1][y+1][i].velocity.x = 0;
         }
-        game->enemies[x+1][y+1][i].s.center.x = 320 + 5*65;
-        game->enemies[x+1][y+1][i].s.center.y = 500 - 5*60;
+        game->enemies[x+1][y+1][i].s.center.x = 420 + 5*65;
+        game->enemies[x+1][y+1][i].s.center.y = 600 - 5*60;
         ycount[x+1][y+1][0] = 0;
         xcount[x+1][y+1][0] = 0;
         game->enemies[x+1][y+1][i].enemiesInit = true;
