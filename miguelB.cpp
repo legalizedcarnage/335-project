@@ -176,12 +176,12 @@ void makeParticle(Game *game, int x, int y)
     //position of particle
     Particle *p = &game->particle[game->n];
     if (game->gun == '4') {
-   // game->shot = true;
+    game->shot = true;
     p->s.center.x = game->object[94].center.x;
     p->s.center.y = game->object[94].center.y;
     game->n=1;
     } if (game->gun == '5') {
-    //game->shot = true;
+    game->shot = true;
     if (game->n ==0) {
     p->s.center.x = game->object[95].center.x;
     p->s.center.y = game->object[95].center.y;
@@ -200,11 +200,11 @@ void makeParticle(Game *game, int x, int y)
     game->n =3;
     }
     } if (game->gun == '6') {
-    //game->shot = false;
+    game->shot = false;
     p->s.center.x = game->object[96].center.x;
     p->s.center.y = game->object[96].center.y;
     } if (game->gun == '7') {
-    //game->shot = true;
+    game->shot = true;
     p->s.center.x = game->object[97].center.x;
     p->s.center.y = game->object[97].center.y;
     game->n=1;
