@@ -65,8 +65,8 @@ void displayMenu(Game * game)
 			glTexCoord2f(1.0f, 1.0f); 
 			glVertex2i(WINDOW_WIDTH, 0); //bottom right
 		glEnd();
-
-	glColor3ub(100,60,0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glColor3ub(100,100,100);
 	declareobject(game,1,150,50,250+5*65,650-5*60);//play button
 	declareobject(game,2,150,50,250+5*65,500-5*60);//quit button
 	drawobject(game,1);
