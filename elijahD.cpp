@@ -624,7 +624,7 @@ void text(Game *game)
 	float w, h;
 	glColor3ub(15,15,15);
 	glPushMatrix();
-	w = s->width;
+	w = s->width-25;
 	h = s->height;
 	glBegin(GL_QUADS);
 		glVertex2i(s->center.x-(w+25),s->center.y-(h+25));
