@@ -36,6 +36,14 @@ int bg = 1;
 Ppmimage *playerImage = NULL;
 Ppmimage *enemyImage = NULL;
 Ppmimage *enemyImage2 = NULL;
+Ppmimage *gun1Image = NULL;
+Ppmimage *gun2Image = NULL;
+Ppmimage *gun3Image = NULL;
+Ppmimage *gun4Image = NULL;
+Ppmimage *gun5Image = NULL;
+Ppmimage *gun6Image = NULL; 
+Ppmimage *gun7Image = NULL;
+Ppmimage *kappaImage = NULL;
 
 GLuint enemyTexture2;
 GLuint enemyalphaTexture2;
@@ -43,6 +51,22 @@ GLuint enemyTexture;
 GLuint enemyalphaTexture;
 GLuint playerTexture;
 GLuint alphaTexture;
+GLuint gun1Texture;
+GLuint gun1alphaTexture;
+GLuint gun2Texture;
+GLuint gun2alphaTexture;
+GLuint gun3Texture;
+GLuint gun3alphaTexture;
+GLuint gun4Texture;
+GLuint gun4alphaTexture;
+GLuint gun5Texture;
+GLuint gun5alphaTexture;
+GLuint gun6Texture;
+GLuint gun6alphaTexture;
+GLuint gun7Texture;
+GLuint gun7alphaTexture;
+GLuint kappaTexture;
+GLuint kappaalphaTexture;
 
 //X Windows variables
 Display *dpy;
@@ -275,6 +299,137 @@ void init_opengl(void)
     glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,enemyImage2->width,
 	    enemyImage2->height,0, GL_RGBA,GL_UNSIGNED_BYTE,enemyalphaData2);
     free(enemyalphaData2);
+    
+     //kappa image
+    kappaImage = ppm6GetImage("kappa.ppm");
+    glGenTextures(1, &kappaTexture);
+    glBindTexture(GL_TEXTURE_2D, kappaTexture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+                kappaImage->width, kappaImage->height,
+                0, GL_RGB, GL_UNSIGNED_BYTE, kappaImage->data);
+    //kappa alpha
+    glGenTextures(1, &kappaalphaTexture);
+    unsigned char *kappaalphaData = buildAlphaData(kappaImage);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,kappaImage->width,
+            kappaImage->height,0, GL_RGBA,GL_UNSIGNED_BYTE,kappaalphaData);
+    free(kappaalphaData);
+    
+      //knife image
+    gun1Image = ppm6GetImage("knife.ppm");
+    glGenTextures(1, &gun1Texture);
+    glBindTexture(GL_TEXTURE_2D,gun1Texture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+                gun1Image->width, gun1Image->height,
+                0, GL_RGB, GL_UNSIGNED_BYTE, gun1Image->data);
+    //knife alpha
+    glGenTextures(1, &gun1alphaTexture);
+    unsigned char *gun1alphaData = buildAlphaData(gun1Image);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,gun1Image->width,
+            gun1Image->height,0, GL_RGBA,GL_UNSIGNED_BYTE,gun1alphaData);
+    free(gun1alphaData);
+
+    //crowbar image
+    gun2Image = ppm6GetImage("Crowbar.ppm");
+    glGenTextures(1, &gun2Texture);
+    glBindTexture(GL_TEXTURE_2D,gun2Texture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+                gun2Image->width, gun2Image->height,
+                0, GL_RGB, GL_UNSIGNED_BYTE, gun2Image->data);
+    //crowbar alpha
+    glGenTextures(1, &gun2alphaTexture);
+    unsigned char *gun2alphaData = buildAlphaData(gun2Image);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,gun2Image->width,
+            gun2Image->height,0, GL_RGBA,GL_UNSIGNED_BYTE,gun2alphaData);
+    free(gun2alphaData);
+
+    //roitshield image
+    gun3Image = ppm6GetImage("roitshield.ppm");
+    glGenTextures(1, &gun3Texture);
+    glBindTexture(GL_TEXTURE_2D,gun3Texture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+                gun3Image->width, gun3Image->height,
+                0, GL_RGB, GL_UNSIGNED_BYTE, gun3Image->data);
+    //roitshield alpha
+    glGenTextures(1, &gun3alphaTexture);
+    unsigned char *gun3alphaData = buildAlphaData(gun3Image);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,gun3Image->width,
+            gun3Image->height,0, GL_RGBA,GL_UNSIGNED_BYTE,gun3alphaData);
+    free(gun3alphaData);
+
+   //pistol image
+    gun4Image = ppm6GetImage("pistol.ppm");
+    glGenTextures(1, &gun4Texture);
+    glBindTexture(GL_TEXTURE_2D,gun4Texture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+                gun4Image->width, gun4Image->height,
+                0, GL_RGB, GL_UNSIGNED_BYTE, gun4Image->data);
+    //pistol alpha
+    glGenTextures(1, &gun4alphaTexture);
+    unsigned char *gun4alphaData = buildAlphaData(gun4Image);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,gun4Image->width,
+            gun4Image->height,0, GL_RGBA,GL_UNSIGNED_BYTE,gun4alphaData);
+    free(gun4alphaData);
+
+    //rifle image
+    gun5Image = ppm6GetImage("rifle.ppm");
+    glGenTextures(1, &gun5Texture);
+    glBindTexture(GL_TEXTURE_2D,gun5Texture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+                gun5Image->width, gun5Image->height,
+                0, GL_RGB, GL_UNSIGNED_BYTE, gun5Image->data);
+    //rifle alpha
+    glGenTextures(1, &gun5alphaTexture);
+    unsigned char *gun5alphaData = buildAlphaData(gun5Image);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,gun5Image->width,
+            gun5Image->height,0, GL_RGBA,GL_UNSIGNED_BYTE,gun5alphaData);
+    free(gun5alphaData);
+    
+    //shotgun image
+    gun6Image = ppm6GetImage("shotgun.ppm");
+    glGenTextures(1, &gun6Texture);
+    glBindTexture(GL_TEXTURE_2D,gun6Texture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+                gun6Image->width, gun6Image->height,
+                0, GL_RGB, GL_UNSIGNED_BYTE, gun6Image->data);
+    //shotgun alpha
+    glGenTextures(1, &gun6alphaTexture);
+    unsigned char *gun6alphaData = buildAlphaData(gun6Image);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,gun6Image->width,
+            gun6Image->height,0, GL_RGBA,GL_UNSIGNED_BYTE,gun6alphaData);
+    free(gun6alphaData);
+
+    //tazer image
+    gun7Image = ppm6GetImage("tazer.ppm");
+    glGenTextures(1, &gun7Texture);
+    glBindTexture(GL_TEXTURE_2D,gun7Texture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+                gun7Image->width, gun7Image->height,
+                0, GL_RGB, GL_UNSIGNED_BYTE, gun7Image->data);
+    //tazer alpha
+    glGenTextures(1, &gun7alphaTexture);
+    unsigned char *gun7alphaData = buildAlphaData(gun7Image);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,gun7Image->width,
+            gun7Image->height,0, GL_RGBA,GL_UNSIGNED_BYTE,gun7alphaData);
+    free(gun7alphaData);
+
+  
+
     //background transparent part
 /*    glBindTexture(GL_TEXTURE_2D, bgTransTexture);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);

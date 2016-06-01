@@ -11,6 +11,14 @@ const int Max_Particles = 100;
 const int Start_HP = 10;
 extern GLuint enemyTexture;
 extern GLuint enemyTexture2;
+extern GLuint gun1Texture;
+extern GLuint gun2Texture;
+extern GLuint gun3Texture;
+extern GLuint gun4Texture;
+extern GLuint gun5Texture;
+extern GLuint gun6Texture;
+extern GLuint gun7Texture;
+extern GLuint kappaTexture;
 
 struct Vec {
 	float x, y, z;
