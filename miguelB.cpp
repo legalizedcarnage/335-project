@@ -25,7 +25,7 @@ using namespace std;
 
 void weapon(Game *game)
 {
-	for (int i = 0; i < 7; i++){
+	for (int i = 0; i < 7; i++) {
 		game->guninv[i] = false;
 	}
 	game->gun_num = -1;
@@ -56,20 +56,20 @@ void weapon(Game *game)
 void mele(Game *game)
 {
     static int count = 0;
-    if (game->space == 's'){
-	for (int i =91; i<94; i++){
-		if (game->direction == 'l'){
+    if (game->space == 's') {
+	for (int i =91; i<94; i++) {
+		if (game->direction == 'l') {
 			game->object[i].center.x = game->object[i].center.x - 1;
-		}if (game->direction == 'r'){
+		} if (game->direction == 'r') {
 			game->object[i].center.x = game->object[i].center.x + 2;
-		}if (game->direction == 'u'){
+		} if (game->direction == 'u') {
 			game->object[i].center.y = game->object[i].center.y + 2;
-		}if (game->direction == 'd'){
+		} if (game->direction == 'd') {
 			game->object[i].center.y = game->object[i].center.y - 1;
 		}
 	}
 	count ++;
-	if (count == 100){
+	if (count == 100) {
 		game->mele = false;
 		game->space = 0;
 		count = 0;
@@ -82,86 +82,86 @@ void weaponMov(Game *game)
 	Player *p;
 	p = &game->player;
 	for (int i = 91; i <95; i ++) {
-		if (game->direction == 'l'){
+		if (game->direction == 'l') {
 			game->object[i].center.x = p->s.center.x - 25;
 			game->object[i].center.y = p->s.center.y;
-		if (game->space == 's'){
+		if (game->space == 's') {
 			game->mele = true;
-			if (game->mele == true){
+			if (game->mele == true) {
 			mele(game);
 			}	
 		}	
-		}if (game->direction == 'r'){
+		} if (game->direction == 'r') {
 			game->object[i].center.x = p->s.center.x + 25;
 			game->object[i].center.y = p->s.center.y;
-		if (game->space == 's'){
+		if (game->space == 's') {
 			game->mele = true;
-		if (game->mele == true){
+		if (game->mele == true) {
 			mele(game);
-                }
+                } 
         }
 			
-		}if (game->direction == 'u'){
+		} if (game->direction == 'u') {
 			game->object[i].center.x = p->s.center.x;
 			game->object[i].center.y = p->s.center.y + 30;
-		if (game->space == 's'){
+		if (game->space == 's') {
 			game->mele = true;
-		if (game->mele == true){
+		if (game->mele == true) {
 			mele(game);
 			}
 		}
-		}if (game->direction == 'd'){
+		} if (game->direction == 'd') {
 			game->object[i].center.x = p->s.center.x;
 			game->object[i].center.y = p->s.center.y - 30;
-		if (game->space == 's'){
+		if (game->space == 's') {
 			game->mele = true;
-		if (game->mele == true){
+		if (game->mele == true) {
 			mele(game);
 				}
 			}	
 		}
 	
-		}for (int i = 95; i<98; i++){
-			if (game->direction == 'l'){
+		} for (int i = 95; i<98; i++) {
+			if (game->direction == 'l') {
 			game->object[i].center.x = p->s.center.x - 45;
 			game->object[i].center.y = p->s.center.y;
-			}if (game->direction == 'r'){
+			} if (game->direction == 'r') {
 			game->object[i].center.x = p->s.center.x + 45;
 			game->object[i].center.y = p->s.center.y;
-			}if (game->direction == 'u'){
+			} if (game->direction == 'u') {
 			game->object[i].center.x = p->s.center.x;
                         game->object[i].center.y = p->s.center.y + 50;
-			}if (game->direction == 'd'){
+			} if (game->direction == 'd') {
 			game->object[i].center.x = p->s.center.x;
 			game->object[i].center.y = p->s.center.y - 50;
 				}
 			}
-		if (game->direction == 'l'){
+		if (game->direction == 'l') {
  		game->object[97].center.x = p->s.center.x - 25;
 		game->object[97].center.y = p->s.center.y;
-		}if (game->direction == 'r'){
+		} if (game->direction == 'r') {
 		game->object[97].center.x = p->s.center.x + 25;
 		game->object[97].center.y = p->s.center.y;
-		}if (game->direction == 'u'){
+		} if (game->direction == 'u') {
 		game->object[97].center.x = p->s.center.x;
 		game->object[97].center.y = p->s.center.y + 30;
-		if (game->direction == 'd'){
+		if (game->direction == 'd') {
 		game->object[97].center.x = p->s.center.x;
 		game->object[97].center.y = p->s.center.y - 30;
 		}
 			
-		} if (game->direction == 'l' || game->direction == 'r'){
+		} if (game->direction == 'l' || game->direction == 'r') {
 			game->object[93].width = 10;
 			game->object[93].height = 45;
-		for (int i = 95; i<97; i ++){
+		for (int i = 95; i<97; i ++) {
 			game->object[i].width = 30;
 			game->object[i].height = 15;
 		}
 	}
-		if (game->direction == 'u' || game->direction == 'd'){
+		if (game->direction == 'u' || game->direction == 'd') {
 			game->object[93].width = 35;
 			game->object[93].height = 10;
-		for (int i = 95; i<97; i ++){
+		for (int i = 95; i<97; i ++) {
 			game->object[i].width = 15;
 			game->object[i].height = 30;
                 }
@@ -220,7 +220,7 @@ void makeParticle(Game *game, int x, int y)
     //if (game->shot == true) {
     //game->space = 0;
     //game->n = 1;
-    if (game->shot == false){
+    if (game->shot == false) {
     game->n++;
     }
 
@@ -326,19 +326,19 @@ void renderTexture(Game *game, int i)
         h = s->height;
 	glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER,0.0f);
-	if (game->gun == '1'){
+	if (game->gun == '1') {
         glBindTexture(GL_TEXTURE_2D, gun1Texture);
-	}if (game->gun == '2'){
+	} if (game->gun == '2') {
 	glBindTexture(GL_TEXTURE_2D, gun2Texture);
-	}if (game->gun == '3'){
+	} if (game->gun == '3') {
 	glBindTexture(GL_TEXTURE_2D, gun3Texture);
-	}if (game->gun == '4'){
+	} if (game->gun == '4') {
 	glBindTexture(GL_TEXTURE_2D, gun4Texture);
-	}if (game->gun == '5'){
+	} if (game->gun == '5') {
 	glBindTexture(GL_TEXTURE_2D, gun6Texture);
-	}if (game->gun == '6'){
+	} if (game->gun == '6') {
 	glBindTexture(GL_TEXTURE_2D, gun5Texture);
-	}if (game->gun == '7'){
+	} if (game->gun == '7') {
 	glBindTexture(GL_TEXTURE_2D, gun7Texture);
 	}
 	glBegin(GL_QUADS);
@@ -384,19 +384,19 @@ void renderTexture(Game *game, int i)
 }		
 void renderWeapon(Game *game)
 {
-	if (game->gun == '1'){
+	if (game->gun == '1') {
 	renderTexture(game,91);
-	}if (game->gun == '2'){
+	} if (game->gun == '2') {
 	renderTexture(game,92);
-	}if (game->gun == '3'){
+	} if (game->gun == '3') {
 	renderTexture(game,93);
-	}if (game->gun == '4'){
+	} if (game->gun == '4') {
 	renderTexture(game,94);
-	}if (game->gun == '5'){
+	} if (game->gun == '5') {
 	renderTexture(game,95);
-	}if (game->gun == '6'){
+	} if (game->gun == '6') {
 	renderTexture(game,96);
-	}if (game->gun == '7'){
+	} if (game->gun == '7') {
 	renderTexture(game,97);
 	}
 }
