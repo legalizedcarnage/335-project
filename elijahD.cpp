@@ -471,9 +471,6 @@ void Print_keys(Game *game)
 		s = &game->keys[game->key_num];
 		w = s->width;
 		h = s->height;
-		cout << s->center.x << " " << s->center.y << endl;
-		cout << w << " " << h << endl;
-		cout << game->key_num << endl;
 		glPushMatrix();
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_GREATER, 0.0f);
@@ -545,15 +542,15 @@ void doors(Game *game)
 		Player_Object(game, &game->player, game->interact, 1,2);	
 		s = &game->interact[1];
 	} else if (game->map[0] == 5 && game->map[1] == 1 
-		&& game->open[2] == false && game->open[3] == false 
-		&& game->open[4] == false) {
+		&& (game->open[2] == false || game->open[3] == false 
+		|| game->open[4] == false)) {
 		Player_Object(game, &game->player, game->interact, 2,3);	
 		s = &game->interact[2];
 	}
 	if ((game->map[0] == 2 && game->map[1] == -1 && game->open[0] == false) 
 	||  (game->map[0] == 1 && game->map[1] == -1 && game->open[1] == false) 
-	||  (game->map[0] == 5 && game->map[1] == 1 && game->open[2] == false
-	&&  game->open[3] == false && game->open[4]==false)) {
+	||  (game->map[0] == 5 && game->map[1] == 1 && (game->open[2] == false
+	||  game->open[3] == false || game->open[4]==false))) {
 		glColor3ub(100,100,100);
 		glPushMatrix();
 		w = s->width;
