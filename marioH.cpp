@@ -312,12 +312,12 @@ void settingsCursor(XEvent *e,Game * game)
                         if (key == XK_Up) {
                                 cursorPos--;
                                 if (cursorPos < 0) {
-                                        cursorPos = 2;
+                                        cursorPos = 3;
                                 }
                         }
                         if (key == XK_Down) {
                                 cursorPos++;
-                                if (cursorPos > 2) {
+                                if (cursorPos > 3) {
                                         cursorPos = 0;
                                 }
                         }
@@ -526,7 +526,7 @@ void pauseMenu(Game * game)
         glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,keyImage2->width,
                 keyImage2->height,0, GL_RGBA,GL_UNSIGNED_BYTE,alphaKeyData);
 
-	if(game->inv[0] == 1) {
+	if(game->inv[0] == 1) { //first key
 		glColor3ub(90,140,90);
                 glBindTexture(GL_TEXTURE_2D, keyTexture2);
                 glBegin(GL_QUADS);
@@ -540,7 +540,7 @@ void pauseMenu(Game * game)
                         glVertex2i(550,450); //bottom right
                 glEnd();
 	}
-	if(game->inv[1] == 1) {
+	if(game->inv[1] == 1) { //second key
 		glColor3ub(90,90,140);
                 glBindTexture(GL_TEXTURE_2D, keyTexture2);
                 glBegin(GL_QUADS);
@@ -554,7 +554,7 @@ void pauseMenu(Game * game)
                         glVertex2i(600,450); //bottom right
                 glEnd();
 	}
-	if(game->inv[2] == 1) {
+	if(game->inv[2] == 1) { //third key
                 glColor3ub(140,90,90);
                 glBindTexture(GL_TEXTURE_2D, keyTexture2);
                 glBegin(GL_QUADS);
@@ -568,7 +568,7 @@ void pauseMenu(Game * game)
                         glVertex2i(650,450); //bottom right
                 glEnd();
         }
-	if(game->inv[3] == 1) {
+	if(game->inv[3] == 1) { //fourth key
                 glColor3ub(140,140,90);
                 glBindTexture(GL_TEXTURE_2D, keyTexture2);
                 glBegin(GL_QUADS);
@@ -582,7 +582,7 @@ void pauseMenu(Game * game)
                         glVertex2i(700,450); //bottom right
                 glEnd();
         }
-	if(game->inv[4] == 1) {
+	if(game->inv[4] == 1) { //fifth key
                 glColor3ub(200,160,150);
                 glBindTexture(GL_TEXTURE_2D, keyTexture2);
                 glBegin(GL_QUADS);
