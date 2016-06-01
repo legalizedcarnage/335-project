@@ -43,7 +43,7 @@ struct Particle {
 
 struct Player {
     	Shape s;
-    	int health;
+    	double health;
 	Vec velocity;
 	bool enemiesInit;
 };

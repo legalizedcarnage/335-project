@@ -61,7 +61,6 @@ void shiftScreen(Game *game, char direction)
 	if (direction == 'r') {
 		game->map[0]++;
 	}
-	std::cout << game->map[0]  << ", " << game->map[1] << endl;
 	if (!game->enemies[game->map[0]+1][game->map[1]+1][0].enemiesInit)	
 		initEnemies(game, game->map[0], game->map[1]);
 }
@@ -180,7 +179,7 @@ void playerCollision(Game *game)
 		right+15 >= enemy_l) {
 			if ((game->gun == '1' || game->gun == '2' 
 			|| game->gun == '3') && game->mele == true)
-				e->health -= 1;
+				e->health -= .2;
 		}
 		if (top >= enemy_b &&
 		bot <= enemy_t &&
@@ -216,7 +215,6 @@ void playerCollision(Game *game)
 					min_distY =
 					-(top - (game->object[j].center.y - 
 					game->object[j].height));
-					cout << "top" << endl;
 				}
 				//floor
 				if (abs(bot - (game->object[j].center.y + 
@@ -237,7 +235,6 @@ void playerCollision(Game *game)
 					min_distY =
 					-(bot - (game->object[j].center.y +
 					game->object[j].height));
-					cout << "bot" << endl;
 				}
 				//sides
 				if (abs(right - (game->object[j].center.x - 
@@ -258,7 +255,6 @@ void playerCollision(Game *game)
 					min_distX =
 					-(right - (game->object[j].center.x - 
 					game->object[j].width));
-					cout << "right" << endl;
 				}
 				if (abs(left - (game->object[j].center.x + 
 				game->object[j].width)) >=
@@ -278,7 +274,6 @@ void playerCollision(Game *game)
 					min_distX =
 					-(left - (game->object[j].center.x +
 					game->object[j].width));
-					cout << "left" << endl;
 				}
 			}
 			p->s.center.x += min_distX;
@@ -335,7 +330,6 @@ void particleCollision(Game *game)
 				*p = game->particle[game->n-1];
 				game->n--;
 				e->health--;
-				cout << "hit enemy" << endl;
 		
 			}
 			if (e->health == 0) {
@@ -352,28 +346,23 @@ void particleCollision(Game *game)
 			&& p->s.center.y >= s->center.y - s->height) {
 				*p = game->particle[game->n-1];
 				game->n--;
-				cout << "hit a wall" << endl;
 				break;
 			}
 		}
 		//check for off-screen
 		if (p->s.center.x > WINDOW_WIDTH + p->s.width) {
-			std::cout << "off screen" << std::endl;
 			game->particle[i] = game->particle[game->n-1];
 			game->n--;
 		}
 		if (p->s.center.x < 0.0) {
-			std::cout << "off screen" << std::endl;
 			game->particle[i] = game->particle[game->n-1];
 			game->n--;
 		}
 		if (p->s.center.y > WINDOW_HEIGHT + p->s.height) {
-			std::cout << "off screen" << std::endl;
 			game->particle[i] = game->particle[game->n-1];
 			game->n--;
 		}
 		if (p->s.center.y < 0.0) {
-			std::cout << "off screen" << std::endl;
 			game->particle[i] = game->particle[game->n-1];
 			game->n--;
 		}
