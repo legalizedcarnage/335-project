@@ -240,12 +240,12 @@ void playerFound(Game *game, int x, int y, int i)
                     objectCollision(game, &game->enemies[x+1][y+1][i]);    
                 }
             }
-            if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
-                        (pow(e->s.center.y - p->s.center.y, 2))) < 50) {
-                e->velocity.x *= -1.0;
-                e->velocity.y *= -1.0;
-                objectCollision(game, &game->enemies[x+1][y+1][i]);    
-            }
+            //if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
+            //            (pow(e->s.center.y - p->s.center.y, 2))) < 50) {
+            //    e->velocity.x *= -1.0;
+            //    e->velocity.y *= -1.0;
+            //    objectCollision(game, &game->enemies[x+1][y+1][i]);    
+            //}
         }
     } else {
         if ( sqrt((pow(e->s.center.x - p->s.center.x, 2)) + 
