@@ -120,6 +120,14 @@ void weaponMov(Game *game)
 				}
 			}	
 		}
+		
+		if (game->direction == 'u') {
+                        game->object[92].center.x = p->s.center.x;
+                        game->object[i].center.y = p->s.center.y + 40;
+		} if (game->direction == 'd') {
+                        game->object[i].center.x = p->s.center.x;
+                        game->object[92].center.y = p->s.center.y - 45;
+		}
 	
 		} for (int i = 95; i<98; i++) {
 			if (game->direction == 'l') {
@@ -151,6 +159,8 @@ void weaponMov(Game *game)
 		}
 			
 		} if (game->direction == 'l' || game->direction == 'r') {
+			game->object[92].width = 10;
+                        game->object[92].height = 25;	
 			game->object[93].width = 10;
 			game->object[93].height = 45;
 		for (int i = 95; i<97; i ++) {
@@ -159,6 +169,8 @@ void weaponMov(Game *game)
 		}
 	}
 		if (game->direction == 'u' || game->direction == 'd') {
+		       	game->object[92].width = 25;
+                        game->object[92].height = 10; 
 			game->object[93].width = 35;
 			game->object[93].height = 10;
 		for (int i = 95; i<97; i ++) {
@@ -172,7 +184,6 @@ void makeParticle(Game *game, int x, int y)
 {
     if (game->n > Max_Particles)
         return;
-    std::cout << "makeParticle() " << x << " " << y << std::endl;
     //position of particle
     Particle *p = &game->particle[game->n];
     if (game->gun == '4') {
