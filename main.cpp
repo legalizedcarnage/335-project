@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <time.h>
 #include <cstring>
 #include <cmath>
 #include <X11/Xlib.h>
@@ -23,7 +24,8 @@ extern "C" {
 
 #define WINDOW_WIDTH  1200
 #define WINDOW_HEIGHT 900
-
+#define OLD_W 1200
+#define OLD_H 900
 #define MAX_PARTICLES 100
 #define GRAVITY 0.1
 
@@ -84,6 +86,24 @@ void render(Game *game);
 //void enemiesMovement(Game *game);
 //void initEnemies(Game *game);
 void physics(Game *game);
+//gordon's time functions---------
+const double physicsRate = 1.0 / 60.0;
+const double oobillion = 1.0 / 1e9;
+struct timespec timeStart, timeCurrent;
+struct timespec timePause;
+double physicsCountdown=0.0;
+double timeSpan=0.0;
+unsigned int upause=0;
+double timeDiff(struct timespec *start, struct timespec *end)
+{
+	return (double)(end->tv_sec - start->tv_sec ) +
+			(double)(end->tv_nsec - start->tv_nsec) * oobillion;
+}
+void timeCopy(struct timespec *dest, struct timespec *source)
+{
+	memcpy(dest, source, sizeof(struct timespec));
+}
+//------------------------------------
 int main(void)
 {
     int done=0;
@@ -118,7 +138,8 @@ int main(void)
     game.text_count =0;
     init_keys(&game);
     initEcount(&game);
-    
+    clock_gettime(CLOCK_REALTIME, &timePause);
+    clock_gettime(CLOCK_REALTIME, &timeStart);
     //init enemies
     //initEnemies(&game);
     //init enemies
@@ -138,8 +159,30 @@ int main(void)
 		if (game.state == 6)
 			settingsCursor(&e,&game); //settings
 	}
-	if (game.state == 1) 
-		physics(&game);
+	//Below is a process to apply physics at a consistent rate.
+		//1. Get the time right now.
+		clock_gettime(CLOCK_REALTIME, &timeCurrent);
+		//2. How long since we were here last?
+		timeSpan = timeDiff(&timeStart, &timeCurrent);
+		//3. Save the current time as our new starting time.
+		timeCopy(&timeStart, &timeCurrent);
+		//4. Add time-span to our countdown amount.
+		physicsCountdown += timeSpan;
+		//5. Has countdown gone beyond our physics rate? 
+		//       if yes,
+		//           In a loop...
+		//              Apply physics
+		//              Reducing countdown by physics-rate.
+		//              Break when countdown < physics-rate.
+		//       if no,
+		//           Apply no physics this frame.
+		while(physicsCountdown >= physicsRate) {
+			//6. Apply physics
+			if (game.state ==1)
+				physics(&game);
+			//7. Reduce the countdown by our physics-rate
+			physicsCountdown -= physicsRate;
+		}
 	render(&game);
 	glXSwapBuffers(dpy, win);
     }
@@ -658,7 +701,7 @@ void render(Game *game)
 	printtile(game);
 	//draw current tile
 	Shape *s;
-	for (int i = 0; i < game->num_objects; i++ ) {
+/*	for (int i = 0; i < game->num_objects; i++ ) {
 		glColor3ub(90,140,90);
 		s = &game->box;
 		glPushMatrix();
@@ -672,7 +715,7 @@ void render(Game *game)
 		glVertex2i( w,-h);
 		glEnd();
 		glPopMatrix();
-	}
+	}*/
 	//draw all particles here
 	renderParticles(game);
 	//draw keys

@@ -5,6 +5,9 @@
 #include <GL/glx.h>
 #define WINDOW_WIDTH  1200
 #define WINDOW_HEIGHT 900
+#define OLD_W 1200
+#define OLD_H 900
+
 const unsigned int Max_Enemies = 10;
 const int Max_Objects = 100;
 const int Max_Particles = 100;
