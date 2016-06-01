@@ -528,7 +528,8 @@ int check_keys(XEvent *e, Game *game)
 		game->gun = '7';
 		break;
 		case XK_z:
-		game->bkey = '1';
+		game->bkey ^= '1';
+		break;
 		case XK_space:
 		if (game->state == 4) {
 			if (game->text_count == 2) {
