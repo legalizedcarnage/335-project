@@ -640,7 +640,7 @@ void text(Game *game)
 	space.center = 0;
 	ggprint08(&space,10,0x00ffffff,
 	"press space to continue");
-	switch(game->text_count) {
+	switch (game->text_count) {
 		case 0: 
 			ggprint16(&tutorial,76,0x00ffffff, 
 			"The goal of the game is to escape the prison.");
