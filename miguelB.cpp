@@ -267,6 +267,7 @@ void renderParticles(Game *game)
 		glPopMatrix();
 			}	   		
 	}
+}
 void renderTexture(Game *game, int i)
 {
 	Shape *s;
