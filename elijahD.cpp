@@ -180,7 +180,7 @@ void playerCollision(Game *game)
 		right+15 >= enemy_l) {
 			if ((game->gun == '1' || game->gun == '2' 
 			|| game->gun == '3') && game->mele == true)
-				e->health -= 2;
+				e->health -= 1;
 		}
 		if (top >= enemy_b &&
 		bot <= enemy_t &&
@@ -552,7 +552,8 @@ void doors(Game *game)
 	}
 	if ((game->map[0] == 2 && game->map[1] == -1 && game->open[0] == false) 
 	||  (game->map[0] == 1 && game->map[1] == -1 && game->open[1] == false) 
-	||  (game->map[0] == 5 && game->map[1] == 1 && game->open[2] == false)) {
+	||  (game->map[0] == 5 && game->map[1] == 1 && game->open[2] == false
+	&&  game->open[3] == false && game->open[4]==false)) {
 		glColor3ub(100,100,100);
 		glPushMatrix();
 		w = s->width;
@@ -591,25 +592,25 @@ void interact(Game *game)
 	}
 	i = 2;
 	if (game->inv[2] == true) {
-		if (top >= game->interact[i].center.y -game->interact[i].height
-		&& bot <= game->interact[i].center.y+ game->interact[i].height
-		&& right == game->interact[i].center.x-game->interact[i].width) {
+		if (top >= game->interact[2].center.y -game->interact[2].height
+		&& bot <= game->interact[2].center.y+ game->interact[2].height
+		&& right == game->interact[2].center.x-game->interact[2].width) {
 			game->open[i] = true;
 		}
 	}
 	i = 3;
 	if (game->inv[3] == true) {
-		if (top >= game->interact[i].center.y -game->interact[i].height
-		&& bot <= game->interact[i].center.y+ game->interact[i].height
-		&& right == game->interact[i].center.x-game->interact[i].width) {
+		if (top >= game->interact[2].center.y -game->interact[2].height
+		&& bot <= game->interact[2].center.y+ game->interact[2].height
+		&& right == game->interact[2].center.x-game->interact[2].width) {
 			game->open[i] = true;
 		}
 	}
 	i = 4;
 	if (game->inv[4] == true) {
-		if (top >= game->interact[i].center.y -game->interact[i].height
-		&& bot <= game->interact[i].center.y+ game->interact[i].height
-		&& right == game->interact[i].center.x-game->interact[i].width) {
+		if (top >= game->interact[2].center.y -game->interact[2].height
+		&& bot <= game->interact[2].center.y+ game->interact[2].height
+		&& right == game->interact[2].center.x-game->interact[2].width) {
 			game->open[i] = true;
 		}
 	}
@@ -667,6 +668,8 @@ void text(Game *game)
 		case 2:
 			ggprint16(&tutorial,76,0x00ffffff, 
 			"Arrow keys to move, space to shoot");
+			ggprint16(&tutorial,76,0x00ffffff, 
+			"Num 1-7 to switch weapons");
 			break;	
 	}
 }
