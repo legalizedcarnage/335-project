@@ -2,7 +2,7 @@
 //Author:Mario Hernandez
 //Purpose: to render the main menu and functionality of the menu buttons
 //Written:	4/27/16
-//Modified:	5/31/16
+//Modified:	6/1/16
 //Progress, Currently have the basic main menu working by jumping into the game
 // and a quit button. Also working on a pause menu with basic button functions
 // and leaving room to include inventory functionality and option menu
@@ -119,7 +119,7 @@ void hudDisplay(Game * game)
 	Rect mKey;
 	Rect Key1;
 	Rect Key2;
-//	Rect Key3;
+	Rect Key3;
 
 	pHealth.bot = 870; 
 	pHealth.left = 210;
@@ -149,9 +149,9 @@ void hudDisplay(Game * game)
 	Key2.left = 460;
 	Key2.center = 0;
 
-	//Key3.bot = 750;
-	//Key3.left = 460;
-	//Key3.center = 0;
+	Key3.bot = 750;
+	Key3.left = 460;
+	Key3.center = 0;
 
 	if (pHudDisplay == 1) {
 		ggprint16(&pHealth, 76, 0x00ffffff, "Health Bar");
@@ -160,9 +160,9 @@ void hudDisplay(Game * game)
 	if (buttonDisplay == 1 && game->map[0]==0 && game->map[1] == 0) {
 		ggprint12(&pKey,76,0x00ffffff,"'P' :   Pause Menu/marioH function");
 		ggprint12(&mKey,76,0x00ffffff,"'M' :   Map Screen/juliaA function");	    
-		ggprint12(&Key1,76, 0x00ffffff, "'\\'  :   Tutorial button");
+		ggprint12(&Key1,76, 0x00ffffff, "'\\'  :   Tutorial button/ElijahD function");
 		ggprint12(&Key2,76, 0x00ffffff, "'H' :   Hardcore mode/Miguel T function");
-		//ggprint12(&Key3,76, 0x00ffffff, "'3' :   Equip Shield");
+		ggprint12(&Key3,76, 0x00ffffff, "'Z' :   Kappa Edition/Miguel B function");
 	}
 
 	if (pHudDisplay == 1) {
@@ -261,7 +261,6 @@ void pauseMenuCursor(XEvent *e,Game * game)
         if (game->state == 2) {
                 if (e->type == KeyPress) {
                         int key = XLookupKeysym(&e->xkey, 0);
-                        //cout << key << endl;
                         if (key == XK_Escape) {
 				game->state = 0;
                         }
@@ -283,11 +282,6 @@ void pauseMenuCursor(XEvent *e,Game * game)
                                         game->state = 1; //play button case
                                         break;
 					case 1:
-					//Check Inventory button case
-					//game->state = 6;
-					//cursorPos = 0;	
-					break;
-					case 2:
 					//Change Settings button case
 					game->state = 6;
 					cursorPos = -1; //minor fix to 
@@ -297,7 +291,7 @@ void pauseMenuCursor(XEvent *e,Game * game)
 					//the settings menu to set pHudDisplay to zero when
 					//it should initially be at one 
 					break;
-                                        case 3:
+                                        case 2:
                                         game->state = 0; // quit button case
 					cursorPos = 0;
                                         break;
@@ -534,18 +528,74 @@ void pauseMenu(Game * game)
 
 	if(game->inv[0] == 1) {
 		glColor3ub(90,140,90);
-
                 glBindTexture(GL_TEXTURE_2D, keyTexture2);
                 glBegin(GL_QUADS);
                         glTexCoord2f(0.0f, 1.0f);
-                        glVertex2i(500,500);
+                        glVertex2i(500,450); //bottom left
                         glTexCoord2f(0.0f, 0.0f);
-                        glVertex2i(500,600);
+                        glVertex2i(500,500); //top left
                         glTexCoord2f(1.0f, 0.0f);
-                        glVertex2i(600,600);
+                        glVertex2i(550,500); //top right
                         glTexCoord2f(1.0f, 1.0f);
-                        glVertex2i(600,500);
+                        glVertex2i(550,450); //bottom right
                 glEnd();
 	}
-}
+	if(game->inv[1] == 1) {
+		glColor3ub(90,90,140);
+                glBindTexture(GL_TEXTURE_2D, keyTexture2);
+                glBegin(GL_QUADS);
+                        glTexCoord2f(0.0f, 1.0f);
+                        glVertex2i(550,450); //bottom left
+                        glTexCoord2f(0.0f, 0.0f);
+                        glVertex2i(550,500); //top left
+                        glTexCoord2f(1.0f, 0.0f);
+                        glVertex2i(600,500); //top right
+                        glTexCoord2f(1.0f, 1.0f);
+                        glVertex2i(600,450); //bottom right
+                glEnd();
+	}
+	if(game->inv[2] == 1) {
+                glColor3ub(140,90,90);
+                glBindTexture(GL_TEXTURE_2D, keyTexture2);
+                glBegin(GL_QUADS);
+                        glTexCoord2f(0.0f, 1.0f);
+                        glVertex2i(600,450); //bottom left
+                        glTexCoord2f(0.0f, 0.0f);
+                        glVertex2i(600,500); //top left
+                        glTexCoord2f(1.0f, 0.0f);
+                        glVertex2i(650,500); //top right
+                        glTexCoord2f(1.0f, 1.0f);
+                        glVertex2i(650,450); //bottom right
+                glEnd();
+        }
+	if(game->inv[3] == 1) {
+                glColor3ub(140,140,90);
+                glBindTexture(GL_TEXTURE_2D, keyTexture2);
+                glBegin(GL_QUADS);
+                        glTexCoord2f(0.0f, 1.0f);
+                        glVertex2i(650,450); //bottom left
+                        glTexCoord2f(0.0f, 0.0f);
+                        glVertex2i(650,500); //top left
+                        glTexCoord2f(1.0f, 0.0f);
+                        glVertex2i(700,500); //top right
+                        glTexCoord2f(1.0f, 1.0f);
+                        glVertex2i(700,450); //bottom right
+                glEnd();
+        }
+	if(game->inv[4] == 1) {
+                glColor3ub(200,160,150);
+                glBindTexture(GL_TEXTURE_2D, keyTexture2);
+                glBegin(GL_QUADS);
+                        glTexCoord2f(0.0f, 1.0f);
+                        glVertex2i(700,450); //bottom left
+                        glTexCoord2f(0.0f, 0.0f);
+                        glVertex2i(700,500); //top left
+                        glTexCoord2f(1.0f, 0.0f);
+                        glVertex2i(750,500); //top right
+                        glTexCoord2f(1.0f, 1.0f);
+                        glVertex2i(750,450); //bottom right
+                glEnd();
+        }
 
+
+}
