@@ -176,12 +176,12 @@ void makeParticle(Game *game, int x, int y)
     //position of particle
     Particle *p = &game->particle[game->n];
     if (game->gun == '4') {
-    game->shot = true;
+   // game->shot = true;
     p->s.center.x = game->object[94].center.x;
     p->s.center.y = game->object[94].center.y;
     game->n=1;
     } if (game->gun == '5') {
-    game->shot = true;
+    //game->shot = true;
     if (game->n ==0) {
     p->s.center.x = game->object[95].center.x;
     p->s.center.y = game->object[95].center.y;
@@ -200,11 +200,11 @@ void makeParticle(Game *game, int x, int y)
     game->n =3;
     }
     } if (game->gun == '6') {
-    game->shot = false;
+    //game->shot = false;
     p->s.center.x = game->object[96].center.x;
     p->s.center.y = game->object[96].center.y;
     } if (game->gun == '7') {
-    game->shot = true;
+    //game->shot = true;
     p->s.center.x = game->object[97].center.x;
     p->s.center.y = game->object[97].center.y;
     game->n=1;
@@ -244,12 +244,37 @@ void movement(Game *game)
 }
 void renderParticles(Game *game)
 {
-	int w = 2;
-	int h = 2;
+	int w;
+	int h; 
 	for (int i = 0; i < game->n; i++) {
+		Vec *c = &game->particle[i].s.center;
+		if (game->bkey) {
+		glPushMatrix();
+		glColor3ub(127,127,127);
+                glEnable(GL_ALPHA_TEST);
+                glAlphaFunc(GL_GREATER, 0.0f);
+                glBindTexture(GL_TEXTURE_2D, kappaTexture);
+                //Vec *c = &game->particle[i].s.center;
+                w = 20;
+                h = 20;
+		glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex2i(c->x-w, c->y-h);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex2i(c->x-w,c->y+ h);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex2i(c->x+ w,c->y+ h);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex2i(c->x+ w,c->y-h);
+		glEnd();
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glDisable(GL_ALPHA_TEST);
+		glPopMatrix();
+		}
+		if (!(game->bkey)) {
 		glPushMatrix();
 		glColor3ub(150,160,220);
-		Vec *c = &game->particle[i].s.center;
+		//Vec *c = &game->particle[i].s.center;
 		w = 2;
 		h = 2;
 		glBegin(GL_QUADS);
@@ -259,7 +284,9 @@ void renderParticles(Game *game)
 		glVertex2i(c->x+w, c->y-h);
 		glEnd();
 		glPopMatrix();
-        }
+			}	   		
+	}
+
 /*	for (int i = 0; i < game->n; i++) {
 		glPushMatrix();
 		glColor3ub(150,160,220);

@@ -52,8 +52,10 @@ struct Game {
     	char direction;
 	char gun;
 	char space;
+	char bkey;
 	bool mele;
 	bool shot;
+	bool s;
         int map[2];
 	Player enemies[100][100][10] ;
 	Player player;
