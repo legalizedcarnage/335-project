@@ -179,14 +179,26 @@ void makeParticle(Game *game, int x, int y)
     game->shot = true;
     p->s.center.x = game->object[94].center.x;
     p->s.center.y = game->object[94].center.y;
+    game->n=1;
     } if (game->gun == '5') {
     game->shot = true;
+    if (game->n ==0) {
     p->s.center.x = game->object[95].center.x;
     p->s.center.y = game->object[95].center.y;
-    p->t.center.x = game->object[95].center.x;
-    p->t.center.y = game->object[95].center.y;
-    p->r.center.x = game->object[95].center.x;
-    p->r.center.y = game->object[95].center.y;
+    game->particle[game->n+1].s.center.x = game->object[95].center.x;
+    game->particle[game->n+1].s.center.y = game->object[95].center.y;
+    game->particle[game->n+1].velocity.y = y+1;
+    game->particle[game->n+1].velocity.x = x+1;
+    game->particle[game->n+2].s.center.x = game->object[95].center.x;
+    game->particle[game->n+2].s.center.y = game->object[95].center.y;
+    game->particle[game->n+2].velocity.y = y-1;
+    game->particle[game->n+2].velocity.x = x-1;
+    //p->t.center.x = game->object[95].center.x;
+    //p->t.center.y = game->object[95].center.y;
+    //p->r.center.x = game->object[95].center.x;
+    //p->r.center.y = game->object[95].center.y;
+    game->n =3;
+    }
     } if (game->gun == '6') {
     game->shot = false;
     p->s.center.x = game->object[96].center.x;
@@ -195,20 +207,20 @@ void makeParticle(Game *game, int x, int y)
     game->shot = true;
     p->s.center.x = game->object[97].center.x;
     p->s.center.y = game->object[97].center.y;
+    game->n=1;
     }
     //double z = sqrt(x*x + y*y);  
 
     p->velocity.y = y;
     p->velocity.x = x;
-    p->velocity2.y = y - 1;
-    p->velocity2.x = x - 1;
-    p->velocity3.y = y + 1;
-    p->velocity3.x = x + 1;
-    if (game->shot == true) {
+    //p->velocity2.y = y - 1;
+    //p->velocity2.x = x - 1;
+    //p->velocity3.y = y + 1;
+    //p->velocity3.x = x + 1;
+    //if (game->shot == true) {
     //game->space = 0;
-    game->n = 1;
-    game->n++;
-    } if (game->shot == false){
+    //game->n = 1;
+    if (game->shot == false){
     game->n++;
     }
 
@@ -223,11 +235,11 @@ void movement(Game *game)
 	p = &game->particle[i];
 	p->s.center.x += p->velocity.x;
 	p->s.center.y += p->velocity.y;
-	p->t.center.x += p->velocity2.x;
+	/*p->t.center.x += p->velocity2.x;
 	p->t.center.y += p->velocity2.y;
 	p->r.center.x += p->velocity3.x;
 	p->r.center.y += p->velocity3.y;
-
+*/
 	}
 }
 void renderParticles(Game *game)
@@ -248,7 +260,7 @@ void renderParticles(Game *game)
 		glEnd();
 		glPopMatrix();
         }
-	for (int i = 0; i < game->n; i++) {
+/*	for (int i = 0; i < game->n; i++) {
 		glPushMatrix();
 		glColor3ub(150,160,220);
 		Vec *a = &game->particle[i].t.center;
@@ -275,7 +287,7 @@ void renderParticles(Game *game)
 		glVertex2i(b->x+w, b->y-h);
 		glEnd();
 		glPopMatrix();
-        }
+        }*/
 }
 void renderTexture(Game *game, int i)
 {

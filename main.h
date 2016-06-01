@@ -34,11 +34,11 @@ struct Shape {
 
 struct Particle {
 	Shape s;
-	Shape r;
-	Shape t;
+	//Shape r;
+	//Shape t;
 	Vec velocity;
-	Vec velocity2;
-	Vec velocity3;
+	//Vec velocity2;
+	//Vec velocity3;
 };
 
 struct Player {
