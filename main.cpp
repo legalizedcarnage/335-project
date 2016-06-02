@@ -789,6 +789,7 @@ void render(Game *game)
     }
     else if (game->state == 5) {
 	usleep(3000000);
+    resetEnemies(game);
 	game->state = 0;
     }
     else if (game->state == 6)
