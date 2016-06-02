@@ -22,6 +22,7 @@ extern GLuint gun5Texture;
 extern GLuint gun6Texture;
 extern GLuint gun7Texture;
 extern GLuint kappaTexture;
+extern GLuint bulletTexture;
 
 struct Vec {
 	float x, y, z;
@@ -56,6 +57,7 @@ struct Game {
 	char gun;
 	char space;
 	char bkey;
+	char xkey;
 	bool mele;
 	bool shot;
 	bool s;

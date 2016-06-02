@@ -37,22 +37,6 @@ void weapon(Game *game)
 	declareobject(game, 96, 35, 15, 465, 205);
 	declareobject(game, 97, 15, 15, 465, 205);
 }
-/*void inv(Game *game)
-{
-	        if (game->gun_num >= 0) {
-                if (game->player.s.center.x + game->player.s.width
-                > game->object[game->gun_num].center.x
-                && game->player.s.center.x - game->player.s.width
-                < game->object[game->gun_num].center.x
-                && game->player.s.center.y + game->player.s.height
-                > game->keys[game->key_num].center.y
-                && game->player.s.center.y - game->player.s.height
-                < game->keys[game->key_num].center.y) {
-                        game->inv[game->gun_num] = true;
-                        cout << game->gun_num+1 << endl;
-                }
-        }
-}*/	
 void mele(Game *game)
 {
     static int count = 0;
@@ -242,7 +226,7 @@ void renderParticles(Game *game)
 	int h; 
 	for (int i = 0; i < game->n; i++) {
 		Vec *c = &game->particle[i].s.center;
-		if (game->bkey) {
+		if (game->bkey && (!(game->xkey)) ) {
 		glPushMatrix();
 		glColor3ub(127,127,127);
                 glEnable(GL_ALPHA_TEST);
@@ -264,7 +248,28 @@ void renderParticles(Game *game)
 		glDisable(GL_ALPHA_TEST);
 		glPopMatrix();
 		}
-		if (!(game->bkey)) {
+		if (game->xkey && (!(game->bkey))) {
+                glPushMatrix();
+                glEnable(GL_ALPHA_TEST);
+                glAlphaFunc(GL_GREATER, 0.0f);
+                glBindTexture(GL_TEXTURE_2D, bulletTexture);
+                w = 5;
+                h = 5;
+                glBegin(GL_QUADS);
+                glTexCoord2f(0.0f, 1.0f);
+                glVertex2i(c->x-w, c->y-h);
+                glTexCoord2f(0.0f, 0.0f);
+                glVertex2i(c->x-w,c->y+ h);
+                glTexCoord2f(1.0f, 0.0f);
+                glVertex2i(c->x+ w,c->y+ h);
+                glTexCoord2f(1.0f, 1.0f);
+                glVertex2i(c->x+ w,c->y-h);
+                glEnd();
+                glBindTexture(GL_TEXTURE_2D, 0);
+                glDisable(GL_ALPHA_TEST);
+                glPopMatrix();
+                }	
+		if (!(game->bkey) || (!(game->bkey))) {
 		glPushMatrix();
 		glColor3ub(150,160,220);
 		w = 2;
@@ -344,9 +349,33 @@ void renderTexture(Game *game, int i)
         glEnd();
         glBindTexture(GL_TEXTURE_2D, 0);
         glDisable(GL_ALPHA_TEST);
-}		
+}
 void renderWeapon(Game *game)
 {
+	 if (game->map[0] == 0 && game->map[1] ==1) {
+                game->gun_num = 0;
+                if (game->guninv[game->gun_num] == true) {
+                        game->gun_num = -1;
+                }
+        }
+        if (game->map[0] == 4 && game->map[1] ==-1) {
+                game->gun_num = 1;
+                if (game->guninv[game->gun_num] == true) {
+                        game->gun_num = -1;
+                }
+        }
+        if (game->map[0] == 5 && game->map[1] ==0) {
+                game->gun_num = 2;
+                if (game->guninv[game->gun_num] == true) {
+                        game->gun_num = -1;
+                }
+        }
+        if (game->map[0] == 3 && game->map[1] ==2) {
+                game->gun_num = 3;
+                if (game->guninv[game->gun_num] == true) {
+                        game->gun_num = -1;
+                }
+	}
 	if (game->gun == '1') {
 	renderTexture(game,91);
 	} if (game->gun == '2') {
@@ -362,5 +391,21 @@ void renderWeapon(Game *game)
 	} if (game->gun == '7') {
 	renderTexture(game,97);
 	}
+}
+void inv(Game *game)
+{
+                if (game->gun_num >= 0) {
+                if (game->player.s.center.x + game->player.s.width
+                > game->object[game->gun_num].center.x
+                && game->player.s.center.x - game->player.s.width
+                < game->object[game->gun_num].center.x
+                && game->player.s.center.y + game->player.s.height
+                > game->object[game->gun_num].center.y
+                && game->player.s.center.y - game->player.s.height
+                < game->object[game->key_num].center.y) {
+                        game->guninv[game->gun_num] = true;
+                        cout << game->gun_num+1 << endl;
+                }
+        }
 }
 

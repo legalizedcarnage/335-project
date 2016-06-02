@@ -46,6 +46,7 @@ Ppmimage *gun5Image = NULL;
 Ppmimage *gun6Image = NULL; 
 Ppmimage *gun7Image = NULL;
 Ppmimage *kappaImage = NULL;
+Ppmimage *bulletImage = NULL;
 
 GLuint enemyTexture2;
 GLuint enemyalphaTexture2;
@@ -69,6 +70,8 @@ GLuint gun7Texture;
 GLuint gun7alphaTexture;
 GLuint kappaTexture;
 GLuint kappaalphaTexture;
+GLuint bulletTexture;
+GLuint bulletalphaTexture;
 
 //X Windows variables
 Display *dpy;
@@ -310,7 +313,6 @@ void init_opengl(void)
 	    playerImage->height,0, GL_RGBA,GL_UNSIGNED_BYTE,alphaData);
     free(alphaData);
 
-
     //enemy image
     enemyImage = ppm6GetImage("enemy.ppm");
     glGenTextures(1, &enemyTexture);
@@ -471,6 +473,20 @@ void init_opengl(void)
             gun7Image->height,0, GL_RGBA,GL_UNSIGNED_BYTE,gun7alphaData);
     free(gun7alphaData);
 
+    bulletImage = ppm6GetImage("bulletRed_outline.ppm");
+    glGenTextures(1, &bulletTexture);
+    glBindTexture(GL_TEXTURE_2D, bulletTexture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+                bulletImage->width, bulletImage->height,
+                0, GL_RGB, GL_UNSIGNED_BYTE, bulletImage->data);
+
+    glGenTextures(1, &bulletalphaTexture);
+    unsigned char *bulletalphaData = buildAlphaData(bulletImage);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,bulletImage->width,
+            bulletImage->height,0, GL_RGBA,GL_UNSIGNED_BYTE,bulletalphaData);
+    free(bulletalphaData);
   
 
     //background transparent part
@@ -572,6 +588,9 @@ int check_keys(XEvent *e, Game *game)
 		break;
 		case XK_z:
 		game->bkey ^= '1';
+		break;
+		case XK_x:
+		game->xkey ^= 1;
 		break;
 		case XK_space:
 		if (game->state == 4) {
@@ -789,7 +808,7 @@ void render(Game *game)
     }
     else if (game->state == 5) {
 	usleep(3000000);
-    resetEnemies(game);
+	resetEnemies(game);
 	game->state = 0;
     }
     else if (game->state == 6)
