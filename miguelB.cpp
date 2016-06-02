@@ -25,7 +25,7 @@ using namespace std;
 
 void weapon(Game *game)
 {
-	for (int i = 0; i < 7; i++) {
+	for (int i = 91; i < 98; i++) {
 		game->guninv[i] = false;
 	}
 	game->gun_num = -1;
@@ -353,25 +353,25 @@ void renderTexture(Game *game, int i)
 void renderWeapon(Game *game)
 {
 	 if (game->map[0] == 0 && game->map[1] ==1) {
-                game->gun_num = 0;
+                game->gun_num = 92;
                 if (game->guninv[game->gun_num] == true) {
                         game->gun_num = -1;
                 }
         }
         if (game->map[0] == 4 && game->map[1] ==-1) {
-                game->gun_num = 1;
+                game->gun_num = 93;
                 if (game->guninv[game->gun_num] == true) {
                         game->gun_num = -1;
                 }
         }
         if (game->map[0] == 5 && game->map[1] ==0) {
-                game->gun_num = 2;
+                game->gun_num = 94;
                 if (game->guninv[game->gun_num] == true) {
                         game->gun_num = -1;
                 }
         }
         if (game->map[0] == 3 && game->map[1] ==2) {
-                game->gun_num = 3;
+                game->gun_num = 94;
                 if (game->guninv[game->gun_num] == true) {
                         game->gun_num = -1;
                 }
@@ -394,7 +394,7 @@ void renderWeapon(Game *game)
 }
 void inv(Game *game)
 {
-                if (game->gun_num >= 0) {
+                if (game->gun_num >= 91) {
                 if (game->player.s.center.x + game->player.s.width
                 > game->object[game->gun_num].center.x
                 && game->player.s.center.x - game->player.s.width
@@ -402,7 +402,7 @@ void inv(Game *game)
                 && game->player.s.center.y + game->player.s.height
                 > game->object[game->gun_num].center.y
                 && game->player.s.center.y - game->player.s.height
-                < game->object[game->key_num].center.y) {
+                < game->object[game->gun_num].center.y) {
                         game->guninv[game->gun_num] = true;
                         cout << game->gun_num+1 << endl;
                 }
